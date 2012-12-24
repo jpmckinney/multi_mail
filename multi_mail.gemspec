@@ -16,9 +16,9 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency 'mail', '~> 2.4.4'
-  s.add_runtime_dependency 'multimap'
-  s.add_development_dependency('rspec', '~> 2.10')
-  s.add_development_dependency('rest-client')
-  s.add_development_dependency('rake')
+  s.add_runtime_dependency 'mail', '~> 2.4.4' # Rails 3.2.9
+  s.add_runtime_dependency 'multimap', '~> 1.1.2'
+  s.add_development_dependency 'rspec', '~> 2.10'
+  s.add_development_dependency 'rest-client', '~> 1.6.7'
+  s.add_development_dependency 'rake'
 end

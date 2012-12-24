@@ -14,7 +14,7 @@ module MultiMail
     end
 
     # @param [String,Hash] raw the content of the provider's webhook
-    # @return [Mail] a message
+    # @return [Mail::Message] a message
     # @raises [ForgedRequest] if the request is not authentic
     def process(raw)
       params = self.class.parse raw
@@ -32,12 +32,12 @@ module MultiMail
     end
 
     # @param [Hash] params the content of the provider's webhook
-    # @return [Mail] a message
+    # @return [Mail::Message] a message
     def transform(params)
       raise NotImplementedError
     end
 
-    # @param [Mail] message a 
+    # @param [Mail::Message] message a message
     # @return [Boolean] whether the message is spam
     def spam?(message)
       false

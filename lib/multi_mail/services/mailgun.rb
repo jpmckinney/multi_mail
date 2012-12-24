@@ -29,7 +29,7 @@ module MultiMail
     end
 
     # @param [Hash] params the content of Mailgun's webhook
-    # @return [Mail] a message
+    # @return [Mail::Message] a message
     # @note Mailgun sends the message headers both individually and in the
     #   `message-headers` parameter. Only `message-headers` is documented.
     def transform(params)
@@ -71,7 +71,7 @@ module MultiMail
       message
     end
 
-    # @param [Mail] message a message
+    # @param [Mail::Message] message a message
     # @return [Boolean] whether the message is spam
     # @see http://documentation.mailgun.net/user_manual.html#spam-filter
     # @note You must enable spam filtering for each domain in Mailgun's [Control

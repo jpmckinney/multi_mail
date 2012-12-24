@@ -19,6 +19,8 @@ service = MultiMail.new({
 message = service.process data # raw POST data or params hash
 ```
 
+`message` is a [Mail::Message](https://github.com/mikel/mail) instance.
+
 ## Supported APIs
 
 * [Mailgun](http://www.mailgun.com/)
