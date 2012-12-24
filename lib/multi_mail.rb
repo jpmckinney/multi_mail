@@ -40,6 +40,9 @@ module MultiMail
     when :sendgrid
       require 'multi_mail/services/sendgrid'
       MultiMail::SendGrid.new(attributes)
+    when :mock
+      # for testing
+      MultiMail::Mock.new(attributes)
     else
       raise ArgumentError.new("#{provider} is not a recognized provider")
     end

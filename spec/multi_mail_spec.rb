@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe MultiMail do
   describe '#new' do
     it 'should not raise an error if the provider is recognized' do
-      expect{ MultiMail.new :provider => :mailgun, :mailgun_api_key => '' }.to_not raise_error(ArgumentError)
+      expect{ MultiMail.new :provider => :mailgun, :mailgun_api_key => 1 }.to_not raise_error
     end
 
     it 'should raise an error if the provider is not recognized' do

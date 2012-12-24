@@ -13,7 +13,7 @@ module MultiMail
       self.class.validate_options(options)
     end
 
-    # @param [String,Hash] raw the content of the provider's webhook
+    # @param [String,Hash] raw raw POST data or a params hash
     # @return [Mail::Message] a message
     # @raises [ForgedRequest] if the request is not authentic
     def process(raw)
@@ -44,7 +44,7 @@ module MultiMail
     end
 
     class << self
-      # @param [String,Hash] raw the content of the provider's webhook
+      # @param [String,Hash] raw raw POST data or a params hash
       def parse(raw)
         case raw
         when String

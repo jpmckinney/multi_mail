@@ -3,7 +3,7 @@ require 'multi_mail/services/mailgun'
 
 describe MultiMail::Mailgun do
   describe '#initialize' do
-    it 'should raise an error if missing required arguments' do
+    it 'should raise an error if :mailgun_api_key is missing' do
       expect{ MultiMail.new :provider => :mailgun }.to raise_error(ArgumentError)
       expect{ MultiMail.new :provider => :mailgun, :mailgun_api_key => nil }.to raise_error(ArgumentError)
     end
@@ -15,7 +15,10 @@ describe MultiMail::Mailgun do
     end
 
     before :all do
-      @service = MultiMail.new :provider => :mailgun, :mailgun_api_key => credentials[:mailgun_api_key]
+      @service = MultiMail.new({
+        :provider => :mailgun,
+        :mailgun_api_key => credentials[:mailgun_api_key],
+      })
     end
 
     describe '#valid?' do
