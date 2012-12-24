@@ -79,7 +79,7 @@ module MultiMail
     # @note We may also inspect `X-Mailgun-SScore` and `X-Mailgun-Spf`, whose
     #   possible values are "Pass", "Neutral", "Fail" and "SoftFail".
     def spam?(message)
-      message['X-Mailgun-SFlag'] == 'Yes'
+      message['X-Mailgun-Sflag'].value == 'Yes'
     end
   end
 end

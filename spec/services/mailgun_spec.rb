@@ -5,6 +5,7 @@ describe MultiMail::Mailgun do
   describe '#initialize' do
     it 'should raise an error if missing required arguments' do
       expect{ MultiMail.new :provider => :mailgun }.to raise_error(ArgumentError)
+      expect{ MultiMail.new :provider => :mailgun, :mailgun_api_key => nil }.to raise_error(ArgumentError)
     end
   end
 
@@ -45,12 +46,12 @@ describe MultiMail::Mailgun do
         message.multipart?.should            == true
         message.parts.size.should            == 2
         message.parts[0].content_type.should == 'text/plain'
-        message.parts[0].body.should         == "Bold text\n\n--\nSignature block"
+        message.parts[0].body.should         == "bold text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block"
         message.parts[1].content_type.should == 'text/html; charset=UTF-8'
         message.parts[1].body.should         == '<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div></body></html>'
 
         # Extra Mailgun parameters
-        message['stripped-text'].value.should      == 'HTML email'
+        message['stripped-text'].value.should      == 'bold text'
         message['stripped-signature'].value.should == "--\r\nSignature block"
         message['stripped-html'].value.should      == '<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><br></div><div>--</div><div>Signature block</div></body></html>'
       end
@@ -58,11 +59,13 @@ describe MultiMail::Mailgun do
 
     describe '#spam?' do
       it 'should return true if the response is spam' do
-        @service.spam?(params('spam')).should == true
+        message = @service.transform(params('spam'))
+        @service.spam?(message).should == true
       end
 
       it 'should return false if the response is ham' do
-        @service.spam?(params('valid')).should == false
+        message = @service.transform(params('valid'))
+        @service.spam?(message).should == false
       end
     end
   end

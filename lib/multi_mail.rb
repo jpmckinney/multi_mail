@@ -25,12 +25,21 @@ module MultiMail
   def self.new(attributes)
     attributes = attributes.dup # prevent delete from having side effects
     case provider = attributes.delete(:provider).to_s.downcase.to_sym
+    when :cloudmailin
+      require 'multi_mail/services/cloudmailin'
+      MultiMail::Cloudmailin.new(attributes)
     when :mailgun
       require 'multi_mail/services/mailgun'
       MultiMail::Mailgun.new(attributes)
     when :mandrill
       require 'multi_mail/services/mandrill'
       MultiMail::Mandrill.new(attributes)
+    when :postmark
+      require 'multi_mail/services/postmark'
+      MultiMail::Postmark.new(attributes)
+    when :sendgrid
+      require 'multi_mail/services/sendgrid'
+      MultiMail::SendGrid.new(attributes)
     else
       raise ArgumentError.new("#{provider} is not a recognized provider")
     end
