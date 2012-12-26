@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Open North"]
   s.email       = ["info@opennorth.ca"]
   s.homepage    = "http://github.com/opennorth/multi_mail"
-  s.summary     = %q{Easily switch between different incoming email APIs}
+  s.summary     = %q{Easily switch between email APIs}
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

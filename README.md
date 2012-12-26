@@ -1,9 +1,9 @@
-# MultiMail: easily switch between incoming email APIs
+# MultiMail: easily switch between email APIs
 
 [![Dependency Status](https://gemnasium.com/opennorth/multi_mail.png)](https://gemnasium.com/opennorth/multi_mail)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/opennorth/multi_mail)
 
-Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailgun](http://www.mailgun.com/), [Mandrill](http://mandrill.com/), [Postmark](http://postmarkapp.com/) and [SendGrid](http://sendgrid.com/) – offer APIs to receive, parse and forward incoming email to a URL. MultiMail lets you easily switch between these APIs.
+Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailgun](http://www.mailgun.com/), [Mandrill](http://mandrill.com/), [Postmark](http://postmarkapp.com/) and [SendGrid](http://sendgrid.com/) – offer APIs to send, receive, parse and forward email. MultiMail lets you easily switch between these APIs.
 
 ## Usage
 
@@ -22,7 +22,11 @@ message = service.process data # raw POST data or params hash
 
 ## Supported APIs
 
+Incoming email:
+
 * [Mailgun](http://www.mailgun.com/)
+
+No outgoing email services are implemented yet.
 
 ## Bugs? Questions?
 

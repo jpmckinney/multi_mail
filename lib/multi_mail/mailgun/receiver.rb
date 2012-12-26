@@ -1,6 +1,6 @@
 module MultiMail
   module Receiver
-    # None of the following gems or projects receive incoming emails:
+    # None of the following gems or projects receive incoming email:
     #
     # * https://github.com/hardikshah/mailgun.rb
     # * https://github.com/HashNuke/mailgun
