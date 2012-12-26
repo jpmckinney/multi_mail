@@ -10,7 +10,7 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
 ```ruby
 require 'multi_mail'
 
-service = MultiMail.new({
+service = MultiMail::Receiver.new({
   :provider => 'mailgun',
   :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
 })
