@@ -12,5 +12,5 @@ module MultiMail
 
   autoload :Service, 'multi_mail/service'
   autoload :Receiver, 'multi_mail/receiver'
-  #autoload :Sender, 'multi_mail/sender'
+  autoload :Sender, 'multi_mail/sender'
 end
