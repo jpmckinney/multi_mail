@@ -15,21 +15,18 @@ rescue LoadError
   end
 end
 
-namespace :postbin do
-  require 'json'
-  require 'yaml'
+require 'yaml'
 
-  require 'mandrill'
+def credentials
+  @credentials ||= YAML.load_file File.expand_path(File.join(File.dirname(__FILE__), 'api_keys.yml'))
+end
+
+namespace :mailgun do
+  require 'json'
   require 'rest-client'
 
-  def credentials
-    @credentials ||= YAML.load_file File.expand_path(File.join(File.dirname(__FILE__), 'api_keys.yml'))
-  end
-
-  # After running this task, send an email to an address at the Mailgun domain,
-  # and read the raw POST data in the postbin.
   desc 'Create a Mailgun catch-all route forwarding to a postbin'
-  task :mailgun do
+  task :postbin do
 
     bin_name = ENV['BIN_NAME'] || JSON.load(RestClient.post('http://requestb.in/api/v1/bins', {}))['name']
     bin_url  = "http://requestb.in/#{bin_name}"
@@ -60,35 +57,49 @@ namespace :postbin do
 
     puts "#{bin_url}?inspect"
   end
+end
 
-  # Create an inbound domain and a catchall route through the web interface.
-  desc 'Create a Mandrill catch-all route forwarding to a postbin'
-  task :mandrill do
-    api = Mandrill::API.new credentials[:mandrill_api_key]
+namespace :mandrill do
+  require 'mandrill'
 
-    domains = {}
-    api.inbound.domains.each do |domain|
+  def mandrill_api
+    @mandrill_api ||= Mandrill::API.new credentials[:mandrill_api_key]
+  end
+
+  def mandrill_domains
+    @mandrill_domains ||= mandrill_api.inbound.domains.each_with_object({}) do |domain,domains|
       domains[domain['domain']] = domain
     end
+  end
 
-    if domains.empty?
+  def mandrill_domain
+    @mandrill_domain ||= ENV['DOMAIN'] || mandrill_domains.keys.first
+  end
+
+  desc 'Create a Mandrill catch-all route forwarding to a postbin'
+  task :validate do
+    if mandrill_domains.empty?
       abort 'Add an inbound domain'
-    elsif domains.size > 1 && ENV['DOMAIN'].nil?
-      abort "ENV['DOMAIN'] must be one of #{domains.keys.join ', '}"
+    elsif mandrill_domains.size > 1 && ENV['DOMAIN'].nil?
+      abort "ENV['DOMAIN'] must be one of #{mandrill_domains.keys.join ', '}"
     end
 
-    if ENV['DOMAIN'] && !domains.keys.include?(ENV['DOMAIN'])
-      abort "#{ENV['DOMAIN']} must be one of #{domains.keys.join ', '}"
+    if ENV['DOMAIN'] && !mandrill_domains.keys.include?(ENV['DOMAIN'])
+      abort "#{ENV['DOMAIN']} must be one of #{mandrill_domains.keys.join ', '}"
     end
 
-    domain = ENV['DOMAIN'] || domains.keys.first
-    unless domains[domain]['valid_mx']
-      puts "The MX for #{domain} is not valid"
+    unless mandrill_domains[mandrill_domain]['valid_mx']
+      puts "The MX for #{mandrill_domain} is not valid"
     end
 
-    routes = api.inbound.routes domain
+    routes = api.inbound.routes mandrill_domain
     if routes.empty? || routes.none?{|route| route['pattern'] == '*'}
-      puts "Add a catchall (*) route for #{domain}"
+      puts "Add a catchall (*) route for #{mandrill_domain}"
     end
+  end
+
+  desc 'Send test emails to the Mandrill domain'
+  task :deliver => :validate do
+    mandrill_api.send_raw '', "foo+bar@#{mandrill_domain}"
   end
 end
