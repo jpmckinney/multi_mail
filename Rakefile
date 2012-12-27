@@ -19,12 +19,15 @@ namespace :postbin do
   require 'json'
   require 'yaml'
 
+  require 'mandrill'
   require 'rest-client'
 
   def credentials
     @credentials ||= YAML.load_file File.expand_path(File.join(File.dirname(__FILE__), 'api_keys.yml'))
   end
 
+  # After running this task, send an email to an address at the Mailgun domain,
+  # and read the raw POST data in the postbin.
   desc 'Create a Mailgun catch-all route forwarding to a postbin'
   task :mailgun do
     bin_name = ENV['BIN_NAME'] || JSON.load(RestClient.post('http://requestb.in/api/v1/bins', {}))['name']
@@ -39,12 +42,41 @@ namespace :postbin do
 
     if route
       unless route['action'] == action
+        puts "Updating the catch_all() route..."
         JSON.load(RestClient.put("#{base_url}/#{route['id']}", :action => action))
       end
     else
+        puts "Creating a catch_all() route..."
       JSON.load(RestClient.post(base_url, :expression => 'catch_all()', :action => action))
     end
 
     puts "#{bin_url}?inspect"
+  end
+
+  # Create an inbound domain and a catchall route through the web interface.
+  desc 'Create a Mandrill catch-all route forwarding to a postbin'
+  task :mandrill do
+    api = Mandrill::API.new credentials[:mandrill_api_key]
+
+    domains = {}
+    api.inbound.domains.each do |domain|
+      domains[domain['domain']] = domain
+    end
+
+    if domains.empty?
+      abort 'Add an inbound domain'
+    elsif domains.size > 1 && ENV['DOMAIN'].nil?
+      abort "ENV['DOMAIN'] must be one of #{domains.keys.join ', '}"
+    end
+
+    domain = ENV['DOMAIN'] || domains.keys.first
+    unless domains[domain]['valid_mx']
+      puts "The MX for #{domain} is not valid"
+    end
+
+    routes = api.inbound.routes domain
+    if routes.empty? || routes.none?{|route| route['pattern'] == '*'}
+      puts "Add a catchall (*) route for #{domain}"
+    end
   end
 end
