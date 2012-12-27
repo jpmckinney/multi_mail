@@ -1,14 +1,5 @@
 module MultiMail
   module Receiver
-    # None of the following gems or projects receive incoming email:
-    #
-    # * https://github.com/hardikshah/mailgun.rb
-    # * https://github.com/HashNuke/mailgun
-    # * https://github.com/rschmukler/holster
-    # * https://github.com/jhm15217/mailgun-email-receiving
-    # * https://github.com/mguterl/mailgun_webhooks
-    # * https://github.com/perfectline/mailgun-rails
-    # * https://github.com/tylerhunt/pew_pew
     class Mailgun < MultiMail::Service
       include MultiMail::Receiver::Base
 
