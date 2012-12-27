@@ -92,14 +92,9 @@ namespace :mandrill do
       puts "The MX for #{mandrill_domain} is not valid"
     end
 
-    routes = api.inbound.routes mandrill_domain
+    routes = mandrill_api.inbound.routes mandrill_domain
     if routes.empty? || routes.none?{|route| route['pattern'] == '*'}
       puts "Add a catchall (*) route for #{mandrill_domain}"
     end
-  end
-
-  desc 'Send test emails to the Mandrill domain'
-  task :deliver => :validate do
-    mandrill_api.send_raw '', "foo+bar@#{mandrill_domain}"
   end
 end

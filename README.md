@@ -25,8 +25,9 @@ message = service.process data # raw POST data or params hash
 Incoming email:
 
 * [Mailgun](http://www.mailgun.com/)
+* [Mandrill](http://mandrill.com/)
 
-No outgoing email services are implemented yet.
+[Attachment parsing](https://github.com/mikel/mail#attaching-and-detaching-files) on incoming email is not implemented yet. No outgoing email services are implemented yet.
 
 ## Bugs? Questions?
 

@@ -26,6 +26,7 @@ module MultiMail
       # @return [Array<Mail::Message>] messages
       # @note Mailgun sends the message headers both individually and in the
       #   `message-headers` parameter. Only `message-headers` is documented.
+      # @todo parse attachments properly
       def transform(params)
         headers = Multimap.new
         JSON.parse(params['message-headers']).each do |key,value|
@@ -36,10 +37,11 @@ module MultiMail
           headers headers
 
           # The following are redundant with `message-headers`:
-          #from    params['from']
-          #sender  params['sender']
-          #to      params['recipient']
-          #subject params['subject']
+          #
+          # from    params['from']
+          # sender  params['sender']
+          # to      params['recipient']
+          # subject params['subject']
 
           text_part do
             body params['body-plain']
@@ -59,7 +61,9 @@ module MultiMail
           'attachment-x',
           'content-id-map',
         ].each do |key|
-          message[key] = params[key]
+          if !params[key].nil? && !params[key].empty?
+            message[key] = params[key]
+          end
         end
 
         [message]
