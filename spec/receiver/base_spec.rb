@@ -10,7 +10,7 @@ describe MultiMail::Receiver::Base do
       end
 
       def transform(params)
-        Mail.new
+        [Mail.new]
       end
     end
   end
@@ -26,7 +26,8 @@ describe MultiMail::Receiver::Base do
     end
 
     it 'should transform the request if the request is valid' do
-      @service.process('foo' => 1).should be_a(Mail::Message)
+      @service.should_receive(:transform).with('foo' => 1).once
+      @service.process('foo' => 1)
     end
 
     it 'raise an error if the request is invalid' do

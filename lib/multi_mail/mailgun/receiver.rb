@@ -23,7 +23,7 @@ module MultiMail
       end
 
       # @param [Hash] params the content of Mailgun's webhook
-      # @return [Mail::Message] a message
+      # @return [Array<Mail::Message>] messages
       # @note Mailgun sends the message headers both individually and in the
       #   `message-headers` parameter. Only `message-headers` is documented.
       def transform(params)
@@ -62,7 +62,7 @@ module MultiMail
           message[key] = params[key]
         end
 
-        message
+        [message]
       end
 
       # @param [Mail::Message] message a message

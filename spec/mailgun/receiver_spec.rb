@@ -37,7 +37,7 @@ describe MultiMail::Receiver::Mailgun do
 
     describe '#transform' do
       it 'should return a mail message' do
-        message = @service.transform(params('valid'))
+        message = @service.transform(params('valid'))[0]
 
         # Headers
         message.date.should    == DateTime.parse('Mon, 24 Dec 2012 00:31:08 -0500')
@@ -62,12 +62,12 @@ describe MultiMail::Receiver::Mailgun do
 
     describe '#spam?' do
       it 'should return true if the response is spam' do
-        message = @service.transform(params('spam'))
+        message = @service.transform(params('spam'))[0]
         @service.spam?(message).should == true
       end
 
       it 'should return false if the response is ham' do
-        message = @service.transform(params('valid'))
+        message = @service.transform(params('valid'))[0]
         @service.spam?(message).should == false
       end
     end

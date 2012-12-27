@@ -12,7 +12,7 @@ module MultiMail
       end
 
       # @param [String,Hash] raw raw POST data or a params hash
-      # @return [Mail::Message] a message
+      # @return [Array<Mail::Message>] messages
       # @raises [ForgedRequest] if the request is not authentic
       def process(raw)
         params = self.class.parse raw
@@ -30,7 +30,7 @@ module MultiMail
       end
 
       # @param [Hash] params the content of the provider's webhook
-      # @return [Mail::Message] a message
+      # @return [Array<Mail::Message>] messages
       def transform(params)
         raise NotImplementedError
       end

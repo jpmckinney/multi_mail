@@ -18,7 +18,7 @@ service = MultiMail::Receiver.new({
 message = service.process data # raw POST data or params hash
 ```
 
-`message` is a [Mail::Message](https://github.com/mikel/mail) instance.
+`message` is an array of [Mail::Message](https://github.com/mikel/mail) instances.
 
 ## Supported APIs
 
