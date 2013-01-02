@@ -3,6 +3,8 @@ module MultiMail
   module Sender
     autoload :Base, 'multi_mail/sender/base'
 
+    # Initializers an outgoing email sender.
+    #
     # @example
     #   require 'multi_mail'
     #   service = MultiMail::Sender.new({
@@ -12,6 +14,7 @@ module MultiMail
     #
     # @param [Hash] attributes required arguments
     # @option opts [String,Symbol] :provider a provider
+    # @return [MultiMail::Service] an outgoing email sender
     # @raises [ArgumentError] if the provider does not exist
     # @see Fog::Storage::new
     def self.new(attributes)

@@ -1,6 +1,8 @@
 module MultiMail
   # @see http://rdoc.info/gems/fog/Fog/Service
   class Service
+    # Initializers an email API client.
+    #
     # @param [Hash] options optional arguments
     def initialize(options = {})
       self.class.validate_options(options)
@@ -15,6 +17,8 @@ module MultiMail
         requirements.concat(args)
       end
 
+      # Returns the list of required arguments.
+      #
       # @return [Array] a list of required arguments
       # @see Fog::Service::requirements
       def requirements
@@ -29,15 +33,20 @@ module MultiMail
         recognized.concat(args)
       end
 
+      # Returns the list of optional arguments.
+      #
       # @return [Array] a list of optional arguments
       # @see Fog::Service::recognized
       def recognized
         @recognized ||= []
       end
 
+      # Ensures that required arguments are present and that optional arguments
+      # are recognized.
+      #
       # @param [Hash] options arguments
-      # @raises [ArgumentError] if can't find required arguments or can't
-      #   recognize optional arguments
+      # @raises [ArgumentError] if it can't find a required argument or can't
+      #   recognize an optional argument
       # @see Fog::Service::validate_options
       def validate_options(options)
         keys = []

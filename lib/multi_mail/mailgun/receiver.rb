@@ -5,6 +5,8 @@ module MultiMail
 
       requires :mailgun_api_key
 
+      # Initializes a Mailgun incoming email receiver.
+      #
       # @param [Hash] options required and optional arguments
       # @option opts [String] :mailgun_api_key a Mailgun API key
       def initialize(options = {})
@@ -12,6 +14,8 @@ module MultiMail
         @mailgun_api_key = options[:mailgun_api_key]
       end
 
+      # Returns whether a request originates from Mailgun.
+      #
       # @param [Hash] params the content of Mailgun's webhook
       # @return [Boolean] whether the request originates from Mailgun
       # @raises [KeyError] if the request is missing parameters
@@ -22,6 +26,8 @@ module MultiMail
           '%s%s' % [params.fetch('timestamp'), params.fetch('token')])
       end
 
+      # Transforms the content of Mailgun's webhook into a list of messages.
+      #
       # @param [Hash] params the content of Mailgun's webhook
       # @return [Array<Mail::Message>] messages
       # @note Mailgun sends the message headers both individually and in the
@@ -69,6 +75,8 @@ module MultiMail
         [message]
       end
 
+      # Returns whether a message is spam.
+      #
       # @param [Mail::Message] message a message
       # @return [Boolean] whether the message is spam
       # @see http://documentation.mailgun.net/user_manual.html#spam-filter

@@ -11,6 +11,9 @@ module MultiMail
         end
       end
 
+      # Ensures a request is authentic, parses it into a params hash, and
+      # transforms it into a list of messages.
+      #
       # @param [String,Hash] raw raw POST data or a params hash
       # @return [Array<Mail::Message>] messages
       # @raises [ForgedRequest] if the request is not authentic
@@ -23,18 +26,24 @@ module MultiMail
         end
       end
 
+      # Returns whether a request is authentic.
+      #
       # @param [Hash] params the content of the provider's webhook
       # @return [Boolean] whether the request is authentic
       def valid?(params)
         true
       end
 
+      # Transforms the content of a provider's webhook into a list of messages.
+      #
       # @param [Hash] params the content of the provider's webhook
       # @return [Array<Mail::Message>] messages
       def transform(params)
         raise NotImplementedError
       end
 
+      # Returns whether a message is spam.
+      #
       # @param [Mail::Message] message a message
       # @return [Boolean] whether the message is spam
       def spam?(message)
@@ -42,6 +51,8 @@ module MultiMail
       end
 
       module ClassMethods
+        # Parses raw POST data into a params hash.
+        #
         # @param [String,Hash] raw raw POST data or a params hash
         def parse(raw)
           case raw

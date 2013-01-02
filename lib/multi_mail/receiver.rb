@@ -3,6 +3,8 @@ module MultiMail
   module Receiver
     autoload :Base, 'multi_mail/receiver/base'
 
+    # Initializes an incoming email receiver.
+    #
     # @example
     #   require 'multi_mail'
     #   service = MultiMail::Receiver.new({
@@ -12,6 +14,7 @@ module MultiMail
     #
     # @param [Hash] attributes required arguments
     # @option opts [String,Symbol] :provider a provider
+    # @return [MultiMail::Service] an incoming email receiver
     # @raises [ArgumentError] if the provider does not exist
     # @see Fog::Storage::new
     def self.new(attributes)

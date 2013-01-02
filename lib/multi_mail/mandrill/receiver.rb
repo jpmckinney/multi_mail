@@ -5,6 +5,8 @@ module MultiMail
 
       requires :mandrill_api_key
 
+      # Initializes a Mandrill incoming email receiver.
+      #
       # @param [Hash] options required and optional arguments
       # @option opts [String] :mandrill_api_key a Mandrill API key
       def initialize(options = {})
@@ -12,20 +14,18 @@ module MultiMail
         @mandrill_api_key = options[:mandrill_api_key]
       end
 
+      # Returns whether a request is an inbound event.
+      #
       # @param [Hash] params the content of Mandrill's webhook
-      # @return [Boolean] whether the request originates from Mandrill
+      # @return [Boolean] whether the request is an inbound event
       def valid?(params)
         JSON.parse(params['mandrill_events']).all? do |event|
           event.fetch('event') == 'inbound'
         end
       end
 
-      # @param [Mail::Message] message a message
-      # @return [Boolean] whether the message is spam
-      def spam?(message)
-        false
-      end
-
+      # Transforms the content of Mandrill's webhook into a list of messages.
+      #
       # @param [Hash] params the content of Mandrill's webhook
       # @return [Array<Mail::Message>] messages
       # @todo parse attachments properly
@@ -65,6 +65,14 @@ module MultiMail
 
           message
         end
+      end
+
+      # Returns whether a message is spam.
+      #
+      # @param [Mail::Message] message a message
+      # @return [Boolean] whether the message is spam
+      def spam?(message)
+        false
       end
     end
   end

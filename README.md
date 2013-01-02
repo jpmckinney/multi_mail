@@ -7,16 +7,14 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
 
 ## Usage
 
-```ruby
-require 'multi_mail'
-
-service = MultiMail::Receiver.new({
-  :provider => 'mailgun',
-  :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
-})
-
-message = service.process data # raw POST data or params hash
-```
+    require 'multi_mail'
+    
+    service = MultiMail::Receiver.new({
+      :provider => 'mailgun',
+      :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
+    })
+    
+    message = service.process data # raw POST data or params hash
 
 `message` is an array of [Mail::Message](https://github.com/mikel/mail) instances.
 
