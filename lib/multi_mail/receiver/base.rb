@@ -1,6 +1,6 @@
 module MultiMail
   module Receiver
-    # Abstract class for incoming email services.
+    # Abstract class for incoming email receivers.
     #
     # The `transform` instance method must be implemented in sub-classes. The
     # `valid?` and `spam?` instance methods may be implemented in sub-classes.
@@ -16,7 +16,7 @@ module MultiMail
       #
       # @param [String,Hash] raw raw POST data or a params hash
       # @return [Array<Mail::Message>] messages
-      # @raises [ForgedRequest] if the request is not authentic
+      # @raise [ForgedRequest] if the request is not authentic
       def process(raw)
         params = self.class.parse raw
         if valid? params

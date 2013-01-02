@@ -1,5 +1,6 @@
 module MultiMail
   module Receiver
+    # Mandrill's incoming email receiver.
     class Mandrill < MultiMail::Service
       include MultiMail::Receiver::Base
 
