@@ -3,8 +3,6 @@ module MultiMail
   #
   # @see http://rdoc.info/gems/fog/Fog/Storage
   module Sender
-    autoload :Base, 'multi_mail/sender/base'
-
     # Initializers an outgoing email sender.
     #
     # @example

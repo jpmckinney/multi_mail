@@ -3,8 +3,6 @@ module MultiMail
   #
   # @see http://rdoc.info/gems/fog/Fog/Storage
   module Receiver
-    autoload :Base, 'multi_mail/receiver/base'
-
     # Initializes an incoming email receiver.
     #
     # @example

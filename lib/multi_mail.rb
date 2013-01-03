@@ -9,8 +9,10 @@ module MultiMail
   # @see http://rdoc.info/gems/fog/Fog/Errors
   class Error < StandardError; end
   class ForgedRequest < MultiMail::Error; end
-
-  autoload :Service, 'multi_mail/service'
-  autoload :Receiver, 'multi_mail/receiver'
-  autoload :Sender, 'multi_mail/sender'
 end
+
+require 'multi_mail/service'
+require 'multi_mail/receiver'
+require 'multi_mail/receiver/base'
+require 'multi_mail/sender'
+require 'multi_mail/sender/base'
