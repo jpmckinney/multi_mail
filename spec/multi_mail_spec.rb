@@ -1,6 +1,18 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe MultiMail do
+  describe '#setup' do
+    before :all do
+      MultiMail.setup do |config|
+        config.autoresponse_pattern = /^Out of Office AutoReply:/i
+      end
+    end
+
+    it 'should set the autoresponse pattern' do
+      MultiMail.autoresponse_pattern.should == /^Out of Office AutoReply:/i
+    end
+  end
+
   describe '#autoresponse?' do
     before :each do
       @message = Mail.new
@@ -30,9 +42,26 @@ describe MultiMail do
       MultiMail.autoresponse?(@message).should == false
     end
 
-    it 'should return true if the subject matches a regular expression' do
-      @message.subject = 'Out of Office AutoReply: Subject'
-      MultiMail.autoresponse?(@message).should == true
+    context 'without an autoresponse pattern' do
+      before :all do
+        MultiMail.autoresponse_pattern = nil
+      end
+
+      it 'should not match the subject against the autoresponse pattern' do
+        @message.subject = 'Out of Office AutoReply: Subject'
+        MultiMail.autoresponse?(@message).should == false
+      end
+    end
+
+    context 'with an autoresponse pattern' do
+      before :all do
+        MultiMail.autoresponse_pattern = /^Out of Office AutoReply:/i
+      end
+
+      it 'should return true if the subject matches the autoresponse pattern' do
+        @message.subject = 'Out of Office AutoReply: Subject'
+        MultiMail.autoresponse?(@message).should == true
+      end
     end
   end
 end
