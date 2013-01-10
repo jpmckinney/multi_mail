@@ -32,6 +32,9 @@ module MultiMail
       when :sendgrid
         require 'multi_mail/sendgrid/sender'
         MultiMail::Sender::SendGrid.new(attributes)
+      when :simple
+        require 'multi_mail/simple/sender'
+        MultiMail::Sender::Simple.new(attributes)
       when :mock
         # for testing
         MultiMail::Sender::Mock.new(attributes)

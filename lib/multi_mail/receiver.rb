@@ -35,6 +35,9 @@ module MultiMail
       when :sendgrid
         require 'multi_mail/sendgrid/receiver'
         MultiMail::Receiver::SendGrid.new(attributes)
+      when :simple
+        require 'multi_mail/simple/receiver'
+        MultiMail::Receiver::Simple.new(attributes)
       when :mock
         # for testing
         MultiMail::Receiver::Mock.new(attributes)

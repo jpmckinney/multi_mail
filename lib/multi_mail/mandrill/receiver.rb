@@ -32,8 +32,19 @@ module MultiMail
       # @todo parse attachments properly
       def transform(params)
         JSON.parse(params['mandrill_events']).map do |event|
+          headers = Multimap.new
+          event['msg']['headers'].each do |key,value|
+            if Array === value
+              value.each do |v|
+                headers[key] = v
+              end
+            else
+              headers[key] = value
+            end
+          end
+
           message = Mail.new do
-            headers event['msg']['headers'].reject{|k,_| k=='Received'} # @todo
+            headers headers
 
             # The following are redundant with `message-headers`:
             #

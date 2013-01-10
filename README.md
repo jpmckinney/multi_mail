@@ -25,8 +25,6 @@ Incoming email:
 * [Mailgun](http://www.mailgun.com/)
 * [Mandrill](http://mandrill.com/)
 
-[Attachment parsing](https://github.com/mikel/mail#attaching-and-detaching-files) on incoming email is not implemented yet. No outgoing email services are implemented yet (see the `sender` branch). Branches exist to implement each other incoming email API.
-
 ## Bugs? Questions?
 
 This gem's main repository is on GitHub: [http://github.com/opennorth/multi_mail](http://github.com/opennorth/multi_mail), where your contributions, forks, bug reports, feature requests, and feedback are greatly welcomed.
