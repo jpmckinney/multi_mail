@@ -29,6 +29,10 @@ Incoming email:
 
 This gem's main repository is on GitHub: [http://github.com/opennorth/multi_mail](http://github.com/opennorth/multi_mail), where your contributions, forks, bug reports, feature requests, and feedback are greatly welcomed.
 
+## Acknowledgements
+
+This gem is developed by [Open North](http://www.opennorth.ca/) through a partnership with the [Participatory Politics Foundation](http://www.participatorypolitics.org/).
+
 ## Copyright
 
 This gem re-uses code from [fog](https://github.com/fog/fog), released under the MIT license.
