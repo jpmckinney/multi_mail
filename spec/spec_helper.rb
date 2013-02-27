@@ -9,12 +9,6 @@ require File.dirname(__FILE__) + '/../lib/multi_mail'
 # in spec/support/ and its subdirectories.
 Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 
-# @return [Hash] required arguments to initialize services
-# @todo warn if unable to authenticate with details in api_keys.yml
-def credentials
-  @credentials ||= YAML.load_file(File.expand_path('../../api_keys.yml', __FILE__))
-end
-
 # @param [String] provider a provider
 # @param [String] fixture one of "valid", "invalid" or "spam"
 # @return [String] the provider's baked response

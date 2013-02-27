@@ -17,7 +17,7 @@ describe MultiMail::Receiver::Mailgun do
     before :all do
       @service = MultiMail::Receiver.new({
         :provider => :mailgun,
-        :mailgun_api_key => credentials[:mailgun_api_key],
+        :mailgun_api_key => 'foo',
       })
     end
 

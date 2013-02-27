@@ -17,7 +17,7 @@ describe MultiMail::Receiver::Mandrill do
     before :all do
       @service = MultiMail::Receiver.new({
         :provider => :mandrill,
-        :mandrill_api_key => credentials[:mandrill_api_key],
+        :mandrill_api_key => 'foo',
       })
     end
 
