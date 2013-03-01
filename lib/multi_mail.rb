@@ -24,7 +24,7 @@ module MultiMail
     # @example
     #   require 'multi_mail'
     #
-    #   MiltiMail.setup do |config|
+    #   MultiMail.setup do |config|
     #     config.autoresponse_pattern = /^Out of Office AutoReply:/i
     #   end
     def setup
