@@ -18,9 +18,9 @@ module MultiMail
       # @return [Array<Mail::Message>] messages
       # @raise [ForgedRequest] if the request is not authentic
       def process(raw)
-        params = self.class.parse raw
-        if valid? params
-          transform params
+        params = self.class.parse(raw)
+        if valid?(params)
+          transform(params)
         else
           raise ForgedRequest
         end
@@ -57,7 +57,7 @@ module MultiMail
         def parse(raw)
           case raw
           when String
-            params = CGI.parse raw
+            params = CGI.parse(raw)
             params.each do |key,value|
               if Array === value && value.size == 1
                 params[key] = value.first

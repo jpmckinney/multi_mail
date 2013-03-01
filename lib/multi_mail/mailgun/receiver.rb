@@ -68,7 +68,7 @@ module MultiMail
           'attachment-x',
           'content-id-map',
         ].each do |key|
-          if !params[key].nil? && !params[key].empty?
+          unless params[key].nil? || params[key].empty?
             message[key] = params[key]
           end
         end
