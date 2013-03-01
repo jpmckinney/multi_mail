@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "multi_mail/version"
+require File.expand_path('../lib/multi_mail/version', __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "multi_mail"
