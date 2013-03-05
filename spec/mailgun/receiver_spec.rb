@@ -31,7 +31,7 @@ describe MultiMail::Receiver::Mailgun do
       end
 
       it 'should raise an error if parameters are missing' do
-        expect{ @service.valid?(params('missing')) }.to raise_error(KeyError)
+        expect{ @service.valid?(params('missing')) }.to raise_error(IndexError)
       end
     end
 

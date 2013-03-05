@@ -19,7 +19,7 @@ module MultiMail
       #
       # @param [Hash] params the content of Mailgun's webhook
       # @return [Boolean] whether the request originates from Mailgun
-      # @raise [KeyError] if the request is missing parameters
+      # @raise [IndexError] if the request is missing parameters
       # @see http://documentation.mailgun.net/user_manual.html#securing-webhooks
       def valid?(params)
         params.fetch('signature') == OpenSSL::HMAC.hexdigest(
