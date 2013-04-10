@@ -59,13 +59,13 @@ module MultiMail
         end
         missing = requirements - keys
         unless missing.empty?
-          raise ArgumentError, "Missing required arguments: #{missing.join(', ')}"
+          raise ArgumentError, "Missing required arguments: #{missing.map(&:to_s).sort.join(', ')}"
         end
 
         unless recognizes.empty?
           unrecognized = options.keys - requirements - recognized
           unless unrecognized.empty?
-            raise ArgumentError, "Unrecognized arguments: #{unrecognized.sort.join(', ')}"
+            raise ArgumentError, "Unrecognized arguments: #{unrecognized.map(&:to_s).sort.join(', ')}"
           end
         end
       end
