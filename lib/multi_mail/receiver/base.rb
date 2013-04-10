@@ -54,6 +54,7 @@ module MultiMail
         # Parses raw POST data into a params hash.
         #
         # @param [String,Hash] raw raw POST data or a params hash
+        # @raise [ArgumentError] if the argument is not a string or a hash
         def parse(raw)
           case raw
           when String
