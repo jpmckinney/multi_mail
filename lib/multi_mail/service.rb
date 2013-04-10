@@ -65,7 +65,7 @@ module MultiMail
         unless recognizes.empty?
           unrecognized = options.keys - requirements - recognized
           unless unrecognized.empty?
-            raise ArgumentError, "Unrecognized arguments: #{unrecognized.join(', ')}"
+            raise ArgumentError, "Unrecognized arguments: #{unrecognized.sort.join(', ')}"
           end
         end
       end

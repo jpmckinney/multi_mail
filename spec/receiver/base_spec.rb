@@ -15,23 +15,23 @@ describe MultiMail::Receiver::Base do
     end
   end
 
-  describe '#process' do
-    before :all do
-      @service = klass.new
-    end
+  let :service do
+    klass.new
+  end
 
+  describe '#process' do
     it 'should parse the request' do
       klass.should_receive(:parse).with('foo' => 1).once.and_return('foo' => 1)
-      @service.process('foo' => 1)
+      service.process('foo' => 1)
     end
 
     it 'should transform the request if the request is valid' do
-      @service.should_receive(:transform).with('foo' => 1).once
-      @service.process('foo' => 1)
+      service.should_receive(:transform).with('foo' => 1).once
+      service.process('foo' => 1)
     end
 
     it 'raise an error if the request is invalid' do
-      expect{ @service.process('foo' => 0) }.to raise_error(MultiMail::ForgedRequest)
+      expect{ service.process('foo' => 0) }.to raise_error(MultiMail::ForgedRequest)
     end
   end
 
