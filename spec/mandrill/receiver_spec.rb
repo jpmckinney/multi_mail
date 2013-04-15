@@ -27,6 +27,7 @@ describe MultiMail::Receiver::Mandrill do
 
     describe '#transform' do
       it 'should return a mail message' do
+        pending
         message = @service.transform(params('valid'))[0]
 
         # Headers
@@ -61,11 +62,13 @@ describe MultiMail::Receiver::Mandrill do
 
     describe '#spam?' do
       it 'should return true if the response is spam' do
+        pending
         message = @service.transform(params('spam'))[0]
         @service.spam?(message).should == true
       end
 
       it 'should return false if the response is ham' do
+        pending
         message = @service.transform(params('valid'))[0]
         @service.spam?(message).should == false
       end

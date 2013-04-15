@@ -9,74 +9,83 @@ describe MultiMail::Receiver::Mailgun do
     end
   end
 
-  # @todo Repeat all tests for raw MIME format. Need to run my own postbin to
-  #   have a URL ending with "mime".
   context 'after initialization' do
-    def params(fixture)
-      MultiMail::Receiver::Mailgun.parse(response('mailgun', fixture))
-    end
-
-    before :all do
-      @service = MultiMail::Receiver.new({
-        :provider => :mailgun,
-        :mailgun_api_key => 'foo',
-      })
-    end
-
-    describe '#valid?' do
-      it 'should return true if the response is valid' do
-        @service.valid?(params('valid')).should == true
+    # @todo Need to run my own postbin to have a URL ending with "mime" in order
+    # to get fixtures to test the raw MIME HTTP POST format.
+    %w(parsed).each do |http_post_format|
+      let :http_post_format do
+        http_post_format
       end
 
-      it 'should return false if the response is invalid' do
-        @service.valid?(params('invalid')).should == false
+      def params(fixture)
+        MultiMail::Receiver::Mailgun.parse(response("mailgun/#{http_post_format}", fixture))
       end
 
-      it 'should raise an error if parameters are missing' do
-        expect{ @service.valid?(params('missing')) }.to raise_error(IndexError)
-      end
-    end
-
-    describe '#transform' do
-      it 'should return a mail message' do
-        message = @service.transform(params('valid'))[0]
-
-        # Headers
-        message.date.should    == DateTime.parse('Mon, 14 Apr 2013 20:55:30 -04:00')
-        message.from.should    == ['james@opennorth.ca']
-        message.to.should      == ['foo+bar@multimail.mailgun.org']
-        message.subject.should == 'Test'
-
-        # Body
-        message.multipart?.should            == true
-        message.parts.size.should            == 4
-        message.parts[0].content_type.should == 'text/plain'
-        message.parts[0].body.should         == "bold text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block\n"
-        message.parts[1].content_type.should == 'text/html; charset=UTF-8'
-        message.parts[1].body.should         == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><head></head><div></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html>)
-
-        # Attachments
-        message.attachments[0].filename.should == 'foo.txt'
-        message.attachments[0].read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla consectetur rhoncus. Nunc mattis mattis urna quis molestie. Quisque ut mattis nisl. Donec neque felis, porta quis condimentum eu, pharetra non libero.\n"
-        message.attachments[1].filename.should == 'bar.txt'
-        message.attachments[1].read.should == "Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus egestas vulputate. Pellentesque eu risus dui, id scelerisque neque. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.\n"
-
-        # Extra Mailgun parameters
-        message['stripped-text'].value.should      == 'bold text'
-        message['stripped-signature'].value.should == "--\r\nSignature block"
-        message['stripped-html'].value.should      == '<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><br></div><div>--</div><div>Signature block</div><div></div></body><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html></html>'
-      end
-    end
-
-    describe '#spam?' do
-      it 'should return true if the response is spam' do
-        message = @service.transform(params('spam'))[0]
-        @service.spam?(message).should == true
+      before :all do
+        @service = MultiMail::Receiver.new({
+          :provider => :mailgun,
+          :mailgun_api_key => 'foo',
+          :http_post_format => http_post_format,
+        })
       end
 
-      it 'should return false if the response is ham' do
-        message = @service.transform(params('valid'))[0]
-        @service.spam?(message).should == false
+      describe '#valid?' do
+        it 'should return true if the response is valid' do
+          @service.valid?(params('valid')).should == true
+        end
+
+        it 'should return false if the response is invalid' do
+          @service.valid?(params('invalid')).should == false
+        end
+
+        it 'should raise an error if parameters are missing' do
+          expect{ @service.valid?(params('missing')) }.to raise_error(IndexError)
+        end
+      end
+
+      describe '#transform' do
+        it 'should return a mail message' do
+          message = @service.transform(params('valid'))[0]
+
+          # Headers
+          message.date.should    == DateTime.parse('Mon, 14 Apr 2013 20:55:30 -04:00')
+          message.from.should    == ['james@opennorth.ca']
+          message.to.should      == ['foo+bar@multimail.mailgun.org']
+          message.subject.should == 'Test'
+
+          # Body
+          message.multipart?.should            == true
+          message.parts.size.should            == 4
+          message.parts[0].content_type.should == 'text/plain'
+          message.parts[0].body.should         == "bold text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block\n"
+          message.parts[1].content_type.should == 'text/html; charset=UTF-8'
+          message.parts[1].body.should         == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><head></head><div></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html>)
+
+          # Attachments
+          message.attachments[0].filename.should == 'foo.txt'
+          message.attachments[0].read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla consectetur rhoncus. Nunc mattis mattis urna quis molestie. Quisque ut mattis nisl. Donec neque felis, porta quis condimentum eu, pharetra non libero.\n"
+          message.attachments[1].filename.should == 'bar.txt'
+          message.attachments[1].read.should == "Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus egestas vulputate. Pellentesque eu risus dui, id scelerisque neque. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.\n"
+
+          if http_post_format == 'parsed'
+            # Extra Mailgun parameters
+            message['stripped-text'].value.should      == 'bold text'
+            message['stripped-signature'].value.should == "--\r\nSignature block"
+            message['stripped-html'].value.should      == '<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><br></div><div>--</div><div>Signature block</div><div></div></body><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html></html>'
+          end
+        end
+      end
+
+      describe '#spam?' do
+        it 'should return true if the response is spam' do
+          message = @service.transform(params('spam'))[0]
+          @service.spam?(message).should == true
+        end
+
+        it 'should return false if the response is ham' do
+          message = @service.transform(params('valid'))[0]
+          @service.spam?(message).should == false
+        end
       end
     end
   end
