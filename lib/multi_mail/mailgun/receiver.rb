@@ -4,6 +4,7 @@ module MultiMail
     class Mailgun < MultiMail::Service
       include MultiMail::Receiver::Base
 
+      # @return [String] the Mailgun API key
       requires :mailgun_api_key
 
       # Initializes a Mailgun incoming email receiver.
@@ -33,7 +34,6 @@ module MultiMail
       # @return [Array<Mail::Message>] messages
       # @note Mailgun sends the message headers both individually and in the
       #   `message-headers` parameter. Only `message-headers` is documented.
-      # @todo parse attachments properly
       def transform(params)
         headers = Multimap.new
         JSON.parse(params['message-headers']).each do |key,value|
@@ -101,7 +101,7 @@ module MultiMail
       # @note We may also inspect `X-Mailgun-SScore` and `X-Mailgun-Spf`, whose
       #   possible values are "Pass", "Neutral", "Fail" and "SoftFail".
       def spam?(message)
-        !message['X-Mailgun-Sflag'].nil? && message['X-Mailgun-Sflag'].value == 'Yes'
+        message.key?('X-Mailgun-Sflag') && message['X-Mailgun-Sflag'].value == 'Yes'
       end
     end
   end
