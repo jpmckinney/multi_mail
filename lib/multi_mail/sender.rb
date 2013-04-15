@@ -1,8 +1,10 @@
 module MultiMail
+  # Endpoint for initializing different outgoing email senders.
+  #
   # @see http://rdoc.info/gems/fog/Fog/Storage
   module Sender
-    autoload :Base, 'multi_mail/sender/base'
-
+    # Initializers an outgoing email sender.
+    #
     # @example
     #   require 'multi_mail'
     #   service = MultiMail::Sender.new({
@@ -12,7 +14,8 @@ module MultiMail
     #
     # @param [Hash] attributes required arguments
     # @option opts [String,Symbol] :provider a provider
-    # @raises [ArgumentError] if the provider does not exist
+    # @return [MultiMail::Service] an outgoing email sender
+    # @raise [ArgumentError] if the provider does not exist
     # @see Fog::Storage::new
     def self.new(attributes)
       attributes = attributes.dup # prevent delete from having side effects
@@ -29,6 +32,9 @@ module MultiMail
       when :sendgrid
         require 'multi_mail/sendgrid/sender'
         MultiMail::Sender::SendGrid.new(attributes)
+      when :simple
+        require 'multi_mail/simple/sender'
+        MultiMail::Sender::Simple.new(attributes)
       when :mock
         # for testing
         MultiMail::Sender::Mock.new(attributes)

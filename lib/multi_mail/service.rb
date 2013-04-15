@@ -1,6 +1,10 @@
 module MultiMail
+  # Interacts with email APIs to send or receive email.
+  #
   # @see http://rdoc.info/gems/fog/Fog/Service
   class Service
+    # Initializers an email API service.
+    #
     # @param [Hash] options optional arguments
     def initialize(options = {})
       self.class.validate_options(options)
@@ -15,6 +19,8 @@ module MultiMail
         requirements.concat(args)
       end
 
+      # Returns the list of required arguments.
+      #
       # @return [Array] a list of required arguments
       # @see Fog::Service::requirements
       def requirements
@@ -29,15 +35,20 @@ module MultiMail
         recognized.concat(args)
       end
 
+      # Returns the list of optional arguments.
+      #
       # @return [Array] a list of optional arguments
       # @see Fog::Service::recognized
       def recognized
         @recognized ||= []
       end
 
+      # Ensures that required arguments are present and that optional arguments
+      # are recognized.
+      #
       # @param [Hash] options arguments
-      # @raises [ArgumentError] if can't find required arguments or can't
-      #   recognize optional arguments
+      # @raise [ArgumentError] if it can't find a required argument or can't
+      #   recognize an optional argument
       # @see Fog::Service::validate_options
       def validate_options(options)
         keys = []
@@ -48,13 +59,13 @@ module MultiMail
         end
         missing = requirements - keys
         unless missing.empty?
-          raise ArgumentError, "Missing required arguments: #{missing.join(', ')}"
+          raise ArgumentError, "Missing required arguments: #{missing.map(&:to_s).sort.join(', ')}"
         end
 
         unless recognizes.empty?
           unrecognized = options.keys - requirements - recognized
           unless unrecognized.empty?
-            raise ArgumentError, "Unrecognized arguments: #{unrecognized.join(', ')}"
+            raise ArgumentError, "Unrecognized arguments: #{unrecognized.map(&:to_s).sort.join(', ')}"
           end
         end
       end

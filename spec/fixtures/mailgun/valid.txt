@@ -1,8 +1,172 @@
 HTTP/1.1 200 OK
 User-Agent: Python-urllib/2.7
 Host: requestb.in
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 6108
-Connection: keep-alive
+Content-Type: multipart/form-data; boundary=127.0.0.1.1002.14208.1365987337.508.82085
+Content-Length: 9632
+Connection: close
 
-recipient=foo%2Bbar%40multimail.mailgun.org&sender=james%40opennorth.ca&subject=Test&from=James+McKinney+%3Cjames%40opennorth.ca%3E&Received=by+luna.mailgun.net+with+SMTP+mgrt+8757958553753%3B+Mon%2C+24+Dec+2012+05%3A31%3A14+%2B0000&X-Envelope-From=%3Cjames%40opennorth.ca%3E&Received=from+mail-ia0-f172.google.com+%28mail-ia0-f172.google.com+%5B209.85.210.172%5D%29+by+mxa.mailgun.org+with+ESMTP+id+50d7e8a1.59309b0-in1%3B+Mon%2C+24+Dec+2012+05%3A31%3A13+-0000+%28UTC%29&Received=by+mail-ia0-f172.google.com+with+SMTP+id+z13so5721887iaz.3+for+%3Cfoo%2Bbar%40multimail.mailgun.org%3E%3B+Sun%2C+23+Dec+2012+21%3A31%3A13+-0800+%28PST%29&X-Google-Dkim-Signature=v%3D1%3B+a%3Drsa-sha256%3B+c%3Drelaxed%2Frelaxed%3B+d%3Dgoogle.com%3B+s%3D20120113%3B+h%3Dx-received%3Afrom%3Acontent-type%3Asubject%3Adate%3Amessage-id%3Ato+%3Amime-version%3Ax-mailer%3Ax-gm-message-state%3B+bh%3D6upuK3YAruhelVsnSVxaSLj4p3tANY1XJwtf3oISt3o%3D%3B+b%3DewYc7cjB7NYk%2Bj3pL3xXRm60pVzerzE6P3mX%2FLWa3CmRWbHZlQSs95483ShvqSkRhz+IXVr6AFDA%2BxHu7CcaR5Ge1jn9EKmoa6nTd7DMjHBX4bdnyQQcjdQJAwQeArXcmihNBPU+7pDyPkqMCzqEL2H1CExVODhOkgZYURXwpYDBsQdy7XEgdTRueJIKtgrTyrTuxz%2FupjIC+RaSk24GKJHMvGvLso%2F%2BNPhIbbih1cIXnx7vG2F8NM%2BFrmtHrMlRxs%2B3BLKza4zfHRTIg+mtUjPlJmCa%2BfdnYYUd0yhtgIsx2iODI8Rw%2FqdH76ZKWxC6h%2BGShu%2Br36uX8sI2mIexBY+qrPg%3D%3D&X-Received=by+10.50.33.212+with+SMTP+id+t20mr14433982igi.108.1356327073551%3B+Sun%2C+23+Dec+2012+21%3A31%3A13+-0800+%28PST%29&Return-Path=%3Cjames%40opennorth.ca%3E&Received=from+%5B192.168.0.104%5D+%28%5B69.165.204.186%5D%29+by+mx.google.com+with+ESMTPS+id+c3sm22042054igj.1.2012.12.23.21.31.10+%28version%3DTLSv1%2FSSLv3+cipher%3DOTHER%29%3B+Sun%2C+23+Dec+2012+21%3A31%3A12+-0800+%28PST%29&From=James+McKinney+%3Cjames%40opennorth.ca%3E&Content-Type=multipart%2Falternative%3B+boundary%3D%22Apple-Mail%3D_062FA552-79D4-4FFA-95A1-647F73FD11A1%22&Subject=Test&Date=Mon%2C+24+Dec+2012+00%3A31%3A08+-0500&Message-Id=%3C79F1A964-ABCE-4131-82F8-0E5073AE1A65%40opennorth.ca%3E&To=foo%2Bbar%40multimail.mailgun.org&Mime-Version=1.0+%28Apple+Message+framework+v1283%29&X-Mailer=Apple+Mail+%282.1283%29&X-Gm-Message-State=ALoCoQm%2FYGSXiuENvTKhfHsnlafwStjOWi4IXZEsxEQWK1k8rjhvh%2BDPhjxtztKZ2agv3AQp5aYn&X-Mailgun-Sflag=No&X-Mailgun-Sscore=-1.9&X-Mailgun-Spf=Pass&message-headers=%5B%5B%22Received%22%2C+%22by+luna.mailgun.net+with+SMTP+mgrt+8757958553753%3B+Mon%2C+24+Dec+2012+05%3A31%3A14+%2B0000%22%5D%2C+%5B%22X-Envelope-From%22%2C+%22%3Cjames%40opennorth.ca%3E%22%5D%2C+%5B%22Received%22%2C+%22from+mail-ia0-f172.google.com+%28mail-ia0-f172.google.com+%5B209.85.210.172%5D%29+by+mxa.mailgun.org+with+ESMTP+id+50d7e8a1.59309b0-in1%3B+Mon%2C+24+Dec+2012+05%3A31%3A13+-0000+%28UTC%29%22%5D%2C+%5B%22Received%22%2C+%22by+mail-ia0-f172.google.com+with+SMTP+id+z13so5721887iaz.3+for+%3Cfoo%2Bbar%40multimail.mailgun.org%3E%3B+Sun%2C+23+Dec+2012+21%3A31%3A13+-0800+%28PST%29%22%5D%2C+%5B%22X-Google-Dkim-Signature%22%2C+%22v%3D1%3B+a%3Drsa-sha256%3B+c%3Drelaxed%2Frelaxed%3B+d%3Dgoogle.com%3B+s%3D20120113%3B+h%3Dx-received%3Afrom%3Acontent-type%3Asubject%3Adate%3Amessage-id%3Ato+%3Amime-version%3Ax-mailer%3Ax-gm-message-state%3B+bh%3D6upuK3YAruhelVsnSVxaSLj4p3tANY1XJwtf3oISt3o%3D%3B+b%3DewYc7cjB7NYk%2Bj3pL3xXRm60pVzerzE6P3mX%2FLWa3CmRWbHZlQSs95483ShvqSkRhz+IXVr6AFDA%2BxHu7CcaR5Ge1jn9EKmoa6nTd7DMjHBX4bdnyQQcjdQJAwQeArXcmihNBPU+7pDyPkqMCzqEL2H1CExVODhOkgZYURXwpYDBsQdy7XEgdTRueJIKtgrTyrTuxz%2FupjIC+RaSk24GKJHMvGvLso%2F%2BNPhIbbih1cIXnx7vG2F8NM%2BFrmtHrMlRxs%2B3BLKza4zfHRTIg+mtUjPlJmCa%2BfdnYYUd0yhtgIsx2iODI8Rw%2FqdH76ZKWxC6h%2BGShu%2Br36uX8sI2mIexBY+qrPg%3D%3D%22%5D%2C+%5B%22X-Received%22%2C+%22by+10.50.33.212+with+SMTP+id+t20mr14433982igi.108.1356327073551%3B+Sun%2C+23+Dec+2012+21%3A31%3A13+-0800+%28PST%29%22%5D%2C+%5B%22Return-Path%22%2C+%22%3Cjames%40opennorth.ca%3E%22%5D%2C+%5B%22Received%22%2C+%22from+%5B192.168.0.104%5D+%28%5B69.165.204.186%5D%29+by+mx.google.com+with+ESMTPS+id+c3sm22042054igj.1.2012.12.23.21.31.10+%28version%3DTLSv1%2FSSLv3+cipher%3DOTHER%29%3B+Sun%2C+23+Dec+2012+21%3A31%3A12+-0800+%28PST%29%22%5D%2C+%5B%22From%22%2C+%22James+McKinney+%3Cjames%40opennorth.ca%3E%22%5D%2C+%5B%22Content-Type%22%2C+%22multipart%2Falternative%3B+boundary%3D%5C%22Apple-Mail%3D_062FA552-79D4-4FFA-95A1-647F73FD11A1%5C%22%22%5D%2C+%5B%22Subject%22%2C+%22Test%22%5D%2C+%5B%22Date%22%2C+%22Mon%2C+24+Dec+2012+00%3A31%3A08+-0500%22%5D%2C+%5B%22Message-Id%22%2C+%22%3C79F1A964-ABCE-4131-82F8-0E5073AE1A65%40opennorth.ca%3E%22%5D%2C+%5B%22To%22%2C+%22foo%2Bbar%40multimail.mailgun.org%22%5D%2C+%5B%22Mime-Version%22%2C+%221.0+%28Apple+Message+framework+v1283%29%22%5D%2C+%5B%22X-Mailer%22%2C+%22Apple+Mail+%282.1283%29%22%5D%2C+%5B%22X-Gm-Message-State%22%2C+%22ALoCoQm%2FYGSXiuENvTKhfHsnlafwStjOWi4IXZEsxEQWK1k8rjhvh%2BDPhjxtztKZ2agv3AQp5aYn%22%5D%2C+%5B%22X-Mailgun-Sflag%22%2C+%22No%22%5D%2C+%5B%22X-Mailgun-Sscore%22%2C+%22-1.9%22%5D%2C+%5B%22X-Mailgun-Spf%22%2C+%22Pass%22%5D%5D&timestamp=1356327074&token=1u0u68zfxyfyur1cglwzwumutta-fxqfirgbfptaxf3xaq5o41&signature=00b70fb2f2a7008628e0d15bca063f0046bfaa24798fc79b89b48ce765138410&body-plain=bold+text%0D%0A%0D%0A%3E+multiline%0D%0A%3E+quoted%0D%0A%3E+text%0D%0A%0D%0A%0D%0A--%0D%0ASignature+block&body-html=%3Chtml%3E%3Chead%3E%3C%2Fhead%3E%3Cbody+style%3D%22word-wrap%3A+break-word%3B+-webkit-nbsp-mode%3A+space%3B+-webkit-line-break%3A+after-white-space%3B+%22%3E%3Cb%3Ebold+text%3C%2Fb%3E%3Cdiv%3E%3Cbr%3E%3C%2Fdiv%3E%3Cdiv%3E%3Cblockquote+type%3D%22cite%22%3Emultiline%3C%2Fblockquote%3E%3Cblockquote+type%3D%22cite%22%3Equoted%3C%2Fblockquote%3E%3Cblockquote+type%3D%22cite%22%3Etext%3C%2Fblockquote%3E%3C%2Fdiv%3E%3Cdiv%3E%3Cbr%3E%3C%2Fdiv%3E%3Cdiv%3E--%3C%2Fdiv%3E%3Cdiv%3ESignature+block%3C%2Fdiv%3E%3C%2Fbody%3E%3C%2Fhtml%3E&stripped-html=%3Chtml%3E%3Chead%3E%3C%2Fhead%3E%3Cbody+style%3D%22word-wrap%3A+break-word%3B+-webkit-nbsp-mode%3A+space%3B+-webkit-line-break%3A+after-white-space%3B+%22%3E%3Cb%3Ebold+text%3C%2Fb%3E%3Cdiv%3E%3Cbr%3E%3C%2Fdiv%3E%3Cdiv%3E%3Cbr%3E%3C%2Fdiv%3E%3Cdiv%3E--%3C%2Fdiv%3E%3Cdiv%3ESignature+block%3C%2Fdiv%3E%3C%2Fbody%3E%3C%2Fhtml%3E&stripped-text=bold+text&stripped-signature=--%0D%0ASignature+block
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="recipient"
+
+foo+bar@multimail.mailgun.org
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="sender"
+
+james@opennorth.ca
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="subject"
+
+Test
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="from"
+
+James McKinney <james@opennorth.ca>
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="Received"
+
+by luna.mailgun.net with SMTP mgrt 8775746703533; Mon, 15 Apr 2013 00:55:37 +0000
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="X-Envelope-From"
+
+<james@opennorth.ca>
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="Received"
+
+from mail-ie0-f171.google.com (mail-ie0-f171.google.com [209.85.223.171]) by mxa.mailgun.org with ESMTP id 516b5005.7fa88c822670-in1; Mon, 15 Apr 2013 00:55:33 -0000 (UTC)
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="Received"
+
+by mail-ie0-f171.google.com with SMTP id e14so5228630iej.30 for <foo+bar@multimail.mailgun.org>; Sun, 14 Apr 2013 17:55:33 -0700 (PDT)
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="X-Google-Dkim-Signature"
+
+v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:subject:date:message-id:to :mime-version:x-mailer:x-gm-message-state; bh=YwuZHU5AJVFy0qXX7vBWpnV+jpLkEFvBLqRAU25Muno=; b=ntxvRQWwkLuxx0a6GdTu3gS5qtACw/VnhHif9iwEPkrPWNz2yfBh0QWsBmMqr3c6Is XpwzLkFkHiLEHfsFzbakv0F37TD2T7z1OoVh0SCEOdru7Vzr5nzwa2WGw2f9bOHLO0p0 qyQpRM2xmNQX0wCEqzJ8VlNOfCGETJQ/pogKuDQisSgBGPLbSvXp/e+geUqZbvZUeXrg SU2/x2CXvL+Hp8UzWUnPJBvtAR9bKwyUZhcdiVGaNWK2yYApMHciWvTFRb3/BcOSF3e7 90rZ1vYrA9zP1Dulm+v1SduYeNpyNtuaD/6A8Tadmcle51PkS80lGetVZzp/KKq2xk8k 5F4Q==
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="X-Received"
+
+by 10.50.67.108 with SMTP id m12mr3789751igt.77.1365987333529; Sun, 14 Apr 2013 17:55:33 -0700 (PDT)
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="Return-Path"
+
+<james@opennorth.ca>
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="Received"
+
+from [192.168.0.110] ([69.165.215.199]) by mx.google.com with ESMTPS id qn10sm8985477igc.6.2013.04.14.17.55.31 (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128); Sun, 14 Apr 2013 17:55:32 -0700 (PDT)
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="From"
+
+James McKinney <james@opennorth.ca>
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="Content-Type"
+
+multipart/alternative; boundary="Apple-Mail=_4B462E86-A543-4F80-AC3A-207967B5AE54"
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="Subject"
+
+Test
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="Date"
+
+Sun, 14 Apr 2013 20:55:30 -0400
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="Message-Id"
+
+<0A192AD2-6B73-4AE3-98FB-1DA8C76E308E@opennorth.ca>
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="To"
+
+foo+bar@multimail.mailgun.org
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="Mime-Version"
+
+1.0 (Apple Message framework v1283)
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="X-Mailer"
+
+Apple Mail (2.1283)
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="X-Gm-Message-State"
+
+ALoCoQmyAMNxiM1lSlsiq3/Ht2gO+IZAYUI4+4jYU/kVgLEJaSKxc2qYIrN6SzHTRTFOFX4d0CMk
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="X-Mailgun-Sflag"
+
+No
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="X-Mailgun-Sscore"
+
+0.0
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="X-Mailgun-Spf"
+
+Neutral
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="X-Mailgun-Incoming"
+
+Yes
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="message-headers"
+
+[["Received", "by luna.mailgun.net with SMTP mgrt 8775746703533; Mon, 15 Apr 2013 00:55:37 +0000"], ["X-Envelope-From", "<james@opennorth.ca>"], ["Received", "from mail-ie0-f171.google.com (mail-ie0-f171.google.com [209.85.223.171]) by mxa.mailgun.org with ESMTP id 516b5005.7fa88c822670-in1; Mon, 15 Apr 2013 00:55:33 -0000 (UTC)"], ["Received", "by mail-ie0-f171.google.com with SMTP id e14so5228630iej.30 for <foo+bar@multimail.mailgun.org>; Sun, 14 Apr 2013 17:55:33 -0700 (PDT)"], ["X-Google-Dkim-Signature", "v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:subject:date:message-id:to :mime-version:x-mailer:x-gm-message-state; bh=YwuZHU5AJVFy0qXX7vBWpnV+jpLkEFvBLqRAU25Muno=; b=ntxvRQWwkLuxx0a6GdTu3gS5qtACw/VnhHif9iwEPkrPWNz2yfBh0QWsBmMqr3c6Is XpwzLkFkHiLEHfsFzbakv0F37TD2T7z1OoVh0SCEOdru7Vzr5nzwa2WGw2f9bOHLO0p0 qyQpRM2xmNQX0wCEqzJ8VlNOfCGETJQ/pogKuDQisSgBGPLbSvXp/e+geUqZbvZUeXrg SU2/x2CXvL+Hp8UzWUnPJBvtAR9bKwyUZhcdiVGaNWK2yYApMHciWvTFRb3/BcOSF3e7 90rZ1vYrA9zP1Dulm+v1SduYeNpyNtuaD/6A8Tadmcle51PkS80lGetVZzp/KKq2xk8k 5F4Q=="], ["X-Received", "by 10.50.67.108 with SMTP id m12mr3789751igt.77.1365987333529; Sun, 14 Apr 2013 17:55:33 -0700 (PDT)"], ["Return-Path", "<james@opennorth.ca>"], ["Received", "from [192.168.0.110] ([69.165.215.199]) by mx.google.com with ESMTPS id qn10sm8985477igc.6.2013.04.14.17.55.31 (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128); Sun, 14 Apr 2013 17:55:32 -0700 (PDT)"], ["From", "James McKinney <james@opennorth.ca>"], ["Content-Type", "multipart/alternative; boundary=\"Apple-Mail=_4B462E86-A543-4F80-AC3A-207967B5AE54\""], ["Subject", "Test"], ["Date", "Sun, 14 Apr 2013 20:55:30 -0400"], ["Message-Id", "<0A192AD2-6B73-4AE3-98FB-1DA8C76E308E@opennorth.ca>"], ["To", "foo+bar@multimail.mailgun.org"], ["Mime-Version", "1.0 (Apple Message framework v1283)"], ["X-Mailer", "Apple Mail (2.1283)"], ["X-Gm-Message-State", "ALoCoQmyAMNxiM1lSlsiq3/Ht2gO+IZAYUI4+4jYU/kVgLEJaSKxc2qYIrN6SzHTRTFOFX4d0CMk"], ["X-Mailgun-Sflag", "No"], ["X-Mailgun-Sscore", "0.0"], ["X-Mailgun-Spf", "Neutral"], ["X-Mailgun-Incoming", "Yes"]]
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="timestamp"
+
+1365987337
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="token"
+
+4zo5t2znar3cpzakwsg869r0rrj2m-vot2s9xwuk41i77tvpi4
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="signature"
+
+12b43fdd05641a7deee68fedfedfe536b22a7de48e0257e1cca871128589c17b
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="attachment-count"
+
+2
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="body-plain"
+
+bold text
+
+> multiline
+> quoted
+> text
+
+
+--
+Signature block
+
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="body-html"
+
+<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><head></head><div></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html>
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="stripped-html"
+
+<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><br></div><div>--</div><div>Signature block</div><div></div></body><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html></html>
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="stripped-text"
+
+bold text
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="stripped-signature"
+
+--
+Signature block
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="attachment-1"; filename="foo.txt"
+Content-Type: text/plain
+Content-Length: 223
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla consectetur rhoncus. Nunc mattis mattis urna quis molestie. Quisque ut mattis nisl. Donec neque felis, porta quis condimentum eu, pharetra non libero.
+
+--127.0.0.1.1002.14208.1365987337.508.82085
+Content-Disposition: form-data; name="attachment-2"; filename="bar.txt"
+Content-Type: text/plain
+Content-Length: 227
+
+Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus egestas vulputate. Pellentesque eu risus dui, id scelerisque neque. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+
+--127.0.0.1.1002.14208.1365987337.508.82085--

@@ -1,8 +1,10 @@
 module MultiMail
+  # Endpoint for initializing different incoming email receivers.
+  #
   # @see http://rdoc.info/gems/fog/Fog/Storage
   module Receiver
-    autoload :Base, 'multi_mail/receiver/base'
-
+    # Initializes an incoming email receiver.
+    #
     # @example
     #   require 'multi_mail'
     #   service = MultiMail::Receiver.new({
@@ -12,7 +14,8 @@ module MultiMail
     #
     # @param [Hash] attributes required arguments
     # @option opts [String,Symbol] :provider a provider
-    # @raises [ArgumentError] if the provider does not exist
+    # @return [MultiMail::Service] an incoming email receiver
+    # @raise [ArgumentError] if the provider does not exist
     # @see Fog::Storage::new
     def self.new(attributes)
       attributes = attributes.dup # prevent delete from having side effects
@@ -32,6 +35,9 @@ module MultiMail
       when :sendgrid
         require 'multi_mail/sendgrid/receiver'
         MultiMail::Receiver::SendGrid.new(attributes)
+      when :simple
+        require 'multi_mail/simple/receiver'
+        MultiMail::Receiver::Simple.new(attributes)
       when :mock
         # for testing
         MultiMail::Receiver::Mock.new(attributes)

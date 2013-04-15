@@ -1,10 +1,14 @@
 module MultiMail
   module Receiver
+    # Mailgun's incoming email receiver.
     class Mailgun < MultiMail::Service
       include MultiMail::Receiver::Base
 
+      # @return [String] the Mailgun API key
       requires :mailgun_api_key
 
+      # Initializes a Mailgun incoming email receiver.
+      #
       # @param [Hash] options required and optional arguments
       # @option opts [String] :mailgun_api_key a Mailgun API key
       def initialize(options = {})
@@ -12,9 +16,11 @@ module MultiMail
         @mailgun_api_key = options[:mailgun_api_key]
       end
 
+      # Returns whether a request originates from Mailgun.
+      #
       # @param [Hash] params the content of Mailgun's webhook
       # @return [Boolean] whether the request originates from Mailgun
-      # @raises [KeyError] if the request is missing parameters
+      # @raise [IndexError] if the request is missing parameters
       # @see http://documentation.mailgun.net/user_manual.html#securing-webhooks
       def valid?(params)
         params.fetch('signature') == OpenSSL::HMAC.hexdigest(
@@ -22,11 +28,12 @@ module MultiMail
           '%s%s' % [params.fetch('timestamp'), params.fetch('token')])
       end
 
+      # Transforms the content of Mailgun's webhook into a list of messages.
+      #
       # @param [Hash] params the content of Mailgun's webhook
       # @return [Array<Mail::Message>] messages
       # @note Mailgun sends the message headers both individually and in the
       #   `message-headers` parameter. Only `message-headers` is documented.
-      # @todo parse attachments properly
       def transform(params)
         headers = Multimap.new
         JSON.parse(params['message-headers']).each do |key,value|
@@ -47,21 +54,36 @@ module MultiMail
             body params['body-plain']
           end
 
-          html_part do
-            content_type 'text/html; charset=UTF-8'
-            body params['body-html']
+          if params.key?('body-html')
+            html_part do
+              content_type 'text/html; charset=UTF-8'
+              body params['body-html']
+            end
+          end
+
+          if params.key?('attachment-count')
+            1.upto(params['attachment-count'].to_i).each do |n|
+              key = "attachment-#{n}"
+              add_file(:filename => params[key][:filename], :content => params[key][:tempfile].read)
+            end
           end
         end
 
         # Extra Mailgun parameters.
-        [ 'stripped-text',
+        extra = [
+          'stripped-text',
           'stripped-signature',
           'stripped-html',
-          'attachment-count',
-          'attachment-x',
           'content-id-map',
-        ].each do |key|
-          if !params[key].nil? && !params[key].empty?
+        ]
+
+        # Other body parts.
+        extra += params.keys.select do |key|
+          key[/\Abody-/]
+        end
+
+        extra.each do |key|
+          if params.key?(key) && !params[key].empty?
             message[key] = params[key]
           end
         end
@@ -69,6 +91,8 @@ module MultiMail
         [message]
       end
 
+      # Returns whether a message is spam.
+      #
       # @param [Mail::Message] message a message
       # @return [Boolean] whether the message is spam
       # @see http://documentation.mailgun.net/user_manual.html#spam-filter
@@ -77,7 +101,7 @@ module MultiMail
       # @note We may also inspect `X-Mailgun-SScore` and `X-Mailgun-Spf`, whose
       #   possible values are "Pass", "Neutral", "Fail" and "SoftFail".
       def spam?(message)
-        message['X-Mailgun-Sflag'].value == 'Yes'
+        message.key?('X-Mailgun-Sflag') && message['X-Mailgun-Sflag'].value == 'Yes'
       end
     end
   end

@@ -51,10 +51,10 @@ describe MultiMail::Service do
         klass.validate_options({
           :required_argument1 => 1,
           :required_argument2 => 1,
-          :foo => 1,
           :bar => 1,
+          :foo => 1,
         })
-      }.to raise_error(ArgumentError, "Unrecognized arguments: foo, bar")
+      }.to raise_error(ArgumentError, "Unrecognized arguments: bar, foo")
     end
   end
 end

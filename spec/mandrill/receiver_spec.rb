@@ -17,7 +17,7 @@ describe MultiMail::Receiver::Mandrill do
     before :all do
       @service = MultiMail::Receiver.new({
         :provider => :mandrill,
-        :mandrill_api_key => credentials[:mandrill_api_key],
+        :mandrill_api_key => 'foo',
       })
     end
 
@@ -31,7 +31,7 @@ describe MultiMail::Receiver::Mandrill do
       end
 
       it 'should raise an error if parameters are missing' do
-        expect{ @service.valid?(params('missing')) }.to raise_error(KeyError)
+        expect{ @service.valid?(params('missing')) }.to raise_error(IndexError)
       end
     end
 
@@ -51,7 +51,6 @@ describe MultiMail::Receiver::Mandrill do
         message.parts[0].content_type.should == 'text/plain'
         message.parts[0].body.should         == "bold text\n\n\n> multiline\n> quoted\n> text\n\n--\nSignature block\n"
         message.parts[1].content_type.should == 'text/html; charset=UTF-8'
-        p message.parts[1].body.decoded
         message.parts[1].body.should         == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div><b>bold text</b></div><div><br></div><div><blockquote type="cite"></blockquote></div><div><blockquote type="cite">multiline</blockquote></div><blockquote type="cite"><div>quoted</div><div>text</div></blockquote><br><div>--</div><div>Signature block</div></body></html>\n)
 
         # Extra Mandrill parameters
