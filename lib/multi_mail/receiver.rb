@@ -13,7 +13,7 @@ module MultiMail
     #   })
     #
     # @param [Hash] attributes required arguments
-    # @option opts [String,Symbol] :provider a provider
+    # @option attributes [String,Symbol] :provider a provider
     # @return [MultiMail::Service] an incoming email receiver
     # @raise [ArgumentError] if the provider does not exist
     # @see Fog::Storage::new

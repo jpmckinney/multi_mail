@@ -9,7 +9,7 @@ module MultiMail
       # Initializes a Mandrill incoming email receiver.
       #
       # @param [Hash] options required and optional arguments
-      # @option opts [Float] :spamassassin_threshold the maximum SpamAssassin
+      # @option option [Float] :spamassassin_threshold the maximum SpamAssassin
       #   score for a message to be ham
       def initialize(options = {})
         super

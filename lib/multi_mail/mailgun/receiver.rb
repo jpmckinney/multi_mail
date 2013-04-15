@@ -5,17 +5,17 @@ module MultiMail
       include MultiMail::Receiver::Base
 
       requires :mailgun_api_key
-      recognizes :raw_mime
+      recognizes :http_post_format
 
       # Initializes a Mailgun incoming email receiver.
       #
       # @param [Hash] options required and optional arguments
-      # @option opts [String] :mailgun_api_key a Mailgun API key
-      # @option opts [Boolean] :raw_mime if using the raw MIME format
+      # @option options [String] :mailgun_api_key a Mailgun API key
+      # @option options [String] :http_post_format "parsed" or "raw"
       def initialize(options = {})
         super
         @mailgun_api_key = options[:mailgun_api_key]
-        @raw_mime = options[:raw_mime]
+        @http_post_format = options[:http_post_format]
       end
 
       # Returns whether a request originates from Mailgun.
@@ -37,7 +37,7 @@ module MultiMail
       # @see http://documentation.mailgun.net/user_manual.html#mime-messages-parameters
       # @see http://documentation.mailgun.net/user_manual.html#parsed-messages-parameters
       def transform(params)
-        if @raw_mime
+        if @http_post_format == 'raw'
           [Mail.new(params['body-mime'])]
         else
           headers = Multimap.new

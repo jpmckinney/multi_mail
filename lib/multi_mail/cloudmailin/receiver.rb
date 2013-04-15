@@ -4,16 +4,16 @@ module MultiMail
     class Cloudmailin < MultiMail::Service
       include MultiMail::Receiver::Base
 
-      requires :format
+      requires :http_post_format
 
       # Initializes a Cloudmailin incoming email receiver.
       #
       # @param [Hash] options required and optional arguments
-      # @option opts [String] :format one of "multipart", "json", "raw" or
-      #   "original"
+      # @option options [String] :http_post_format one of "multipart", "json",
+      #   "raw" or "original"
       def initialize(options = {})
         super
-        @format = options[:format]
+        @http_post_format = options[:http_post_format]
       end
 
       # @param [Hash] params the content of Cloudmailin's webhook
@@ -31,7 +31,7 @@ module MultiMail
       # @see http://docs.cloudmailin.com/http_post_formats/original/
       # @todo Handle cases where the attachment store is in-use.
       def transform(params)
-        case @format
+        case @http_post_format
         when 'multipart', 'json'
           headers = Multimap.new
           params['headers'].each do |key,value|
@@ -60,7 +60,7 @@ module MultiMail
 
             if params.key?('attachments')
               params['attachments'].each do |attachment|
-                if @format == 'multipart'
+                if @http_post_format == 'multipart'
                   add_file(:filename => attachment[:filename], :content => attachment[:tempfile].read)
                 else
                   add_file(:filename => attachment['file_name'], :content => Base64.decode64(attachment['content']))
@@ -83,7 +83,7 @@ module MultiMail
           message['X-Mailgun-Spf'] = params['envelope']['spf']['result']
           [message]
         when 'original'
-          raise ArgumentError, "Can't handle Cloudmailin original format" # @todo
+          raise ArgumentError, "Can't handle Cloudmailin original HTTP POST format" # @todo
         end
       end
 
