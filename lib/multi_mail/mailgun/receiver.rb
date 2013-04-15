@@ -6,6 +6,7 @@ module MultiMail
 
       requires :mailgun_api_key
       recognizes :http_post_format
+      attr_reader :http_post_format
 
       # Initializes a Mailgun incoming email receiver.
       #
@@ -37,7 +38,7 @@ module MultiMail
       # @see http://documentation.mailgun.net/user_manual.html#mime-messages-parameters
       # @see http://documentation.mailgun.net/user_manual.html#parsed-messages-parameters
       def transform(params)
-        case @http_post_format
+        case http_post_format
         when 'parsed', '', nil
           headers = Multimap.new
           JSON.parse(params['message-headers']).each do |key,value|
@@ -100,7 +101,7 @@ module MultiMail
         when 'raw'
           [Mail.new(params['body-mime'])]
         else
-          raise ArgumentError, "Can't handle Mailgun #{@http_post_format} HTTP POST format"
+          raise ArgumentError, "Can't handle Mailgun #{http_post_format} HTTP POST format"
         end
       end
 

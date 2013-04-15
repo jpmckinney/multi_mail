@@ -30,7 +30,7 @@ Incoming email:
       :provider => 'cloudmailin',
     })
 
-The default HTTP POST format is `multipart`. Add a `:http_post_format` option to change the HTTP POST format, with possible values of `"multipart"` (default), `"json"`, `"raw"` or `"original"`. For example:
+The default HTTP POST format is `multipart`. Add a `:http_post_format` option to change the HTTP POST format, with possible values of `"multipart"` (default), `"json"` or `"raw"`. (The [original format](http://docs.cloudmailin.com/http_post_formats/original/) is deprecated.) For example:
 
     service = MultiMail::Receiver.new({
       :provider => 'cloudmailin',

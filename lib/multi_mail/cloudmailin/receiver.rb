@@ -5,12 +5,12 @@ module MultiMail
       include MultiMail::Receiver::Base
 
       recognizes :http_post_format
+      attr_reader :http_post_format
 
       # Initializes a Cloudmailin incoming email receiver.
       #
       # @param [Hash] options required and optional arguments
-      # @option options [String] :http_post_format one of "multipart", "json",
-      #   "raw" or "original"
+      # @option options [String] :http_post_format "multipart", "json" or "raw"
       def initialize(options = {})
         super
         @http_post_format = options[:http_post_format]
@@ -28,10 +28,12 @@ module MultiMail
       # @see http://docs.cloudmailin.com/http_post_formats/multipart/
       # @see http://docs.cloudmailin.com/http_post_formats/json/
       # @see http://docs.cloudmailin.com/http_post_formats/raw/
-      # @see http://docs.cloudmailin.com/http_post_formats/original/
       # @todo Handle cases where the attachment store is in-use.
       def transform(params)
-        case @http_post_format
+        # Must make `http_post_format` a local variable to satisfy Mail's scope.
+        x = http_post_format
+
+        case http_post_format
         when 'multipart', 'json', '', nil
           headers = Multimap.new
           params['headers'].each do |key,value|
@@ -59,10 +61,12 @@ module MultiMail
             end
 
             if params.key?('attachments')
-              params['attachments'].each do |_,attachment|
-                if @http_post_format == 'json'
+              if x == 'json'
+                params['attachments'].each do |attachment|
                   add_file(:filename => attachment['file_name'], :content => Base64.decode64(attachment['content']))
-                else
+                end
+              else
+                params['attachments'].each do |_,attachment|
                   add_file(:filename => attachment[:filename], :content => attachment[:tempfile].read)
                 end
               end
@@ -82,8 +86,8 @@ module MultiMail
           message = Mail.new(params['message'])
           message['X-Mailgun-Spf'] = params['envelope']['spf']['result']
           [message]
-        else # @todo 'original'
-          raise ArgumentError, "Can't handle Cloudmailin #{@http_post_format} HTTP POST format"
+        else
+          raise ArgumentError, "Can't handle Cloudmailin #{http_post_format} HTTP POST format"
         end
       end
 

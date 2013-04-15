@@ -3,14 +3,14 @@ require 'multi_mail/simple/receiver'
 
 describe MultiMail::Receiver::Simple do
   context 'after initialization' do
-    def params(fixture)
-      MultiMail::Receiver::Simple.parse(response('simple', fixture))
-    end
-
     let :service do
       MultiMail::Receiver.new({
         :provider => :simple,
       })
+    end
+
+    def params(fixture)
+      MultiMail::Receiver::Simple.parse(response('simple', fixture))
     end
 
     describe '#transform' do
