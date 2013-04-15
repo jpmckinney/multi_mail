@@ -115,5 +115,5 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla consectet
 Content-Disposition: form-data; name="attachments[1]"; filename="bar.txt"
 Content-Type: text/plain
 
-Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus egestas vulputate. Pellentesque eu risus dui, id scelerisque neque. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus egestas vulputate. Pellentesque eu risus dui, id scelerisque neque.
 ------cloudmailinboundry--
