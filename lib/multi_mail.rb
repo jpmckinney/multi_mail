@@ -1,3 +1,4 @@
+require 'base64'
 require 'cgi'
 require 'json'
 require 'openssl'

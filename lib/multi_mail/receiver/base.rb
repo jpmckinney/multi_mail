@@ -58,19 +58,30 @@ module MultiMail
         def parse(raw)
           case raw
           when String
-            params = CGI.parse(raw)
-            params.each do |key,value|
-              if Array === value && value.size == 1
-                params[key] = value.first
+            begin
+              JSON.parse(raw)
+            rescue JSON::ParserError
+              params = CGI.parse(raw)
+
+              # Flatten the parameters.
+              params.each do |key,value|
+                if Array === value && value.size == 1
+                  params[key] = value.first
+                end
               end
+
+              params
             end
-            params
           when Array
+            params = {}
+
+            # Collect the values onto keys.
             map = Multimap.new
             raw.each do |key,value|
               map[key] = value
             end
-            params = {}
+
+            # Flatten the parameters.
             map.each do |key,value|
               if Array === value && value.size == 1
                 params[key] = value.first
@@ -78,6 +89,7 @@ module MultiMail
                 params[key] = value
               end
             end
+
             params
           when Hash
             raw

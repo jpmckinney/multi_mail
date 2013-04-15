@@ -30,6 +30,7 @@ module MultiMail
       #
       # @param [Hash] params the content of Mandrill's webhook
       # @return [Array<Mail::Message>] messages
+      # @see http://help.mandrill.com/entries/22092308-What-is-the-format-of-inbound-email-webhooks-
       def transform(params)
         JSON.parse(params['mandrill_events']).map do |event|
           msg = event['msg']
@@ -61,13 +62,17 @@ module MultiMail
               body msg['text']
             end
 
-            html_part do
-              content_type 'text/html; charset=UTF-8' # @todo unsure about charset
-              body msg['html']
+            if msg.key?('html')
+              html_part do
+                content_type 'text/html; charset=UTF-8' # @todo unsure about charset
+                body msg['html']
+              end
             end
 
-            msg['attachments'].each do |attachment|
-              add_file(:filename => attachment['name'], :content => attachment['content'])
+            if msg.key?('attachments')
+              msg['attachments'].each do |attachment|
+                add_file(:filename => attachment['name'], :content => attachment['content'])
+              end
             end
           end
 
