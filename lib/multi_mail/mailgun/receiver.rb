@@ -4,16 +4,18 @@ module MultiMail
     class Mailgun < MultiMail::Service
       include MultiMail::Receiver::Base
 
-      # @return [String] the Mailgun API key
       requires :mailgun_api_key
+      recognizes :raw_mime
 
       # Initializes a Mailgun incoming email receiver.
       #
       # @param [Hash] options required and optional arguments
       # @option opts [String] :mailgun_api_key a Mailgun API key
+      # @option opts [Boolean] :raw_mime if using the raw MIME format
       def initialize(options = {})
         super
         @mailgun_api_key = options[:mailgun_api_key]
+        @raw_mime = options[:raw_mime]
       end
 
       # Returns whether a request originates from Mailgun.
@@ -32,63 +34,71 @@ module MultiMail
       #
       # @param [Hash] params the content of Mailgun's webhook
       # @return [Array<Mail::Message>] messages
-      # @note Mailgun sends the message headers both individually and in the
-      #   `message-headers` parameter. Only `message-headers` is documented.
+      # @see http://documentation.mailgun.net/user_manual.html#mime-messages-parameters
+      # @see http://documentation.mailgun.net/user_manual.html#parsed-messages-parameters
       def transform(params)
-        headers = Multimap.new
-        JSON.parse(params['message-headers']).each do |key,value|
-          headers[key] = value
-        end
-
-        message = Mail.new do
-          headers headers
-
-          # The following are redundant with `message-headers`:
-          #
-          # from    params['from']
-          # sender  params['sender']
-          # to      params['recipient']
-          # subject params['subject']
-
-          text_part do
-            body params['body-plain']
+        if @raw_mime
+          [Mail.new(params['body-mime'])]
+        else
+          headers = Multimap.new
+          JSON.parse(params['message-headers']).each do |key,value|
+            headers[key] = value
           end
 
-          if params.key?('body-html')
-            html_part do
-              content_type 'text/html; charset=UTF-8'
-              body params['body-html']
+          message = Mail.new do
+            headers headers
+
+            # The following are redundant with `body-mime` in raw MIME format
+            # and with `message-headers` in fully parsed format.
+            #
+            # from    params['from']
+            # sender  params['sender']
+            # to      params['recipient']
+            # subject params['subject']
+            #
+            # Mailgun POSTs all MIME headers both individually and in
+            # `message-headers`.
+
+            text_part do
+              body params['body-plain']
+            end
+
+            if params.key?('body-html')
+              html_part do
+                content_type 'text/html; charset=UTF-8'
+                body params['body-html']
+              end
+            end
+
+            if params.key?('attachment-count')
+              1.upto(params['attachment-count'].to_i).each do |n|
+                key = "attachment-#{n}"
+                add_file(:filename => params[key][:filename], :content => params[key][:tempfile].read)
+              end
             end
           end
 
-          if params.key?('attachment-count')
-            1.upto(params['attachment-count'].to_i).each do |n|
-              key = "attachment-#{n}"
-              add_file(:filename => params[key][:filename], :content => params[key][:tempfile].read)
+          # Extra Mailgun parameters.
+          extra = [
+            'stripped-text',
+            'stripped-signature',
+            'stripped-html',
+            'content-id-map',
+          ]
+
+          # Other body parts.
+          extra += params.keys.select do |key|
+            key[/\Abody-/]
+          end
+
+          extra.each do |key|
+            if params.key?(key) && !params[key].empty?
+              message[key] = params[key]
             end
           end
+
+          [message]
         end
-
-        # Extra Mailgun parameters.
-        extra = [
-          'stripped-text',
-          'stripped-signature',
-          'stripped-html',
-          'content-id-map',
-        ]
-
-        # Other body parts.
-        extra += params.keys.select do |key|
-          key[/\Abody-/]
-        end
-
-        extra.each do |key|
-          if params.key?(key) && !params[key].empty?
-            message[key] = params[key]
-          end
-        end
-
-        [message]
       end
 
       # Returns whether a message is spam.
