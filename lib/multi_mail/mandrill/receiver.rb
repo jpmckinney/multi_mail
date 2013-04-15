@@ -32,6 +32,7 @@ module MultiMail
       # @return [Array<Mail::Message>] messages
       # @see http://help.mandrill.com/entries/22092308-What-is-the-format-of-inbound-email-webhooks-
       def transform(params)
+        # JSON is necessarily UTF-8.
         JSON.parse(params['mandrill_events']).map do |event|
           msg = event['msg']
 
@@ -64,7 +65,7 @@ module MultiMail
 
             if msg.key?('html')
               html_part do
-                content_type 'text/html; charset=UTF-8' # @todo unsure about charset
+                content_type 'text/html; charset=UTF-8'
                 body msg['html']
               end
             end
