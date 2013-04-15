@@ -86,8 +86,11 @@ namespace :mandrill do
     end
 
     routes = api.inbound.routes domain
-    if routes.empty? || routes.none?{|route| route['pattern'] == '*'}
+    match = routes.find{|route| route['pattern'] == '*'}
+    if routes.empty? || match.nil?
       puts "Add a catchall (*) route for #{domain}"
     end
+
+    puts "The catchall route for #{domain} POSTs to #{match['url']}"
   end
 end
