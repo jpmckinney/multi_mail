@@ -54,20 +54,21 @@ describe MultiMail::Receiver::Cloudmailin do
             message.parts[1].content_type.should == 'text/html; charset=UTF-8'
             message.parts[1].body.should         == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html>)
 
-            # Attachments
-            message.attachments[0].filename.should == 'foo.txt'
-            message.attachments[0].read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla consectetur rhoncus. Nunc mattis mattis urna quis molestie. Quisque ut mattis nisl. Donec neque felis, porta quis condimentum eu, pharetra non libero."
-            message.attachments[1].filename.should == 'bar.txt'
-            message.attachments[1].read.should == "Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus egestas vulputate. Pellentesque eu risus dui, id scelerisque neque."
+            # Attachments (Ruby 1.8 messiness)
+            message.attachments.map(&:filename).sort.should == [
+              'bar.txt',
+              'foo.txt',
+            ]
+            message.attachments.map(&:read).sort.should == [
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla consectetur rhoncus. Nunc mattis mattis urna quis molestie. Quisque ut mattis nisl. Donec neque felis, porta quis condimentum eu, pharetra non libero.",
+              "Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus egestas vulputate. Pellentesque eu risus dui, id scelerisque neque.",
+            ]
 
             # Extra Cloudmailin parameters
-            case http_post_format
-            when 'raw'
-              # Do nothing.
-            when 'json'
-              message['reply_plain'].value.should == "bold text\n"
+            if http_post_format == 'raw'
+              message['reply_plain'].should be_nil
             else
-              message['reply_plain'].value.should == "bold text\r\n"
+              message['reply_plain'].value.should == "bold text\n"
             end
             message['X-Mailgun-Spf'].value.should == 'pass'
           end

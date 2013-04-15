@@ -73,8 +73,9 @@ module MultiMail
             end
           end
 
-          # Extra Cloudmailin parameters.
-          message['reply_plain'] = params['reply_plain']
+          # Extra Cloudmailin parameters. The multipart format uses CRLF whereas
+          # the JSON format uses LF. Normalize to LF.
+          message['reply_plain'] = params['reply_plain'].gsub("\r\n", "\n")
 
           # Re-use Mailgun headers.
           message['X-Mailgun-Spf'] = params['envelope']['spf']['result']

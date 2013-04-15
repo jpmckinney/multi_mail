@@ -85,8 +85,12 @@ describe MultiMail::Receiver::Mailgun do
             message.attachments[1].filename.should == 'bar.txt'
             message.attachments[1].read.should == "Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus egestas vulputate. Pellentesque eu risus dui, id scelerisque neque. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.\n"
 
-            if http_post_format == 'parsed'
-              # Extra Mailgun parameters
+            # Extra Mailgun parameters
+            if http_post_format == 'raw'
+              message['stripped-text'].should be_nil
+              message['stripped-signature'].should be_nil
+              message['stripped-html'].should be_nil
+            else
               message['stripped-text'].value.should      == 'bold text'
               message['stripped-signature'].value.should == "--\r\nSignature block"
               message['stripped-html'].value.should      == '<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><br></div><div>--</div><div>Signature block</div><div></div></body><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html></html>'
