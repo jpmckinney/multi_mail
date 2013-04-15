@@ -13,6 +13,7 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
     service = MultiMail::Receiver.new({
       :provider => 'mailgun',
       :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
+      :raw_mime => false,
     })
     
     message = service.process data # raw POST data or params hash

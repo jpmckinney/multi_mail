@@ -2,23 +2,13 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'multi_mail/mandrill/receiver'
 
 describe MultiMail::Receiver::Mandrill do
-  describe '#initialize' do
-    it 'should raise an error if :mandrill_api_key is missing' do
-      expect{ MultiMail::Receiver.new :provider => :mandrill }.to raise_error(ArgumentError)
-      expect{ MultiMail::Receiver.new :provider => :mandrill, :mandrill_api_key => nil }.to raise_error(ArgumentError)
-    end
-  end
-
   context 'after initialization' do
     def params(fixture)
       MultiMail::Receiver::Mandrill.parse(response('mandrill', fixture))
     end
 
     before :all do
-      @service = MultiMail::Receiver.new({
-        :provider => :mandrill,
-        :mandrill_api_key => 'foo',
-      })
+      @service = MultiMail::Receiver.new(:provider => :mandrill)
     end
 
     describe '#valid?' do

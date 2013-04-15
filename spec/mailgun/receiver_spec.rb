@@ -9,6 +9,8 @@ describe MultiMail::Receiver::Mailgun do
     end
   end
 
+  # @todo Repeat all tests for raw MIME format. Need to run my own postbin to
+  #   have a URL ending with "mime".
   context 'after initialization' do
     def params(fixture)
       MultiMail::Receiver::Mailgun.parse(response('mailgun', fixture))

@@ -4,19 +4,15 @@ module MultiMail
     class Mandrill < MultiMail::Service
       include MultiMail::Receiver::Base
 
-      # @return [String] the Mandrill API key
-      requires :mandrill_api_key
-
-      # @return [Float] the minimum SpamAssassin score to be spam
       recognizes :spamassassin_threshold
 
       # Initializes a Mandrill incoming email receiver.
       #
       # @param [Hash] options required and optional arguments
-      # @option opts [String] :mandrill_api_key a Mandrill API key
+      # @option opts [Float] :spamassassin_threshold the maximum SpamAssassin
+      #   score for a message to be ham
       def initialize(options = {})
         super
-        @mandrill_api_key = options[:mandrill_api_key]
         @spamassassin_threshold = options[:spamassassin_threshold] || 5
       end
 
