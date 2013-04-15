@@ -42,14 +42,14 @@ Connection: close
   "reply_plain": "bold text\n",
   "attachments": [
     {
-      "content": "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBp\nc2NpbmcgZWxpdC4gU2VkIGZyaW5naWxsYSBjb25zZWN0ZXR1ciByaG9uY3Vz\nLiBOdW5jIG1hdHRpcyBtYXR0aXMgdXJuYSBxdWlzIG1vbGVzdGllLiBRdWlz\ncXVlIHV0IG1hdHRpcyBuaXNsLiBEb25lYyBuZXF1ZSBmZWxpcywgcG9ydGEg\ncXVpcyBjb25kaW1lbnR1bSBldSwgcGhhcmV0cmEgbm9uIGxpYmVyby4=",
+      "content": "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gU2VkIGZyaW5naWxsYSBjb25zZWN0ZXR1ciByaG9uY3VzLiBOdW5jIG1hdHRpcyBtYXR0aXMgdXJuYSBxdWlzIG1vbGVzdGllLiBRdWlzcXVlIHV0IG1hdHRpcyBuaXNsLiBEb25lYyBuZXF1ZSBmZWxpcywgcG9ydGEgcXVpcyBjb25kaW1lbnR1bSBldSwgcGhhcmV0cmEgbm9uIGxpYmVyby4=",
       "file_name": "foo.txt",
       "content_type": "text/plain",
       "size": "221",
       "disposition": "attachment"
     },
     {
-      "content": "TmFtIGFjY3Vtc2FuIGV1aXNtb2QgZXJvcyBldCByaG9uY3VzLiBQaGFzZWxs\ndXMgZmVybWVudHVtIGVyYXQgaWQgbGFjdXMgZWdlc3RhcyB2dWxwdXRhdGUu\nIFBlbGxlbnRlc3F1ZSBldSByaXN1cyBkdWksIGlkIHNjZWxlcmlzcXVlIG5l\ncXVlLg==",
+      "content": "TmFtIGFjY3Vtc2FuIGV1aXNtb2QgZXJvcyBldCByaG9uY3VzLiBQaGFzZWxsdXMgZmVybWVudHVtIGVyYXQgaWQgbGFjdXMgZWdlc3RhcyB2dWxwdXRhdGUuIFBlbGxlbnRlc3F1ZSBldSByaXN1cyBkdWksIGlkIHNjZWxlcmlzcXVlIG5lcXVlLg==",
       "file_name": "bar.txt",
       "content_type": "text/plain",
       "size": "225",

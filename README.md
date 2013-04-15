@@ -20,9 +20,9 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
 
 Incoming email:
 
-* [Cloudmailin](http://www.cloudmailin.com/)
 * [Mailgun](http://www.mailgun.com/)
 * [Mandrill](http://mandrill.com/)
+* [Cloudmailin](http://www.cloudmailin.com/)
 
 ## Cloudmailin
 
@@ -30,12 +30,14 @@ Incoming email:
       :provider => 'cloudmailin',
     })
 
-The default HTTP POST format is `multipart`. Add a `:http_post_format` option to change the HTTP POST format, with possible values of `"multipart"` (default), `"json"` or `"raw"`. (The [original format](http://docs.cloudmailin.com/http_post_formats/original/) is deprecated.) For example:
+The default HTTP POST format is `raw`. Add a `:http_post_format` option to change the HTTP POST format, with possible values of `"multipart"`, `"json"` or `"raw"` (default). (The [original format](http://docs.cloudmailin.com/http_post_formats/original/) is deprecated.) For example:
 
     service = MultiMail::Receiver.new({
       :provider => 'cloudmailin',
       :http_post_format => 'raw',
     })
+
+**2013-04-15:** If an email contains multiple HTML parts and you are using the `multipart` or `json` HTTP POST formats, Cloudmailin will only include the first HTML part in its `html` parameter. Use the `raw` format to avoid any data loss.
 
 ## Mailgun
 

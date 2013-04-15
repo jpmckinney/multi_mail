@@ -18,10 +18,14 @@ describe MultiMail::Receiver::Cloudmailin do
       end
     end
 
-    ['json', 'multipart', '', nil].each do |http_post_format| # @todo raw
+    ['raw', 'json', 'multipart', '', nil].each do |http_post_format|
       context "with #{http_post_format.inspect} format" do
         let :http_post_format do
           http_post_format
+        end
+
+        let :actual_http_post_format do
+          http_post_format.to_s.empty? ? 'raw' : http_post_format
         end
 
         let :service do
@@ -32,8 +36,7 @@ describe MultiMail::Receiver::Cloudmailin do
         end
 
         def params(fixture)
-          directory = http_post_format.to_s.empty? ? 'multipart' : http_post_format
-          MultiMail::Receiver::Cloudmailin.parse(response("cloudmailin/#{directory}", fixture))
+          MultiMail::Receiver::Cloudmailin.parse(response("cloudmailin/#{actual_http_post_format}", fixture))
         end
 
         describe '#transform' do
@@ -47,12 +50,23 @@ describe MultiMail::Receiver::Cloudmailin do
             message.subject.should == 'Test'
 
             # Body
-            message.multipart?.should            == true
-            message.parts.size.should            == 4
-            message.parts[0].content_type.should == 'text/plain'
-            message.parts[0].body.should         == "bold text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block"
-            message.parts[1].content_type.should == 'text/html; charset=UTF-8'
-            message.parts[1].body.should         == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html>)
+            message.multipart?.should    == true
+            message.parts.size.should    == 4
+            message.parts[0].body.should == "bold text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block"
+
+            # @todo All HTTP POST formats should return the same information.
+            #   For the raw format, set content types to "text/plain" and
+            #   "text/html; charset=UTF-8" and convert strings to UTF-8.
+            # @note The body matchers are different due to a Cloudmailin bug.
+            if actual_http_post_format == 'raw'
+              message.parts[0].content_type.should == 'text/plain; charset=us-ascii'
+              message.parts[1].content_type.should == 'text/html; charset=us-ascii'
+              message.parts[1].body.should == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><head></head><div></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; ">\n</body></html>)
+            else
+              message.parts[0].content_type.should == 'text/plain'
+              message.parts[1].content_type.should == 'text/html; charset=UTF-8'
+              message.parts[1].body.should == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html>)
+            end
 
             # Attachments (Ruby 1.8 messiness)
             message.attachments.map(&:filename).sort.should == [
@@ -65,7 +79,7 @@ describe MultiMail::Receiver::Cloudmailin do
             ]
 
             # Extra Cloudmailin parameters
-            if http_post_format == 'raw'
+            if actual_http_post_format == 'raw'
               message['reply_plain'].should be_nil
             else
               message['reply_plain'].value.should == "bold text\n"

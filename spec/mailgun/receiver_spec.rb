@@ -34,6 +34,10 @@ describe MultiMail::Receiver::Mailgun do
           http_post_format
         end
 
+        let :actual_http_post_format do
+          http_post_format.to_s.empty? ? 'parsed' : http_post_format
+        end
+
         let :service do
           MultiMail::Receiver.new({
             :provider => :mailgun,
@@ -43,8 +47,7 @@ describe MultiMail::Receiver::Mailgun do
         end
 
         def params(fixture)
-          directory = http_post_format.to_s.empty? ? 'parsed' : http_post_format
-          MultiMail::Receiver::Mailgun.parse(response("mailgun/#{directory}", fixture))
+          MultiMail::Receiver::Mailgun.parse(response("mailgun/#{actual_http_post_format}", fixture))
         end
 
         describe '#valid?' do
@@ -86,7 +89,7 @@ describe MultiMail::Receiver::Mailgun do
             message.attachments[1].read.should == "Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus egestas vulputate. Pellentesque eu risus dui, id scelerisque neque. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.\n"
 
             # Extra Mailgun parameters
-            if http_post_format == 'raw'
+            if actual_http_post_format == 'raw'
               message['stripped-text'].should be_nil
               message['stripped-signature'].should be_nil
               message['stripped-html'].should be_nil

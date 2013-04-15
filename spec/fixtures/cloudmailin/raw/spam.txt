@@ -1,0 +1,136 @@
+HTTP/1.1 200 OK
+User-Agent: CloudMailin Server
+Host: requestb.in
+Content-Type: multipart/form-data; boundary=----cloudmailinboundry
+Content-Length: 5003
+Connection: close
+
+------cloudmailinboundry
+Content-Disposition: form-data; name="message"
+
+Received: by mail-ia0-f180.google.com with SMTP id l29so4453581iag.39
+        for <5dae6f85cd65d30d384a@cloudmailin.net>; Mon, 15 Apr 2013 09:43:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:from:content-type:subject:date:message-id:to
+         :mime-version:x-mailer:x-gm-message-state;
+        bh=eKoJfik9Phpj2GXisshTbeMFzhoxQ9hrAn3S71S4apM=;
+        b=C950Xi4hmb8OzIOU2PwaQqmPIY27PPasFfYPyMNThHwwp8q09A3ZFA3LT9Cev3dUU8
+         tEvLN7zFtaBQYtrYON0Taj7AmLlKxebKxleAaFCAYKYNOWiEcceiVcTUk0ClGbuV4yBh
+         s7W/821mjucc0Jo7u9WGpdQFdOvL/nqa8SnbiZANRV3wwHPtJm83uCOgbxLwNHlEIOmt
+         w9bt+fDUuWn696KLsrN0IUPm8H2dlNqm4mZvS9rXykTIsqfvJCW4+0MIiZ6LUhBYENqH
+         qD6Xr6a4oiirKfqloNF2PoydhQiY23m9BsyneJtAQfOMXFSVDaPppepcxexp6WA390HO
+         oQSg==
+X-Received: by 10.50.112.100 with SMTP id ip4mr5957054igb.87.1366044226308;
+        Mon, 15 Apr 2013 09:43:46 -0700 (PDT)
+Return-Path: <james@opennorth.ca>
+Received: from [192.168.0.110] ([69.165.215.199])
+        by mx.google.com with ESMTPS id xd4sm12900784igb.3.2013.04.15.09.43.44
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Mon, 15 Apr 2013 09:43:45 -0700 (PDT)
+From: James McKinney <james@opennorth.ca>
+Content-Type: multipart/alternative; boundary="Apple-Mail=_925698A8-94EF-44BD-8CCB-84289E65C917"
+Subject: Test
+Date: Mon, 15 Apr 2013 12:43:42 -0400
+Message-Id: <EDACEE73-3EB1-4F4B-B117-5751CA558CAB@opennorth.ca>
+To: 5dae6f85cd65d30d384a@cloudmailin.net
+Mime-Version: 1.0 (Apple Message framework v1283)
+X-Mailer: Apple Mail (2.1283)
+X-Gm-Message-State: ALoCoQkgN2f/CqGI8nCLPMZ2SH3cFjVAzR8RFe63biiFuO5zLAm8QBjBGeb0T43paQtVIWbl1nkV
+
+
+--Apple-Mail=_925698A8-94EF-44BD-8CCB-84289E65C917
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+  charset=us-ascii
+
+bold text
+
+> multiline
+> quoted
+> text
+
+
+--
+Signature block
+
+
+--Apple-Mail=_925698A8-94EF-44BD-8CCB-84289E65C917
+Content-Type: multipart/mixed;
+  boundary="Apple-Mail=_2A1C541F-9740-4FC4-B8E1-DB04AFB27DB4"
+
+
+--Apple-Mail=_2A1C541F-9740-4FC4-B8E1-DB04AFB27DB4
+Content-Transfer-Encoding: 7bit
+Content-Type: text/html;
+  charset=us-ascii
+
+<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html>
+--Apple-Mail=_2A1C541F-9740-4FC4-B8E1-DB04AFB27DB4
+Content-Disposition: attachment;
+  filename=foo.txt
+Content-Type: text/plain;
+  name="foo.txt"
+Content-Transfer-Encoding: quoted-printable
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla =
+consectetur rhoncus. Nunc mattis mattis urna quis molestie. Quisque ut =
+mattis nisl. Donec neque felis, porta quis condimentum eu, pharetra non =
+libero.
+
+--Apple-Mail=_2A1C541F-9740-4FC4-B8E1-DB04AFB27DB4
+Content-Transfer-Encoding: 7bit
+Content-Type: text/html;
+  charset=us-ascii
+
+<html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><head></head><div></div></body></html>
+--Apple-Mail=_2A1C541F-9740-4FC4-B8E1-DB04AFB27DB4
+Content-Disposition: attachment;
+  filename=bar.txt
+Content-Type: text/plain;
+  name="bar.txt"
+Content-Transfer-Encoding: quoted-printable
+
+Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus =
+egestas vulputate. Pellentesque eu risus dui, id scelerisque neque.
+
+--Apple-Mail=_2A1C541F-9740-4FC4-B8E1-DB04AFB27DB4
+Content-Transfer-Encoding: 7bit
+Content-Type: text/html;
+  charset=us-ascii
+
+<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; ">
+</body></html>
+--Apple-Mail=_2A1C541F-9740-4FC4-B8E1-DB04AFB27DB4--
+
+--Apple-Mail=_925698A8-94EF-44BD-8CCB-84289E65C917--
+
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[to]"
+
+5dae6f85cd65d30d384a@cloudmailin.net
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[recipients][0]"
+
+5dae6f85cd65d30d384a@cloudmailin.net
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[from]"
+
+james@opennorth.ca
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[helo_domain]"
+
+mail-ia0-f180.google.com
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[remote_ip]"
+
+209.85.210.180
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[spf][result]"
+
+fail
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[spf][domain]"
+
+opennorth.ca
+------cloudmailinboundry--

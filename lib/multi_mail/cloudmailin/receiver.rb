@@ -34,7 +34,39 @@ module MultiMail
         x = http_post_format
 
         case http_post_format
-        when 'multipart', 'json', '', nil
+        when 'raw', '', nil
+          message = Mail.new(params['message'])
+
+          # @todo The preambles and epilogues of nested parts may be lost.
+          # @see https://github.com/mikel/mail/blob/master/spec/mail/body_spec.rb
+          if message.multipart? && message.parts.any?(&:multipart?)
+            # Get the message parts as a flat array.
+            flat = flatten(Mail.new, message.parts.dup)
+
+            # Rebuild the message's parts.
+            message.parts.clear
+
+            # Merge non-attachments with the same content type.
+            (flat.parts - flat.attachments).group_by(&:content_type).each do |content_type,group|
+              message.parts << Mail::Part.new({
+                :content_type => content_type,
+                :body => group.map{|part| part.body.decoded}.join,
+              })
+            end
+
+            # Add attachments last.
+            flat.attachments.each do |part|
+              message.parts << part
+            end
+          end
+
+          # Re-use Mailgun headers.
+          message['X-Mailgun-Spf'] = params['envelope']['spf']['result']
+
+          # Discard rest of `envelope`: `from`, `to`, `recipients`,
+          # `helo_domain` and `remote_ip`.
+          [message]
+        when 'multipart', 'json'
           headers = Multimap.new
           params['headers'].each do |key,value|
             if Array === value
@@ -76,15 +108,6 @@ module MultiMail
           # Extra Cloudmailin parameters. The multipart format uses CRLF whereas
           # the JSON format uses LF. Normalize to LF.
           message['reply_plain'] = params['reply_plain'].gsub("\r\n", "\n")
-
-          # Re-use Mailgun headers.
-          message['X-Mailgun-Spf'] = params['envelope']['spf']['result']
-
-          # Discard rest of `envelope`: `from`, `to`, `recipients`,
-          # `helo_domain` and `remote_ip`.
-          [message]
-        when 'raw'
-          message = Mail.new(params['message'])
           message['X-Mailgun-Spf'] = params['envelope']['spf']['result']
           [message]
         else
@@ -96,6 +119,24 @@ module MultiMail
       # @return [Boolean] whether the message is spam
       def spam?(message)
         message['X-Mailgun-Spf'] && message['X-Mailgun-Spf'].value == 'fail'
+      end
+
+    private
+
+      # Flattens a hierarchy of message parts.
+      #
+      # @param [Mail::Message] message a message
+      # @param [Mail::PartsList] parts parts to add to the message
+      # @return [Mail::Message] the message with all the parts
+      def flatten(message, parts)
+        parts.each do |part|
+          if part.multipart?
+            flatten(message, part.parts)
+          else
+            message.parts << part
+          end
+        end
+        message
       end
     end
   end
