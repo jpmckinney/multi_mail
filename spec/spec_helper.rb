@@ -16,10 +16,11 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 # @see FakeWeb::Responder#baked_response
 # @see https://github.com/rack/rack/blob/master/test/spec_multipart.rb
 def response(provider, fixture)
-  io       = File.open(File.expand_path("../fixtures/#{provider}/#{fixture}.txt", __FILE__), 'rb')
+  io       = StringIO.new(File.read(File.expand_path("../fixtures/#{provider}/#{fixture}.txt", __FILE__)))
   socket   = Net::BufferedIO.new(io)
   response = Net::HTTPResponse.read_new(socket)
   body     = response.reading_body(socket, true) {}
+  # The above method seems sensitive to buffer/file sizes.
 
   if response.header['content-type']['multipart/form-data']
     Rack::Multipart.parse_multipart(Rack::MockRequest.env_for('/', {

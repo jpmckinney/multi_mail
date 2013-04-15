@@ -9,8 +9,8 @@ module MultiMail
       # Initializes a Mandrill incoming email receiver.
       #
       # @param [Hash] options required and optional arguments
-      # @option option [Float] :spamassassin_threshold the maximum SpamAssassin
-      #   score for a message to be ham
+      # @option option [Float] :spamassassin_threshold the SpamAssassin score
+      #   needed to flag a message as spam
       def initialize(options = {})
         super
         @spamassassin_threshold = options[:spamassassin_threshold] || 5
@@ -98,7 +98,7 @@ module MultiMail
       # @param [Mail::Message] message a message
       # @return [Boolean] whether the message is spam
       def spam?(message)
-        message.key?('X-Mailgun-SScore') && message['X-Mailgun-SScore'].value.to_f > @spamassassin_threshold
+        message['X-Mailgun-SScore'] && message['X-Mailgun-SScore'].value.to_f > @spamassassin_threshold
       end
     end
   end

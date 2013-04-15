@@ -1,0 +1,119 @@
+HTTP/1.1 200 OK
+User-Agent: CloudMailin Server
+Host: requestb.in
+Content-Type: multipart/form-data; boundary=----cloudmailinboundry
+Content-Length: 4622
+Connection: close
+
+------cloudmailinboundry
+Content-Disposition: form-data; name="plain"
+
+bold text
+
+> multiline
+> quoted
+> text
+
+
+--
+Signature block
+------cloudmailinboundry
+Content-Disposition: form-data; name="html"
+
+<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html>
+------cloudmailinboundry
+Content-Disposition: form-data; name="reply_plain"
+
+bold text
+
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[Return-Path]"
+
+james@opennorth.ca
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[Received][0]"
+
+by mail-ie0-f175.google.com with SMTP id c12so5462355ieb.34 for <5dae6f85cd65d30d384a@cloudmailin.net>; Mon, 15 Apr 2013 00:20:49 -0700
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[Received][1]"
+
+from [192.168.0.110] ([69.165.215.199]) by mx.google.com with ESMTPS id ie7sm10059489igb.1.2013.04.15.00.20.47 (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128); Mon, 15 Apr 2013 00:20:48 -0700
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[Date]"
+
+Mon, 15 Apr 2013 03:20:46 -0400
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[From]"
+
+James McKinney <james@opennorth.ca>
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[To]"
+
+5dae6f85cd65d30d384a@cloudmailin.net
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[Message-ID]"
+
+<4CC0564B-3AD3-4883-AEBF-BAC9A8DD79D9@opennorth.ca>
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[Subject]"
+
+Test
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[Mime-Version]"
+
+1.0
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[X-Google-DKIM-Signature]"
+
+v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:subject:date:message-id:to :mime-version:x-mailer:x-gm-message-state; bh=NUBGgwNbVbXwDkV+NuNddoyYvUYy4TdGNDerA3SK1xA=; b=bHa5PoZdPwWm7+25qoHC44JLS5WpYdFJE15pK6WML3ePgxZY7RMBtvHUR9UTZP88qo JnDRm6rrDEVcUV0pHE5WeMsCP6hlF3iduLulfT4MV1NhfhYaUpMggAfPc9lXcndOfuTi bVgP3AGEbrIDh/w1bwTrKHSMAffstcbVsLWButFAr0kXhSIicXJlNw6/0rb5OIi7NJlU mmIBnN2JC3mEMedV5KojyX7J9PXzBXisb8l5epht93PQlr3a/yJXgUW3aExjHEkRdfy4 CsZ3/cNlfQeLZW7y6/F7x83hRpagkzD2hOI73J7yF9MSKTTTNcVTSfkds226j3jmQy8e bUzg==
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[X-Received]"
+
+by 10.50.67.18 with SMTP id j18mr4680273igt.110.1366010449574; Mon, 15 Apr 2013 00:20:49 -0700 (PDT)
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[X-Mailer]"
+
+Apple Mail (2.1283)
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[X-Gm-Message-State]"
+
+ALoCoQkMDn9gBYMWTGVCuvAPD+zffTznWT6ZcMp5QRsZUAMhwpEiW4HQbti4D6islWW9w0GyXwsC
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[to]"
+
+5dae6f85cd65d30d384a@cloudmailin.net
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[recipients][0]"
+
+5dae6f85cd65d30d384a@cloudmailin.net
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[from]"
+
+james@opennorth.ca
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[helo_domain]"
+
+mail-ie0-f175.google.com
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[remote_ip]"
+
+209.85.223.175
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[spf][result]"
+
+fail
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[spf][domain]"
+
+opennorth.ca
+------cloudmailinboundry
+Content-Disposition: form-data; name="attachments[0]"; filename="foo.txt"
+Content-Type: text/plain
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla consectetur rhoncus. Nunc mattis mattis urna quis molestie. Quisque ut mattis nisl. Donec neque felis, porta quis condimentum eu, pharetra non libero.
+------cloudmailinboundry
+Content-Disposition: form-data; name="attachments[1]"; filename="bar.txt"
+Content-Type: text/plain
+
+Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus egestas vulputate. Pellentesque eu risus dui, id scelerisque neque.
+------cloudmailinboundry--

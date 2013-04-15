@@ -3,32 +3,32 @@ require 'multi_mail/mandrill/receiver'
 
 describe MultiMail::Receiver::Mandrill do
   context 'after initialization' do
+    let :service do
+      MultiMail::Receiver.new(:provider => :mandrill)
+    end
+
     def params(fixture)
       MultiMail::Receiver::Mandrill.parse(response('mandrill', fixture))
     end
 
-    before :all do
-      @service = MultiMail::Receiver.new(:provider => :mandrill)
-    end
-
     describe '#valid?' do
       it 'should return true if the response is valid' do
-        @service.valid?(params('valid')).should == true
+        service.valid?(params('valid')).should == true
       end
 
       it 'should return false if the response is invalid' do
-        @service.valid?(params('invalid')).should == false
+        service.valid?(params('invalid')).should == false
       end
 
       it 'should raise an error if parameters are missing' do
-        expect{ @service.valid?(params('missing')) }.to raise_error(IndexError)
+        expect{ service.valid?(params('missing')) }.to raise_error(IndexError)
       end
     end
 
     describe '#transform' do
       it 'should return a mail message' do
         pending
-        message = @service.transform(params('valid'))[0]
+        message = service.transform(params('valid'))[0]
 
         # Headers
         message.date.should    == DateTime.parse('Thu, 27 Dec 2012 15:25:37 -0500')
@@ -63,14 +63,14 @@ describe MultiMail::Receiver::Mandrill do
     describe '#spam?' do
       it 'should return true if the response is spam' do
         pending
-        message = @service.transform(params('spam'))[0]
-        @service.spam?(message).should == true
+        message = service.transform(params('spam'))[0]
+        service.spam?(message).should == true
       end
 
       it 'should return false if the response is ham' do
         pending
-        message = @service.transform(params('valid'))[0]
-        @service.spam?(message).should == false
+        message = service.transform(params('valid'))[0]
+        service.spam?(message).should == false
       end
     end
   end

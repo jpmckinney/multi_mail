@@ -10,42 +10,59 @@ describe MultiMail::Receiver::Mailgun do
   end
 
   context 'after initialization' do
+    context 'with invalid HTTP POST format' do
+      let :service do
+        MultiMail::Receiver.new({
+          :provider => :mailgun,
+          :mailgun_api_key => 'foo',
+          :http_post_format => 'invalid',
+        })
+      end
+
+      describe '#transform' do
+        it 'should raise an error if :http_post_format is invalid' do
+          expect{ service.transform({}) }.to raise_error(ArgumentError)
+        end
+      end
+    end
+
     # @todo Need to run my own postbin to have a URL ending with "mime" in order
     # to get fixtures to test the raw MIME HTTP POST format.
-    %w(parsed).each do |http_post_format|
+    ['parsed', '', nil].each do |http_post_format|
       let :http_post_format do
         http_post_format
       end
 
-      def params(fixture)
-        MultiMail::Receiver::Mailgun.parse(response("mailgun/#{http_post_format}", fixture))
-      end
-
-      before :all do
-        @service = MultiMail::Receiver.new({
+      let :service do
+        MultiMail::Receiver.new({
           :provider => :mailgun,
           :mailgun_api_key => 'foo',
           :http_post_format => http_post_format,
         })
       end
 
+      def params(fixture)
+        directory = http_post_format.to_s.empty? ? 'parsed' : http_post_format
+        MultiMail::Receiver::Mailgun.parse(response("mailgun/#{directory}", fixture))
+      end
+
       describe '#valid?' do
         it 'should return true if the response is valid' do
-          @service.valid?(params('valid')).should == true
+          service.valid?(params('valid')).should == true
         end
 
         it 'should return false if the response is invalid' do
-          @service.valid?(params('invalid')).should == false
+          service.valid?(params('invalid')).should == false
         end
 
         it 'should raise an error if parameters are missing' do
-          expect{ @service.valid?(params('missing')) }.to raise_error(IndexError)
+          expect{ service.valid?(params('missing')) }.to raise_error(IndexError)
         end
       end
 
       describe '#transform' do
         it 'should return a mail message' do
-          message = @service.transform(params('valid'))[0]
+          message = service.transform(params('valid'))[0]
 
           # Headers
           message.date.should    == DateTime.parse('Mon, 14 Apr 2013 20:55:30 -04:00')
@@ -78,13 +95,13 @@ describe MultiMail::Receiver::Mailgun do
 
       describe '#spam?' do
         it 'should return true if the response is spam' do
-          message = @service.transform(params('spam'))[0]
-          @service.spam?(message).should == true
+          message = service.transform(params('spam'))[0]
+          service.spam?(message).should == true
         end
 
         it 'should return false if the response is ham' do
-          message = @service.transform(params('valid'))[0]
-          @service.spam?(message).should == false
+          message = service.transform(params('valid'))[0]
+          service.spam?(message).should == false
         end
       end
     end

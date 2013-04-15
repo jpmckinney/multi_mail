@@ -10,11 +10,7 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
 
     require 'multi_mail'
     
-    service = MultiMail::Receiver.new({
-      :provider => 'mailgun',
-      :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
-      :http_post_format => 'raw',
-    })
+    service = MultiMail::Receiver.new(:provider => 'mandrill')
     
     message = service.process data # raw POST data or params hash
 
@@ -24,8 +20,50 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
 
 Incoming email:
 
+* [Cloudmailin](http://www.cloudmailin.com/)
 * [Mailgun](http://www.mailgun.com/)
 * [Mandrill](http://mandrill.com/)
+
+## Cloudmailin
+
+    service = MultiMail::Receiver.new({
+      :provider => 'cloudmailin',
+    })
+
+The default HTTP POST format is `multipart`. Add a `:http_post_format` option to change the HTTP POST format, with possible values of `"multipart"` (default), `"json"`, `"raw"` or `"original"`. For example:
+
+    service = MultiMail::Receiver.new({
+      :provider => 'cloudmailin',
+      :http_post_format => 'raw',
+    })
+
+## Mailgun
+
+    service = MultiMail::Receiver.new({
+      :provider => 'mailgun',
+      :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
+    })
+
+If you have a route with a URL ending with "mime" and you are using the raw MIME format, add a `:http_post_format => 'raw'` option. For example:
+
+    service = MultiMail::Receiver.new({
+      :provider => 'mailgun',
+      :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
+      :http_post_format => 'raw',
+    })
+
+## Mandrill
+
+    service = MultiMail::Receiver.new({
+      :provider => 'mandrill',
+    })
+
+The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:spamassassin_threshold` option to increase or decrease it. For example:
+
+    service = MultiMail::Receiver.new({
+      :provider => 'mandrill',
+      :spamassassin_threshold => 4.5,
+    })
 
 ## Bugs? Questions?
 

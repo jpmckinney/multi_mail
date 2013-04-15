@@ -4,7 +4,7 @@ module MultiMail
     class Cloudmailin < MultiMail::Service
       include MultiMail::Receiver::Base
 
-      requires :http_post_format
+      recognizes :http_post_format
 
       # Initializes a Cloudmailin incoming email receiver.
       #
@@ -32,7 +32,7 @@ module MultiMail
       # @todo Handle cases where the attachment store is in-use.
       def transform(params)
         case @http_post_format
-        when 'multipart', 'json'
+        when 'multipart', 'json', '', nil
           headers = Multimap.new
           params['headers'].each do |key,value|
             if Array === value
@@ -59,11 +59,11 @@ module MultiMail
             end
 
             if params.key?('attachments')
-              params['attachments'].each do |attachment|
-                if @http_post_format == 'multipart'
-                  add_file(:filename => attachment[:filename], :content => attachment[:tempfile].read)
-                else
+              params['attachments'].each do |_,attachment|
+                if @http_post_format == 'json'
                   add_file(:filename => attachment['file_name'], :content => Base64.decode64(attachment['content']))
+                else
+                  add_file(:filename => attachment[:filename], :content => attachment[:tempfile].read)
                 end
               end
             end
@@ -82,15 +82,15 @@ module MultiMail
           message = Mail.new(params['message'])
           message['X-Mailgun-Spf'] = params['envelope']['spf']['result']
           [message]
-        when 'original'
-          raise ArgumentError, "Can't handle Cloudmailin original HTTP POST format" # @todo
+        else # @todo 'original'
+          raise ArgumentError, "Can't handle Cloudmailin #{@http_post_format} HTTP POST format"
         end
       end
 
       # @param [Mail::Message] message a message
       # @return [Boolean] whether the message is spam
       def spam?(message)
-        message.key?('X-Mailgun-Spf') && message['X-Mailgun-Spf'].value == 'fail'
+        message['X-Mailgun-Spf'] && message['X-Mailgun-Spf'].value == 'fail'
       end
     end
   end

@@ -2,34 +2,43 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'multi_mail/cloudmailin/receiver'
 
 describe MultiMail::Receiver::Cloudmailin do
-  describe '#initialize' do
-    it 'should raise an error if :http_post_format is missing' do
-      expect{ MultiMail::Receiver.new :provider => :cloudmailin }.to raise_error(ArgumentError)
-      expect{ MultiMail::Receiver.new :provider => :cloudmailin, :http_post_format => nil }.to raise_error(ArgumentError)
-    end
-  end
-
   context 'after initialization' do
-    %w(multipart json raw).each do |http_post_format|
+    context 'with invalid HTTP POST format' do
+      let :service do
+        MultiMail::Receiver.new({
+          :provider => :cloudmailin,
+          :http_post_format => 'invalid',
+        })
+      end
+
+      describe '#transform' do
+        it 'should raise an error if :http_post_format is invalid' do
+          expect{ service.transform({}) }.to raise_error(ArgumentError)
+        end
+      end
+    end
+
+    ['multipart', '', nil].each do |http_post_format| # @todo json raw
       let :http_post_format do
         http_post_format
       end
 
-      def params(fixture)
-        MultiMail::Receiver::Cloudmailin.parse(response("cloudmailin/#{http_post_format}", fixture))
-      end
-
-      before :all do
-        @service = MultiMail::Receiver.new({
+      let :service do
+        MultiMail::Receiver.new({
           :provider => :cloudmailin,
           :http_post_format => http_post_format,
         })
       end
 
+      def params(fixture)
+        directory = http_post_format.to_s.empty? ? 'multipart' : http_post_format
+        MultiMail::Receiver::Cloudmailin.parse(response("cloudmailin/#{directory}", fixture))
+      end
+
       describe '#transform' do
         it 'should return a mail message' do
           pending
-          message = @service.transform(params('valid'))[0]
+          message = service.transform(params('valid'))[0]
 
           # Headers
           message.date.should    == DateTime.parse('Mon, 14 Apr 2013 20:55:30 -04:00')
@@ -59,15 +68,13 @@ describe MultiMail::Receiver::Cloudmailin do
 
       describe '#spam?' do
         it 'should return true if the response is spam' do
-          pending
-          message = @service.transform(params('spam'))[0]
-          @service.spam?(message).should == true
+          message = service.transform(params('spam'))[0]
+          service.spam?(message).should == true
         end
 
         it 'should return false if the response is ham' do
-          pending
-          message = @service.transform(params('valid'))[0]
-          @service.spam?(message).should == false
+          message = service.transform(params('valid'))[0]
+          service.spam?(message).should == false
         end
       end
     end

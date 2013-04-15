@@ -7,15 +7,15 @@ describe MultiMail::Receiver::Simple do
       MultiMail::Receiver::Simple.parse(response('simple', fixture))
     end
 
-    before :all do
-      @service = MultiMail::Receiver.new({
+    let :service do
+      MultiMail::Receiver.new({
         :provider => :simple,
       })
     end
 
     describe '#transform' do
       it 'should return a mail message' do
-        message = @service.transform(params('valid'))[0]
+        message = service.transform(params('valid'))[0]
 
         # Headers
         message.date.should    == DateTime.parse('Thu, 27 Dec 2012 15:25:37 -0500')
