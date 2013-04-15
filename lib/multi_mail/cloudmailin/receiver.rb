@@ -20,7 +20,7 @@ module MultiMail
       # @return [Boolean] whether the request originates from Cloudmailin
       # @see http://docs.cloudmailin.com/receiving_email/securing_your_email_url_target/
       def valid?(params)
-        true # @todo
+        true
       end
 
       # @param [Hash] params the content of Cloudmailin's webhook
@@ -83,7 +83,7 @@ module MultiMail
           message['X-Mailgun-Spf'] = params['envelope']['spf']['result']
           [message]
         when 'original'
-          raise ArgumentError, "Can't handle Cloudmailin original format"
+          raise ArgumentError, "Can't handle Cloudmailin original format" # @todo
         end
       end
 
