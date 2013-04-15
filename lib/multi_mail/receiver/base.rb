@@ -65,6 +65,20 @@ module MultiMail
               end
             end
             params
+          when Array
+            map = Multimap.new
+            raw.each do |key,value|
+              map[key] = value
+            end
+            params = {}
+            map.each do |key,value|
+              if Array === value && value.size == 1
+                params[key] = value.first
+              else
+                params[key] = value
+              end
+            end
+            params
           when Hash
             raw
           else

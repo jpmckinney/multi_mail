@@ -54,21 +54,36 @@ module MultiMail
             body params['body-plain']
           end
 
-          html_part do
-            content_type 'text/html; charset=UTF-8'
-            body params['body-html']
+          if params.key?('body-html')
+            html_part do
+              content_type 'text/html; charset=UTF-8'
+              body params['body-html']
+            end
+          end
+
+          if params.key?('attachment-count')
+            1.upto(params['attachment-count'].to_i).each do |n|
+              key = "attachment-#{n}"
+              add_file(:filename => params[key][:filename], :content => params[key][:tempfile].read)
+            end
           end
         end
 
         # Extra Mailgun parameters.
-        [ 'stripped-text',
+        extra = [
+          'stripped-text',
           'stripped-signature',
           'stripped-html',
-          'attachment-count',
-          'attachment-x',
           'content-id-map',
-        ].each do |key|
-          unless params[key].nil? || params[key].empty?
+        ]
+
+        # Other body parts.
+        extra += params.keys.select do |key|
+          key[/\Abody-/]
+        end
+
+        extra.each do |key|
+          if params.key?(key) && !params[key].empty?
             message[key] = params[key]
           end
         end
