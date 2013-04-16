@@ -75,7 +75,7 @@ module MultiMail
           when Array
             params = {}
 
-            # Collect the values onto keys.
+            # Collect the values for each key.
             map = Multimap.new
             raw.each do |key,value|
               map[key] = value

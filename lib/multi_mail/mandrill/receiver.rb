@@ -72,7 +72,7 @@ module MultiMail
             end
 
             if msg.key?('attachments')
-              msg['attachments'].each do |attachment|
+              msg['attachments'].each do |_,attachment|
                 add_file(:filename => attachment['name'], :content => attachment['content'])
               end
             end

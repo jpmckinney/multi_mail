@@ -11,7 +11,8 @@ require File.dirname(__FILE__) + '/../lib/multi_mail'
 Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 
 # Use requestb.in. Copy the content from the "Raw" tab and replace the first
-# line with "HTTP/1.1 200 OK". Note that messages cannot exceed 10kb.
+# line with "HTTP/1.1 200 OK". Note that messages cannot exceed 10kb. All
+# fixtures are modified to have the same Date header.
 #
 # # Cloudmailin
 #

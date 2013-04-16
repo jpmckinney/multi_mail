@@ -66,7 +66,9 @@ describe MultiMail::Receiver::Mailgun do
 
         describe '#transform' do
           it 'should return a mail message' do
-            message = service.transform(params('valid'))[0]
+            messages = service.transform(params('valid'))
+            messages.size.should == 1
+            message = messages[0]
 
             # Headers
             message.date.should    == DateTime.parse('Mon, 15 Apr 2013 20:20:12 -04:00')

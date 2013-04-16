@@ -100,7 +100,7 @@ task :mandrill do
     puts "Add a catchall (*) route for #{domain}"
   end
 
-  puts "The catchall route for #{domain} POSTs to #{match['url']}"
+  puts "The catchall route for #{domain} POSTs to #{match['url']}?inspect"
 end
 
 desc 'POST a test fixture to an URL'
