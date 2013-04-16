@@ -2,27 +2,27 @@ HTTP/1.1 200 OK
 User-Agent: CloudMailin Server
 Host: requestb.in
 Content-Type: application/json
-Content-Length: 3453
+Content-Length: 2886
 Connection: close
 
 {
   "headers": {
     "Return-Path": "james@opennorth.ca",
     "Received": [
-      "by mail-ie0-f170.google.com with SMTP id c11so5503572ieb.1 for <5dae6f85cd65d30d384a@cloudmailin.net>; Mon, 15 Apr 2013 01:35:33 -0700",
-      "from [192.168.0.110] ([69.165.215.199]) by mx.google.com with ESMTPS id ip2sm10157263igc.5.2013.04.15.01.35.30 (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128); Mon, 15 Apr 2013 01:35:31 -0700"
+      "by mail-ie0-f179.google.com with SMTP id 16so1969083iea.10 for <5dae6f85cd65d30d384a@cloudmailin.net>; Mon, 15 Apr 2013 18:42:49 -0700",
+      "from [192.168.0.110] ([69.165.215.199]) by mx.google.com with ESMTPS id n7sm13633177igb.9.2013.04.15.18.42.47 (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128); Mon, 15 Apr 2013 18:42:48 -0700"
     ],
-    "Date": "Mon, 15 Apr 2013 04:35:28 -0400",
+    "Date": "Mon, 15 Apr 2013 20:20:12 -0400",
     "From": "James McKinney <james@opennorth.ca>",
     "To": "5dae6f85cd65d30d384a@cloudmailin.net",
-    "Message-ID": "<0007FA0E-18D3-48B9-8E54-7E5D930F62A9@opennorth.ca>",
+    "Message-ID": "<68CFE2AD-5B45-4092-B96B-857C7C83F2FD@opennorth.ca>",
     "Subject": "Test",
     "Mime-Version": "1.0",
-    "Content-Type": "multipart/alternative; boundary=\"Apple-Mail=_52175037-A445-427A-96CB-79744A6FE0C1\"",
-    "X-Google-DKIM-Signature": "v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:subject:date:message-id:to :mime-version:x-mailer:x-gm-message-state; bh=7YWb9Rbl4cgL1MeMi20GP3+ygR0lFIqrpBXbkwLbqmY=; b=em/wGFdKyJ/y2EMhYYTx3ClKtBDSV7qV43Z3YkASTs7AfLiRT6SQSojG2KEKED2pyF AFBu23Gq0wMF8ta6oPYgEcY9PonP6Tu589Ku2q2v5R1E+aUDFKk3f64njokK+t71B6M9 eltQtnbDO7fynQ1v6ZKRpZA9qW1X2K7rIBn9KcmkSJxRqMCQ1Gz0s748Bse9Fh7SySpF c9GBGiTzCu5B0tuRqTIp06gASaRjvOFWp/h2dGE6dLkjOOcbnwox2c6rWW5KsavHFFyf pPBW2evxN4F2K8k/ONMbfuM0ZJ60rcMQGRLaFbYNyFYEKmMjQqkK6In0ckI0lmXkCd2l 1sTw==",
-    "X-Received": "by 10.50.57.200 with SMTP id k8mr4632248igq.44.1366014932904; Mon, 15 Apr 2013 01:35:32 -0700 (PDT)",
+    "Content-Type": "multipart/alternative; boundary=\"Apple-Mail=_5BFC0BD3-5B75-44B5-969D-945C65A1B798\"",
+    "X-Google-DKIM-Signature": "v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:subject:date:message-id:to :mime-version:x-mailer:x-gm-message-state; bh=GOPBHZuTURFHkef2tJkyotDoTS4aiD6AxzXm86f7T4c=; b=G4+E8pKvwe4/vfLKfUaocHshj6nysczApUpAg1IhwQYcWS2+42fLNhMQXg7biOMxXD 6UrdP4vCiOcKqmk5w+hhtggYrMF5N1UHnI6Ou+JhaHbpBX87YpvgxGAbQkQPMMufgdfN eaCDVMcnOMoa3zNaDG/JPwEavU2rXzSqwjbcy2zHxUtxdfc30HW6G15xr5cNZAYPXo0N 43AdVeBRTLOKHFOkHkBNx7CT3bnpAXTdq3uXPkHVrjuE+UqQgU5uW+zBbqskEboKZIXe mqdWtkmUkrAcC/XQEF6w4WQEMJmh0X3onMcWe7ZJJwdLPQ7uAPtdleRFyMwLSe6nX159 8/ww==",
+    "X-Received": "by 10.50.178.105 with SMTP id cx9mr6523935igc.111.1366076569637; Mon, 15 Apr 2013 18:42:49 -0700 (PDT)",
     "X-Mailer": "Apple Mail (2.1283)",
-    "X-Gm-Message-State": "ALoCoQmLPD1KMMeXAwhGAIHu4qduDmRb4FPTEu3eBb2kj+h7MSMcBQftKJctuTvLzrM2zfZLsSrs"
+    "X-Gm-Message-State": "ALoCoQluErpLKQotSpx3bJ2xN652WvYooGCb2C1yra99Um8DODvBLQbHdtsQoEFb//aIB219tHGO"
   },
   "envelope": {
     "to": "5dae6f85cd65d30d384a@cloudmailin.net",
@@ -30,29 +30,29 @@ Connection: close
       "5dae6f85cd65d30d384a@cloudmailin.net"
     ],
     "from": "james@opennorth.ca",
-    "helo_domain": "mail-ie0-f170.google.com",
-    "remote_ip": "209.85.223.170",
+    "helo_domain": "mail-ie0-f179.google.com",
+    "remote_ip": "209.85.223.179",
     "spf": {
       "result": "fail",
       "domain": "opennorth.ca"
     }
   },
-  "plain": "bold text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block",
-  "html": "<html><head></head><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><b>bold text</b><div><br></div><div><blockquote type=\"cite\">multiline</blockquote><blockquote type=\"cite\">quoted</blockquote><blockquote type=\"cite\">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html>",
-  "reply_plain": "bold text\n",
+  "plain": "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block",
+  "html": "<html><head></head><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><b>bold text</b><div><br></div><div></div></body></html>",
+  "reply_plain": "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n",
   "attachments": [
     {
-      "content": "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gU2VkIGZyaW5naWxsYSBjb25zZWN0ZXR1ciByaG9uY3VzLiBOdW5jIG1hdHRpcyBtYXR0aXMgdXJuYSBxdWlzIG1vbGVzdGllLiBRdWlzcXVlIHV0IG1hdHRpcyBuaXNsLiBEb25lYyBuZXF1ZSBmZWxpcywgcG9ydGEgcXVpcyBjb25kaW1lbnR1bSBldSwgcGhhcmV0cmEgbm9uIGxpYmVyby4=",
+      "content": "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4=",
       "file_name": "foo.txt",
       "content_type": "text/plain",
-      "size": "221",
+      "size": "56",
       "disposition": "attachment"
     },
     {
-      "content": "TmFtIGFjY3Vtc2FuIGV1aXNtb2QgZXJvcyBldCByaG9uY3VzLiBQaGFzZWxsdXMgZmVybWVudHVtIGVyYXQgaWQgbGFjdXMgZWdlc3RhcyB2dWxwdXRhdGUuIFBlbGxlbnRlc3F1ZSBldSByaXN1cyBkdWksIGlkIHNjZWxlcmlzcXVlIG5lcXVlLiBDdW0gc29jaWlzIG5hdG9xdWUgcGVuYXRpYnVzIGV0IG1hZ25pcyBkaXMgcGFydHVyaWVudCBtb250ZXMsIG5hc2NldHVyIHJpZGljdWx1cyBtdXMu",
+      "content": "TmFtIGFjY3Vtc2FuIGV1aXNtb2QgZXJvcyBldCByaG9uY3VzLg==",
       "file_name": "bar.txt",
       "content_type": "text/plain",
-      "size": "225",
+      "size": "37",
       "disposition": "attachment"
     }
   ]

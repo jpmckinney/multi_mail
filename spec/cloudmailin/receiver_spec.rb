@@ -44,7 +44,7 @@ describe MultiMail::Receiver::Cloudmailin do
             message = service.transform(params('valid'))[0]
 
             # Headers
-            message.date.should    == DateTime.parse('Mon, 15 Apr 2013 03:20:46 -04:00')
+            message.date.should    == DateTime.parse('Mon, 15 Apr 2013 20:20:12 -04:00')
             message.from.should    == ['james@opennorth.ca']
             message.to.should      == ['5dae6f85cd65d30d384a@cloudmailin.net']
             message.subject.should == 'Test'
@@ -52,20 +52,20 @@ describe MultiMail::Receiver::Cloudmailin do
             # Body
             message.multipart?.should    == true
             message.parts.size.should    == 4
-            message.parts[0].body.should == "bold text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block"
+            message.parts[0].body.should == "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block"
 
             # @todo All HTTP POST formats should return the same information.
             #   For the raw format, set content types to "text/plain" and
             #   "text/html; charset=UTF-8" and convert strings to UTF-8.
-            # @note The body matchers are different due to a Cloudmailin bug.
+            # @note Due to a Cloudmailin bug, the HTML part is missing content.
             if actual_http_post_format == 'raw'
               message.parts[0].content_type.should == 'text/plain; charset=us-ascii'
               message.parts[1].content_type.should == 'text/html; charset=us-ascii'
-              message.parts[1].body.should == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><head></head><div></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; ">\n</body></html>)
+              message.parts[1].body.should == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div></div></body></html><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><head></head><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><br><div><b></b></div><div><b><span class="Apple-style-span" style="font-weight: normal; "><br></span></b></div><div><b><span class="Apple-style-span" style="font-weight: normal; "><i>some italic text</i></span></b></div><div><b><span class="Apple-style-span" style="font-weight: normal; "><br></span></b></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div></body></html>)
             else
               message.parts[0].content_type.should == 'text/plain'
               message.parts[1].content_type.should == 'text/html; charset=UTF-8'
-              message.parts[1].body.should == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html>)
+              message.parts[1].body.should == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div></div></body></html>)
             end
 
             # Attachments (Ruby 1.8 messiness)
@@ -73,16 +73,17 @@ describe MultiMail::Receiver::Cloudmailin do
               'bar.txt',
               'foo.txt',
             ]
+            # @note Cloudmailin removes the newline at the end of the file.
             message.attachments.map(&:read).sort.should == [
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla consectetur rhoncus. Nunc mattis mattis urna quis molestie. Quisque ut mattis nisl. Donec neque felis, porta quis condimentum eu, pharetra non libero.",
-              "Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus egestas vulputate. Pellentesque eu risus dui, id scelerisque neque.",
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+              "Nam accumsan euismod eros et rhoncus.",
             ]
 
             # Extra Cloudmailin parameters
             if actual_http_post_format == 'raw'
               message['reply_plain'].should be_nil
             else
-              message['reply_plain'].value.should == "bold text\n"
+              message['reply_plain'].value.should == "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n"
             end
             message['X-Mailgun-Spf'].value.should == 'pass'
           end

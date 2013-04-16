@@ -27,7 +27,7 @@ describe MultiMail::Receiver::Mailgun do
     end
 
     # @todo Need to run my own postbin to have a URL ending with "mime" in order
-    # to get fixtures to test the raw MIME HTTP POST format.
+    #   to get fixtures to test the raw MIME HTTP POST format.
     ['parsed', '', nil].each do |http_post_format|
       context "with #{http_post_format.inspect} format" do
         let :http_post_format do
@@ -89,9 +89,9 @@ describe MultiMail::Receiver::Mailgun do
             message.attachments[1].read.should == "Nam accumsan euismod eros et rhoncus.\n"
 
             # Extra Mailgun parameters
-            # @note `stripped-text` contains "some italic text" but
-            #   `stripped-html` doesn't. `stripped-text` and
-            #   `stripped-signature` use CRLF line endings.
+            # @note Due to a Mailgun bug, `stripped-text` contains "some italic
+            #    text" but `stripped-html` doesn't. `stripped-signature` and
+            #    `stripped-text` use CRLF line endings.
             if actual_http_post_format == 'raw'
               message['stripped-text'].should be_nil
               message['stripped-signature'].should be_nil

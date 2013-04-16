@@ -28,7 +28,6 @@ module MultiMail
       # @see http://docs.cloudmailin.com/http_post_formats/multipart/
       # @see http://docs.cloudmailin.com/http_post_formats/json/
       # @see http://docs.cloudmailin.com/http_post_formats/raw/
-      # @todo Handle cases where the attachment store is in-use.
       def transform(params)
         # Must make `http_post_format` a local variable to satisfy Mail's scope.
         x = http_post_format

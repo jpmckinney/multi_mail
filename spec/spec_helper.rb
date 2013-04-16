@@ -45,11 +45,13 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 # @see FakeWeb::Responder#baked_response
 # @see https://github.com/rack/rack/blob/master/test/spec_multipart.rb
 def response(provider, fixture)
-  io       = StringIO.new(File.read(File.expand_path("../fixtures/#{provider}/#{fixture}.txt", __FILE__)))
+  contents = File.read(File.expand_path("../fixtures/#{provider}/#{fixture}.txt", __FILE__))
+  io       = StringIO.new(contents)
   socket   = Net::BufferedIO.new(io)
   response = Net::HTTPResponse.read_new(socket)
-  body     = response.reading_body(socket, true) {}
-  # The above method seems sensitive to buffer/file sizes.
+  # `response.reading_body(socket, true) {}`, for whatever reason, fails to read
+  # all of the body in files like `cloudmailin/multipart/valid.txt`.
+  body = contents[/(?:\r?\n){2,}(.+)\z/m, 1]
 
   if response.header['content-type']['multipart/form-data']
     Rack::Multipart.parse_multipart(Rack::MockRequest.env_for('/', {

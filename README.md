@@ -39,6 +39,8 @@ The default HTTP POST format is `raw`. Add a `:http_post_format` option to chang
       :http_post_format => 'raw',
     })
 
+**Note:** [MultiMail doesn't yet support Cloudmailin's URL attachments (attachment stores).](https://github.com/opennorth/multi_mail/issues/11) Please use regular attachments (always the case if you use the `raw` format) if you are using MultiMail.
+
 **2013-04-15:** If an email contains multiple HTML parts and you are using the `multipart` or `json` HTTP POST formats, Cloudmailin will only include the first HTML part in its `html` parameter. Use the `raw` format to avoid any data loss.
 
 ## Mailgun
