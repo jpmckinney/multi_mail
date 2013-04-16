@@ -1,134 +1,142 @@
 HTTP/1.1 200 OK
 User-Agent: Python-urllib/2.7
 Host: requestb.in
-Content-Type: multipart/form-data; boundary=127.0.0.1.1002.14208.1365987337.508.82085
-Content-Length: 9632
+Content-Type: multipart/form-data; boundary=127.0.0.1.1002.5631.1366071615.667.35498
+Content-Length: 9652
 Connection: close
 
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="recipient"
 
 foo+bar@multimail.mailgun.org
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="sender"
 
 james@opennorth.ca
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="subject"
 
 Test
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="from"
 
 James McKinney <james@opennorth.ca>
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="Received"
 
-by luna.mailgun.net with SMTP mgrt 8775746703533; Mon, 15 Apr 2013 00:55:37 +0000
---127.0.0.1.1002.14208.1365987337.508.82085
+by luna.mailgun.net with SMTP mgrt 8739881119761; Tue, 16 Apr 2013 00:20:15 +0000
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="X-Envelope-From"
 
 <james@opennorth.ca>
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="Received"
 
-from mail-ie0-f171.google.com (mail-ie0-f171.google.com [209.85.223.171]) by mxa.mailgun.org with ESMTP id 516b5005.7fa88c822670-in1; Mon, 15 Apr 2013 00:55:33 -0000 (UTC)
---127.0.0.1.1002.14208.1365987337.508.82085
+from mail-ie0-f172.google.com (mail-ie0-f172.google.com [209.85.223.172]) by mxa.mailgun.org with ESMTP id 516c993e.7feeac370970-in1; Tue, 16 Apr 2013 00:20:14 -0000 (UTC)
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="Received"
 
-by mail-ie0-f171.google.com with SMTP id e14so5228630iej.30 for <foo+bar@multimail.mailgun.org>; Sun, 14 Apr 2013 17:55:33 -0700 (PDT)
---127.0.0.1.1002.14208.1365987337.508.82085
+by mail-ie0-f172.google.com with SMTP id c10so6519869ieb.17 for <foo+bar@multimail.mailgun.org>; Mon, 15 Apr 2013 17:20:14 -0700 (PDT)
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="X-Google-Dkim-Signature"
 
-v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:subject:date:message-id:to :mime-version:x-mailer:x-gm-message-state; bh=YwuZHU5AJVFy0qXX7vBWpnV+jpLkEFvBLqRAU25Muno=; b=ntxvRQWwkLuxx0a6GdTu3gS5qtACw/VnhHif9iwEPkrPWNz2yfBh0QWsBmMqr3c6Is XpwzLkFkHiLEHfsFzbakv0F37TD2T7z1OoVh0SCEOdru7Vzr5nzwa2WGw2f9bOHLO0p0 qyQpRM2xmNQX0wCEqzJ8VlNOfCGETJQ/pogKuDQisSgBGPLbSvXp/e+geUqZbvZUeXrg SU2/x2CXvL+Hp8UzWUnPJBvtAR9bKwyUZhcdiVGaNWK2yYApMHciWvTFRb3/BcOSF3e7 90rZ1vYrA9zP1Dulm+v1SduYeNpyNtuaD/6A8Tadmcle51PkS80lGetVZzp/KKq2xk8k 5F4Q==
---127.0.0.1.1002.14208.1365987337.508.82085
+v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:subject:date:message-id:to :mime-version:x-mailer:x-gm-message-state; bh=R7t3+HmbTXy88fTHZkghDYrCoX3JzLSvHw55rnronHk=; b=Haf2akufk9PFXcbkT2dZKh2r4OKiy3Oy398AEHubFlB/wHZm2oDjxqmQDSZZYzITTl 2HrC1rNA+LMXv8VRkh4ZaKBNQbi8hjulJXkD26r7PfmAqGnTY8JiKjOC4Q2TyJ5+N8m4 tAkLNRdy15aCO2WZtRI5uWL5WkgpRaabcgvONmd9XenKtyImAbS2RdDShAISVrcabivh ttzVqc12mELfVNiUCYFnyJDY0t7x0gxbbq7IRr3QqzXPihMDQtyNWKDNgy+5XopPxygV dES+wZHK9CeK0aivwpZl5Nz3wHuTWzU9ceoufLJFsL5AQGLCOAi2s5j7CnSilUjxN2sz /aoA==
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="X-Received"
 
-by 10.50.67.108 with SMTP id m12mr3789751igt.77.1365987333529; Sun, 14 Apr 2013 17:55:33 -0700 (PDT)
---127.0.0.1.1002.14208.1365987337.508.82085
+by 10.42.155.136 with SMTP id u8mr16615icw.26.1366071614191; Mon, 15 Apr 2013 17:20:14 -0700 (PDT)
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="Return-Path"
 
 <james@opennorth.ca>
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="Received"
 
-from [192.168.0.110] ([69.165.215.199]) by mx.google.com with ESMTPS id qn10sm8985477igc.6.2013.04.14.17.55.31 (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128); Sun, 14 Apr 2013 17:55:32 -0700 (PDT)
---127.0.0.1.1002.14208.1365987337.508.82085
+from [192.168.0.110] ([69.165.215.199]) by mx.google.com with ESMTPS id ua6sm13398085igb.0.2013.04.15.17.20.12 (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128); Mon, 15 Apr 2013 17:20:13 -0700 (PDT)
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="From"
 
 James McKinney <james@opennorth.ca>
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="Content-Type"
 
-multipart/alternative; boundary="Apple-Mail=_4B462E86-A543-4F80-AC3A-207967B5AE54"
---127.0.0.1.1002.14208.1365987337.508.82085
+multipart/alternative; boundary="Apple-Mail=_D289CF3C-691D-4372-B921-FE97254B7A92"
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="Subject"
 
 Test
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="Date"
 
-Sun, 14 Apr 2013 20:55:30 -0400
---127.0.0.1.1002.14208.1365987337.508.82085
+Mon, 15 Apr 2013 20:20:12 -0400
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="Message-Id"
 
-<0A192AD2-6B73-4AE3-98FB-1DA8C76E308E@opennorth.ca>
---127.0.0.1.1002.14208.1365987337.508.82085
+<D6B0F2D4-0AB6-4BE1-8D40-75BFD0C26E64@opennorth.ca>
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="To"
 
 foo+bar@multimail.mailgun.org
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="Mime-Version"
 
 1.0 (Apple Message framework v1283)
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="X-Mailer"
 
 Apple Mail (2.1283)
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="X-Gm-Message-State"
 
-ALoCoQmyAMNxiM1lSlsiq3/Ht2gO+IZAYUI4+4jYU/kVgLEJaSKxc2qYIrN6SzHTRTFOFX4d0CMk
---127.0.0.1.1002.14208.1365987337.508.82085
+ALoCoQm7HZ+xBsab1OTc5IP/6gSIc3SwGeh4lRf+obkhtV8tpZr9UlJRNMg8azp72ybxsGko66Jg
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="X-Mailgun-Sflag"
 
 No
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="X-Mailgun-Sscore"
 
 0.0
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="X-Mailgun-Spf"
 
 Neutral
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="X-Mailgun-Incoming"
 
 Yes
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="message-headers"
 
-[["Received", "by luna.mailgun.net with SMTP mgrt 8775746703533; Mon, 15 Apr 2013 00:55:37 +0000"], ["X-Envelope-From", "<james@opennorth.ca>"], ["Received", "from mail-ie0-f171.google.com (mail-ie0-f171.google.com [209.85.223.171]) by mxa.mailgun.org with ESMTP id 516b5005.7fa88c822670-in1; Mon, 15 Apr 2013 00:55:33 -0000 (UTC)"], ["Received", "by mail-ie0-f171.google.com with SMTP id e14so5228630iej.30 for <foo+bar@multimail.mailgun.org>; Sun, 14 Apr 2013 17:55:33 -0700 (PDT)"], ["X-Google-Dkim-Signature", "v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:subject:date:message-id:to :mime-version:x-mailer:x-gm-message-state; bh=YwuZHU5AJVFy0qXX7vBWpnV+jpLkEFvBLqRAU25Muno=; b=ntxvRQWwkLuxx0a6GdTu3gS5qtACw/VnhHif9iwEPkrPWNz2yfBh0QWsBmMqr3c6Is XpwzLkFkHiLEHfsFzbakv0F37TD2T7z1OoVh0SCEOdru7Vzr5nzwa2WGw2f9bOHLO0p0 qyQpRM2xmNQX0wCEqzJ8VlNOfCGETJQ/pogKuDQisSgBGPLbSvXp/e+geUqZbvZUeXrg SU2/x2CXvL+Hp8UzWUnPJBvtAR9bKwyUZhcdiVGaNWK2yYApMHciWvTFRb3/BcOSF3e7 90rZ1vYrA9zP1Dulm+v1SduYeNpyNtuaD/6A8Tadmcle51PkS80lGetVZzp/KKq2xk8k 5F4Q=="], ["X-Received", "by 10.50.67.108 with SMTP id m12mr3789751igt.77.1365987333529; Sun, 14 Apr 2013 17:55:33 -0700 (PDT)"], ["Return-Path", "<james@opennorth.ca>"], ["Received", "from [192.168.0.110] ([69.165.215.199]) by mx.google.com with ESMTPS id qn10sm8985477igc.6.2013.04.14.17.55.31 (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128); Sun, 14 Apr 2013 17:55:32 -0700 (PDT)"], ["From", "James McKinney <james@opennorth.ca>"], ["Content-Type", "multipart/alternative; boundary=\"Apple-Mail=_4B462E86-A543-4F80-AC3A-207967B5AE54\""], ["Subject", "Test"], ["Date", "Sun, 14 Apr 2013 20:55:30 -0400"], ["Message-Id", "<0A192AD2-6B73-4AE3-98FB-1DA8C76E308E@opennorth.ca>"], ["To", "foo+bar@multimail.mailgun.org"], ["Mime-Version", "1.0 (Apple Message framework v1283)"], ["X-Mailer", "Apple Mail (2.1283)"], ["X-Gm-Message-State", "ALoCoQmyAMNxiM1lSlsiq3/Ht2gO+IZAYUI4+4jYU/kVgLEJaSKxc2qYIrN6SzHTRTFOFX4d0CMk"], ["X-Mailgun-Sflag", "No"], ["X-Mailgun-Sscore", "0.0"], ["X-Mailgun-Spf", "Neutral"], ["X-Mailgun-Incoming", "Yes"]]
---127.0.0.1.1002.14208.1365987337.508.82085
+[["Received", "by luna.mailgun.net with SMTP mgrt 8739881119761; Tue, 16 Apr 2013 00:20:15 +0000"], ["X-Envelope-From", "<james@opennorth.ca>"], ["Received", "from mail-ie0-f172.google.com (mail-ie0-f172.google.com [209.85.223.172]) by mxa.mailgun.org with ESMTP id 516c993e.7feeac370970-in1; Tue, 16 Apr 2013 00:20:14 -0000 (UTC)"], ["Received", "by mail-ie0-f172.google.com with SMTP id c10so6519869ieb.17 for <foo+bar@multimail.mailgun.org>; Mon, 15 Apr 2013 17:20:14 -0700 (PDT)"], ["X-Google-Dkim-Signature", "v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:subject:date:message-id:to :mime-version:x-mailer:x-gm-message-state; bh=R7t3+HmbTXy88fTHZkghDYrCoX3JzLSvHw55rnronHk=; b=Haf2akufk9PFXcbkT2dZKh2r4OKiy3Oy398AEHubFlB/wHZm2oDjxqmQDSZZYzITTl 2HrC1rNA+LMXv8VRkh4ZaKBNQbi8hjulJXkD26r7PfmAqGnTY8JiKjOC4Q2TyJ5+N8m4 tAkLNRdy15aCO2WZtRI5uWL5WkgpRaabcgvONmd9XenKtyImAbS2RdDShAISVrcabivh ttzVqc12mELfVNiUCYFnyJDY0t7x0gxbbq7IRr3QqzXPihMDQtyNWKDNgy+5XopPxygV dES+wZHK9CeK0aivwpZl5Nz3wHuTWzU9ceoufLJFsL5AQGLCOAi2s5j7CnSilUjxN2sz /aoA=="], ["X-Received", "by 10.42.155.136 with SMTP id u8mr16615icw.26.1366071614191; Mon, 15 Apr 2013 17:20:14 -0700 (PDT)"], ["Return-Path", "<james@opennorth.ca>"], ["Received", "from [192.168.0.110] ([69.165.215.199]) by mx.google.com with ESMTPS id ua6sm13398085igb.0.2013.04.15.17.20.12 (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128); Mon, 15 Apr 2013 17:20:13 -0700 (PDT)"], ["From", "James McKinney <james@opennorth.ca>"], ["Content-Type", "multipart/alternative; boundary=\"Apple-Mail=_D289CF3C-691D-4372-B921-FE97254B7A92\""], ["Subject", "Test"], ["Date", "Mon, 15 Apr 2013 20:20:12 -0400"], ["Message-Id", "<D6B0F2D4-0AB6-4BE1-8D40-75BFD0C26E64@opennorth.ca>"], ["To", "foo+bar@multimail.mailgun.org"], ["Mime-Version", "1.0 (Apple Message framework v1283)"], ["X-Mailer", "Apple Mail (2.1283)"], ["X-Gm-Message-State", "ALoCoQm7HZ+xBsab1OTc5IP/6gSIc3SwGeh4lRf+obkhtV8tpZr9UlJRNMg8azp72ybxsGko66Jg"], ["X-Mailgun-Sflag", "No"], ["X-Mailgun-Sscore", "0.0"], ["X-Mailgun-Spf", "Neutral"], ["X-Mailgun-Incoming", "Yes"]]
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="timestamp"
 
-1365987337
---127.0.0.1.1002.14208.1365987337.508.82085
+1366071615
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="token"
 
-4zo5t2znar3cpzakwsg869r0rrj2m-vot2s9xwuk41i77tvpi4
---127.0.0.1.1002.14208.1365987337.508.82085
+5o56tmpwd3dnwthehwclemd-i-7u2gv9vb3u745ywj67d0mc87
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="signature"
 
-12b43fdd05641a7deee68fedfedfe536b22a7de48e0257e1cca871128589c17b
---127.0.0.1.1002.14208.1365987337.508.82085
+bc2ab6c1080d52f2a06928b93f21e86c2d28c548e2ef64354f8ba1a95bb53cd6
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="attachment-count"
 
 2
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="body-plain"
 
 bold text
+
+
+
+some more bold text
+
+
+
+some italic text
 
 > multiline
 > quoted
@@ -137,36 +145,43 @@ bold text
 
 --
 Signature block
-
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="body-html"
 
-<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><head></head><div></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html>
---127.0.0.1.1002.14208.1365987337.508.82085
+<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div></div></body></html><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><head></head><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><br><div><b></b></div><div><b><span class="Apple-style-span" style="font-weight: normal; "><br></span></b></div><div><b><span class="Apple-style-span" style="font-weight: normal; "><i>some italic text</i></span></b></div><div><b><span class="Apple-style-span" style="font-weight: normal; "><br></span></b></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div></body></html>
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="stripped-html"
 
-<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><br></div><div>--</div><div>Signature block</div><div></div></body><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html></html>
---127.0.0.1.1002.14208.1365987337.508.82085
+<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div></div></body><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html><html><head></head></html></html>
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="stripped-text"
 
 bold text
---127.0.0.1.1002.14208.1365987337.508.82085
+
+
+
+some more bold text
+
+
+
+some italic text
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="stripped-signature"
 
 --
 Signature block
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="attachment-1"; filename="foo.txt"
 Content-Type: text/plain
-Content-Length: 223
+Content-Length: 58
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla consectetur rhoncus. Nunc mattis mattis urna quis molestie. Quisque ut mattis nisl. Donec neque felis, porta quis condimentum eu, pharetra non libero.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
---127.0.0.1.1002.14208.1365987337.508.82085
+--127.0.0.1.1002.5631.1366071615.667.35498
 Content-Disposition: form-data; name="attachment-2"; filename="bar.txt"
 Content-Type: text/plain
-Content-Length: 227
+Content-Length: 39
 
-Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus egestas vulputate. Pellentesque eu risus dui, id scelerisque neque. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+Nam accumsan euismod eros et rhoncus.
 
---127.0.0.1.1002.14208.1365987337.508.82085--
+--127.0.0.1.1002.5631.1366071615.667.35498--

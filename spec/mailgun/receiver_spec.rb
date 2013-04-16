@@ -69,7 +69,7 @@ describe MultiMail::Receiver::Mailgun do
             message = service.transform(params('valid'))[0]
 
             # Headers
-            message.date.should    == DateTime.parse('Mon, 14 Apr 2013 20:55:30 -04:00')
+            message.date.should    == DateTime.parse('Mon, 15 Apr 2013 20:20:12 -04:00')
             message.from.should    == ['james@opennorth.ca']
             message.to.should      == ['foo+bar@multimail.mailgun.org']
             message.subject.should == 'Test'
@@ -78,25 +78,28 @@ describe MultiMail::Receiver::Mailgun do
             message.multipart?.should            == true
             message.parts.size.should            == 4
             message.parts[0].content_type.should == 'text/plain'
-            message.parts[0].body.should         == "bold text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block\n"
+            message.parts[0].body.should         == "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block"
             message.parts[1].content_type.should == 'text/html; charset=UTF-8'
-            message.parts[1].body.should         == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div><div></div></body></html><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><head></head><div></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html>)
+            message.parts[1].body.should         == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div></div></body></html><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><head></head><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><br><div><b></b></div><div><b><span class="Apple-style-span" style="font-weight: normal; "><br></span></b></div><div><b><span class="Apple-style-span" style="font-weight: normal; "><i>some italic text</i></span></b></div><div><b><span class="Apple-style-span" style="font-weight: normal; "><br></span></b></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div></body></html>)
 
             # Attachments
             message.attachments[0].filename.should == 'foo.txt'
-            message.attachments[0].read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla consectetur rhoncus. Nunc mattis mattis urna quis molestie. Quisque ut mattis nisl. Donec neque felis, porta quis condimentum eu, pharetra non libero.\n"
+            message.attachments[0].read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n"
             message.attachments[1].filename.should == 'bar.txt'
-            message.attachments[1].read.should == "Nam accumsan euismod eros et rhoncus. Phasellus fermentum erat id lacus egestas vulputate. Pellentesque eu risus dui, id scelerisque neque. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.\n"
+            message.attachments[1].read.should == "Nam accumsan euismod eros et rhoncus.\n"
 
             # Extra Mailgun parameters
+            # @note `stripped-text` contains "some italic text" but
+            #   `stripped-html` doesn't. `stripped-text` and
+            #   `stripped-signature` use CRLF line endings.
             if actual_http_post_format == 'raw'
               message['stripped-text'].should be_nil
               message['stripped-signature'].should be_nil
               message['stripped-html'].should be_nil
             else
-              message['stripped-text'].value.should      == 'bold text'
+              message['stripped-text'].value.should      == "bold text\r\n\r\n\r\n\r\nsome more bold text\r\n\r\n\r\n\r\nsome italic text"
               message['stripped-signature'].value.should == "--\r\nSignature block"
-              message['stripped-html'].value.should      == '<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div><br></div><div>--</div><div>Signature block</div><div></div></body><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html><html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><div></div></body></html></html>'
+              message['stripped-html'].value.should      == '<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div></div></body><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html><html><head></head></html></html>'
             end
           end
         end
