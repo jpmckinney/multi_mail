@@ -24,6 +24,8 @@ Incoming email:
 * [Mandrill](http://mandrill.com/)
 * [Cloudmailin](http://www.cloudmailin.com/)
 
+Any additional information provided by an API is added to the message as a header. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it with `message['stripped-text'].value`.
+
 ## Cloudmailin
 
     service = MultiMail::Receiver.new({
@@ -53,6 +55,8 @@ If you have a route with a URL ending with "mime" and you are using the raw MIME
       :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
       :http_post_format => 'raw',
     })
+
+**2013-04-15:** Mailgun's `stripped-text` and `stripped-html` parameters do not return the same parts of the message. In our usage, `stripped-html` would drop non-quoted, non-signature parts of the message, but `stripped-text` would not.
 
 ## Mandrill
 
