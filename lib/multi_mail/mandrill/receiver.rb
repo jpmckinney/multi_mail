@@ -85,10 +85,8 @@ module MultiMail
           message['email'] = msg['email']
           message['dkim-signed'] = msg['dkim']['signed']
           message['dkim-valid'] = msg['dkim']['valid']
-
-          # Re-use Mailgun headers.
-          message['X-Mailgun-SScore'] = msg['spam_report']['score']
-          message['X-Mailgun-Spf'] = msg['spf']['result']
+          message['spam_report-score'] = msg['spam_report']['score']
+          message['spf-result'] = msg['spf']['result']
 
           message
         end
@@ -99,7 +97,7 @@ module MultiMail
       # @param [Mail::Message] message a message
       # @return [Boolean] whether the message is spam
       def spam?(message)
-        message['X-Mailgun-SScore'] && message['X-Mailgun-SScore'].value.to_f > @spamassassin_threshold
+        message['spam_report-score'] && message['spam_report-score'].value.to_f > @spamassassin_threshold
       end
     end
   end

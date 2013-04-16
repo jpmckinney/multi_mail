@@ -43,6 +43,13 @@ The default HTTP POST format is `raw`. Add a `:http_post_format` option to chang
 
 **2013-04-15:** If an email contains multiple HTML parts and you are using the `multipart` or `json` HTTP POST formats, Cloudmailin will only include the first HTML part in its `html` parameter. Use the `raw` format to avoid any data loss.
 
+### Additional information provided by the API
+
+See [Cloudmailin's documentation](http://docs.cloudmailin.com/http_post_formats/):
+
+* `reply_plain`
+* `spf-result`
+
 ## Mailgun
 
     service = MultiMail::Receiver.new({
@@ -58,7 +65,16 @@ If you have a route with a URL ending with "mime" and you are using the raw MIME
       :http_post_format => 'raw',
     })
 
-**2013-04-15:** Mailgun's `stripped-text` and `stripped-html` parameters do not return the same parts of the message. In our usage, `stripped-html` would drop non-quoted, non-signature parts of the message, but `stripped-text` would not.
+**2013-04-15:** Mailgun's `stripped-text` and `stripped-html` parameters do not return the same parts of the message. `stripped-html` sometimes incorrectly drops non-quoted, non-signature parts of the message; `stripped-text` doesn't.
+
+### Additional information provided by the API
+
+See [Mailgun's documentation](http://documentation.mailgun.net/user_manual.html#parsed-messages-parameters):
+
+* `stripped-text`
+* `stripped-signature`
+* `stripped-html`
+* `content-id-map`
 
 ## Mandrill
 
@@ -72,6 +88,17 @@ The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:s
       :provider => 'mandrill',
       :spamassassin_threshold => 4.5,
     })
+
+### Additional information provided by the API
+
+See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is-the-format-of-inbound-email-webhooks-):
+
+* `ts`
+* `email`
+* `dkim-signed`
+* `dkim-valid`
+* `spam_report-score`
+* `spf-result`
 
 ## Bugs? Questions?
 

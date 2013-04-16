@@ -55,8 +55,8 @@ describe MultiMail::Receiver::Mandrill do
         message['email'].value.should == 'foo+bar@govkit.org'
         message['dkim-signed'].value.should == 'true'
         message['dkim-valid'].value.should == 'true'
-        message['X-Mailgun-SScore'].value.should == '0'
-        message['X-Mailgun-Spf'].value.should == 'pass'
+        message['spam_report-core'].value.should == '0'
+        message['spf-result'].value.should == 'pass'
       end
     end
 

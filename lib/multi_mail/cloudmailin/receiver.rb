@@ -69,8 +69,8 @@ module MultiMail
             end
           end
 
-          # Re-use Mailgun headers.
-          message['X-Mailgun-Spf'] = params['envelope']['spf']['result']
+          # Extra Cloudmailin parameters.
+          message['spf-result'] = params['envelope']['spf']['result']
 
           # Discard rest of `envelope`: `from`, `to`, `recipients`,
           # `helo_domain` and `remote_ip`.
@@ -117,7 +117,7 @@ module MultiMail
           # Extra Cloudmailin parameters. The multipart format uses CRLF whereas
           # the JSON format uses LF. Normalize to LF.
           message['reply_plain'] = params['reply_plain'].gsub("\r\n", "\n")
-          message['X-Mailgun-Spf'] = params['envelope']['spf']['result']
+          message['spf-result'] = params['envelope']['spf']['result']
           [message]
         else
           raise ArgumentError, "Can't handle Cloudmailin #{http_post_format} HTTP POST format"
@@ -127,7 +127,7 @@ module MultiMail
       # @param [Mail::Message] message a message
       # @return [Boolean] whether the message is spam
       def spam?(message)
-        message['X-Mailgun-Spf'] && message['X-Mailgun-Spf'].value == 'fail'
+        message['spf-result'] && message['spf-result'].value == 'fail'
       end
 
     private
