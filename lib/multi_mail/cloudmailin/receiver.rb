@@ -47,9 +47,19 @@ module MultiMail
 
             # Merge non-attachments with the same content type.
             (flat.parts - flat.attachments).group_by(&:content_type).each do |content_type,group|
+              body = group.map{|part| part.body.decoded}.join
+
+              if content_type == 'text/plain; charset=us-ascii'
+                # `text/plain; charset=us-ascii` is the default content type.
+                content_type = 'text/plain'
+              elsif content_type == 'text/html; charset=us-ascii'
+                content_type = 'text/html; charset=UTF-8'
+                body = body.encode('UTF-8') if body.respond_to?(:encode)
+              end
+
               message.parts << Mail::Part.new({
                 :content_type => content_type,
-                :body => group.map{|part| part.body.decoded}.join,
+                :body => body,
               })
             end
 
