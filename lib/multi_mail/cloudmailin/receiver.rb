@@ -109,6 +109,7 @@ module MultiMail
                 end
               else
                 params['attachments'].each do |_,attachment|
+                  # See the relevant comment in Mailgun's receiver.
                   if Hash === attachment
                     add_file(:filename => attachment[:filename], :content => attachment[:tempfile].read)
                   else

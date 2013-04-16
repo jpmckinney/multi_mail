@@ -73,6 +73,11 @@ module MultiMail
             if params.key?('attachment-count')
               1.upto(params['attachment-count'].to_i).each do |n|
                 attachment = params["attachment-#{n}"]
+                # ActionDispatch::Http::Request subclasses Rack::Request and
+                # turns attachment hashes into instances of 
+                # ActionDispatch::Http::UploadedFile in Rails 3 and 4 and an
+                # instance of ActionController::UploadedFile in Rails 2.3, both
+                # of which have the same behavior.
                 if Hash === attachment
                   add_file(:filename => attachment[:filename], :content => attachment[:tempfile].read)
                 else

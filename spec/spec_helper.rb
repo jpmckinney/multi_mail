@@ -42,24 +42,77 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 #
 # @param [String] provider a provider
 # @param [String] fixture one of "valid", "invalid" or "spam"
+# @param [Boolean] action_dispatch whether uploaded files should be
+#   `ActionDispatch::Http::UploadedFile` objects
 # @return [String] the provider's baked response
 # @see FakeWeb::Responder#baked_response
 # @see https://github.com/rack/rack/blob/master/test/spec_multipart.rb
-def response(provider, fixture)
+def response(provider, fixture, action_dispatch = false)
   contents = File.read(File.expand_path("../fixtures/#{provider}/#{fixture}.txt", __FILE__))
   io       = StringIO.new(contents)
   socket   = Net::BufferedIO.new(io)
   response = Net::HTTPResponse.read_new(socket)
+
   # `response.reading_body(socket, true) {}`, for whatever reason, fails to read
   # all of the body in files like `cloudmailin/multipart/valid.txt`.
   body = contents[/(?:\r?\n){2,}(.+)\z/m, 1]
 
+  # It's kind of crazy that no library has an easier way of doing this.
   if response.header['content-type']['multipart/form-data']
-    Rack::Multipart.parse_multipart(Rack::MockRequest.env_for('/', {
+    body = Rack::Multipart.parse_multipart(Rack::MockRequest.env_for('/', {
       'CONTENT_TYPE' => response.header['content-type'],
       :input => body,
     }))
+  end
+
+  if action_dispatch
+    klass = Class.new(MultiMail::Service) do
+      include MultiMail::Receiver::Base
+    end
+    normalize_encode_params(klass.parse(body))
   else
     body
+  end
+end
+
+# @see https://github.com/rails/rails/blob/master/actionpack/lib/action_dispatch/http/upload.rb
+class UploadedFile
+  attr_accessor :original_filename, :content_type, :tempfile, :headers
+
+  def initialize(hash)
+    @original_filename = hash[:filename]
+    @content_type      = hash[:type]
+    @headers           = hash[:head]
+    @tempfile          = hash[:tempfile]
+    raise(ArgumentError, ':tempfile is required') unless @tempfile
+  end
+
+  def read(*args)
+    @tempfile.read(*args)
+  end
+end
+
+# @see https://github.com/rails/rails/blob/master/actionpack/lib/action_dispatch/http/parameters.rb
+# @see https://github.com/rails/rails/blob/master/actionpack/lib/action_dispatch/http/upload.rb
+def normalize_encode_params(params)
+  if Hash === params
+    if params.has_key?(:tempfile)
+      UploadedFile.new(params)
+    else
+      new_hash = {}
+      params.each do |k, v|
+        new_hash[k] = case v
+        when Hash
+          normalize_encode_params(v)
+        when Array
+          v.map! {|el| normalize_encode_params(el) }
+        else
+          v
+        end
+      end
+      new_hash
+    end
+  else
+    params
   end
 end
