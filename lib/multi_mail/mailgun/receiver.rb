@@ -72,8 +72,12 @@ module MultiMail
 
             if params.key?('attachment-count')
               1.upto(params['attachment-count'].to_i).each do |n|
-                key = "attachment-#{n}"
-                add_file(:filename => params[key][:filename], :content => params[key][:tempfile].read)
+                attachment = params["attachment-#{n}"]
+                if Hash === attachment
+                  add_file(:filename => attachment[:filename], :content => attachment[:tempfile].read)
+                else
+                  add_file(:filename => attachment.original_filename, :content => attachment.read)
+                end
               end
             end
           end

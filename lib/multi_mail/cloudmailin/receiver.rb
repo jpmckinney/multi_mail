@@ -109,7 +109,11 @@ module MultiMail
                 end
               else
                 params['attachments'].each do |_,attachment|
-                  add_file(:filename => attachment[:filename], :content => attachment[:tempfile].read)
+                  if Hash === attachment
+                    add_file(:filename => attachment[:filename], :content => attachment[:tempfile].read)
+                  else
+                    add_file(:filename => attachment.original_filename, :content => attachment.read)
+                  end
                 end
               end
             end

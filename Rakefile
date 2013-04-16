@@ -102,3 +102,16 @@ task :mandrill do
 
   puts "The catchall route for #{domain} POSTs to #{match['url']}"
 end
+
+desc 'POST a test fixture to an URL'
+task :http_post, :url, :fixture do |t,args|
+  require 'rest-client'
+
+  contents = File.read(args[:fixture])
+  io       = StringIO.new(contents)
+  socket   = Net::BufferedIO.new(io)
+  response = Net::HTTPResponse.read_new(socket)
+  body = contents[/(?:\r?\n){2,}(.+)\z/m, 1]
+
+  puts RestClient.post(args[:url], body, :content_type => response.header['content-type'])
+end
