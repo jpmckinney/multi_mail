@@ -21,76 +21,84 @@ def credentials
   @credentials ||= YAML.load_file File.expand_path(File.join(File.dirname(__FILE__), 'api_keys.yml'))
 end
 
-namespace :mailgun do
+desc 'Create a Mailgun catch-all route forwarding to a postbin'
+task :mailgun do
+  require 'securerandom'
   require 'json'
   require 'rest-client'
 
-  desc 'Create a Mailgun catch-all route forwarding to a postbin'
-  task :postbin do
-    bin_name = ENV['BIN_NAME'] || JSON.load(RestClient.post('http://requestb.in/api/v1/bins', {}))['name']
-    bin_url  = "http://requestb.in/#{bin_name}"
-
-    base_url = "https://api:#{credentials[:mailgun_api_key]}@api.mailgun.net/v2"
-    action   = %(forward("#{bin_url}"))
-
-    domain = ENV['DOMAIN'] || "#{SecureRandom.base64(4).tr('+/=lIO0', 'pqrsxyz')}.mailgun.com"
-
-    if JSON.load(RestClient.get("#{base_url}/domains"))['items'].empty?
-      puts "Creating the #{domain} domain..."
-      RestClient.post("#{base_url}/domains", :name => domain)
-    end
-
-    route = JSON.load(RestClient.get("#{base_url}/routes"))['items'].find do |route|
-      route['expression'] == 'catch_all()'
-    end
-
-    if route
-      unless route['action'] == action
-        puts "Updating the catch_all() route..."
-        JSON.load(RestClient.put("#{base_url}/routes/#{route['id']}", :action => action))
-      end
-    else
-      puts "Creating a catch_all() route..."
-      JSON.load(RestClient.post("#{base_url}/routes", :expression => 'catch_all()', :action => action))
-    end
-
-    puts "#{bin_url}?inspect"
+  def bin_url_and_action
+    bin_name = JSON.load(RestClient.post('http://requestb.in/api/v1/bins', {}))['name']
+    ["http://requestb.in/#{bin_name}", %(forward("#{bin_url}"))]
   end
+
+  base_url = "https://api:#{credentials[:mailgun_api_key]}@api.mailgun.net/v2"
+  domain = JSON.load(RestClient.get("#{base_url}/domains"))['items'].first
+
+  if domain
+    domain_name = domain['name']
+  else
+    domain_name = "#{SecureRandom.base64(4).tr('+/=lIO0', 'pqrsxyz')}.mailgun.com"
+    puts "Creating the #{domain_name} domain..."
+    RestClient.post("#{base_url}/domains", :name => domain_name)
+  end
+
+  catch_all_route = JSON.load(RestClient.get("#{base_url}/routes"))['items'].find do |route|
+    route['expression'] == 'catch_all()'
+  end
+
+  if catch_all_route
+    action = catch_all_route['actions'].find do |action|
+      action[%r{\Aforward\("(http://requestb\.in/\w+)"\)\z}]
+    end
+
+    if action
+      bin_url = $1
+    else
+      bin_url, action = bin_url_and_action
+      puts "Updating the catch_all() route..."
+      JSON.load(RestClient.put("#{base_url}/routes/#{catch_all_route['id']}", :action => action))
+    end
+  else
+    bin_url, action = bin_url_and_action
+    puts "Creating a catch_all() route..."
+    JSON.load(RestClient.post("#{base_url}/routes", :expression => 'catch_all()', :action => action))
+  end
+
+  puts "The catchall route for #{domain_name} POSTs to #{bin_url}?inspect"
 end
 
-namespace :mandrill do
+desc 'Ensure a Mandrill catch-all route forwarding to a postbin'
+task :mandrill do
   require 'mandrill'
 
-  desc 'Ensure a Mandrill catch-all route forwarding to a postbin'
-  task :validate do
-    api = Mandrill::API.new credentials[:mandrill_api_key]
+  api = Mandrill::API.new credentials[:mandrill_api_key]
 
-    domains = api.inbound.domains.each_with_object({}) do |domain,domains|
-      domains[domain['domain']] = domain
-    end
-
-    if domains.empty?
-      abort 'Add an inbound domain'
-    elsif domains.size > 1 && ENV['DOMAIN'].nil?
-      abort "ENV['DOMAIN'] must be one of #{domains.keys.join ', '}"
-    end
-
-    if ENV['DOMAIN'] && !domains.keys.include?(ENV['DOMAIN'])
-      abort "#{ENV['DOMAIN']} must be one of #{domains.keys.join ', '}"
-    end
-
-    domain = ENV['DOMAIN'] || domains.keys.first
-
-    unless domains[domain]['valid_mx']
-      puts "The MX for #{domain} is not valid"
-    end
-
-    routes = api.inbound.routes domain
-    match = routes.find{|route| route['pattern'] == '*'}
-    if routes.empty? || match.nil?
-      puts "Add a catchall (*) route for #{domain}"
-    end
-
-    puts "The catchall route for #{domain} POSTs to #{match['url']}"
+  domains = api.inbound.domains.each_with_object({}) do |domain,domains|
+    domains[domain['domain']] = domain
   end
+
+  if domains.empty?
+    abort 'Add an inbound domain'
+  elsif domains.size > 1 && ENV['DOMAIN'].nil?
+    abort "ENV['DOMAIN'] must be one of #{domains.keys.join ', '}"
+  end
+
+  if ENV['DOMAIN'] && !domains.keys.include?(ENV['DOMAIN'])
+    abort "#{ENV['DOMAIN']} must be one of #{domains.keys.join ', '}"
+  end
+
+  domain = ENV['DOMAIN'] || domains.keys.first
+
+  unless domains[domain]['valid_mx']
+    puts "The MX for #{domain} is not valid"
+  end
+
+  routes = api.inbound.routes domain
+  match = routes.find{|route| route['pattern'] == '*'}
+  if routes.empty? || match.nil?
+    puts "Add a catchall (*) route for #{domain}"
+  end
+
+  puts "The catchall route for #{domain} POSTs to #{match['url']}"
 end
