@@ -49,6 +49,7 @@ module MultiMail
             (flat.parts - flat.attachments).group_by(&:content_type).each do |content_type,group|
               body = group.map{|part| part.body.decoded}.join
 
+              # Make content types match across all HTTP POST formats.
               if content_type == 'text/plain; charset=us-ascii'
                 # `text/plain; charset=us-ascii` is the default content type.
                 content_type = 'text/plain'

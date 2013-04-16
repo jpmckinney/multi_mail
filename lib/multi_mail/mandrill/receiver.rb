@@ -5,6 +5,7 @@ module MultiMail
       include MultiMail::Receiver::Base
 
       recognizes :spamassassin_threshold
+      attr_reader :spamassassin_threshold
 
       # Initializes a Mandrill incoming email receiver.
       #
@@ -97,7 +98,7 @@ module MultiMail
       # @param [Mail::Message] message a message
       # @return [Boolean] whether the message is spam
       def spam?(message)
-        message['spam_report-score'] && message['spam_report-score'].value.to_f > @spamassassin_threshold
+        message['spam_report-score'] && message['spam_report-score'].value.to_f > spamassassin_threshold
       end
     end
   end
