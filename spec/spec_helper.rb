@@ -1,7 +1,11 @@
+require 'rubygems'
+
+require 'coveralls'
+Coveralls.wear!
+
 require 'net/http'
 require 'yaml'
 
-require 'rubygems'
 require 'rspec'
 require 'rack'
 require File.dirname(__FILE__) + '/../lib/multi_mail'
