@@ -29,9 +29,6 @@ module MultiMail
       # @see http://docs.cloudmailin.com/http_post_formats/json/
       # @see http://docs.cloudmailin.com/http_post_formats/raw/
       def transform(params)
-        # Must make `http_post_format` a local variable to satisfy Mail's scope.
-        x = http_post_format
-
         case http_post_format
         when 'raw', '', nil
           message = self.class.condense(Mail.new(params['message']))
@@ -54,6 +51,7 @@ module MultiMail
             end
           end
 
+          this = self
           message = Mail.new do
             headers headers
 
@@ -69,7 +67,7 @@ module MultiMail
             end
 
             if params.key?('attachments')
-              if x == 'json'
+              if this.http_post_format == 'json'
                 params['attachments'].each do |attachment|
                   add_file(:filename => attachment['file_name'], :content => Base64.decode64(attachment['content']))
                 end

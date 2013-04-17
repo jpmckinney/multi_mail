@@ -89,7 +89,7 @@ The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:s
       :spamassassin_threshold => 4.5,
     })
 
-**2013-04-15:** If an email contains multiple HTML parts, Mandrill will only include the first HTML part in its `html` parameter. Mandrill also adds a newline to the end of each message part.
+**2013-04-15:** If an email contains multiple HTML parts, Mandrill will only include the first HTML part in its `html` parameter. We therefore parse its `raw_msg` parameter to set the HTML part correctly. Mandrill also adds a newline to the end of each message part.
 
 ### Additional information provided by the API
 

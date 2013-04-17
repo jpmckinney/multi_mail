@@ -48,6 +48,7 @@ module MultiMail
             end
           end
 
+          this = self
           message = Mail.new do
             headers headers
 
@@ -64,7 +65,19 @@ module MultiMail
               body msg['text']
             end
 
-            if msg.key?('html')
+            # If an email contains multiple HTML parts, Mandrill will only
+            # include the first HTML part in its `html` parameter. We therefore
+            # parse its `raw_msg` parameter to set the HTML part correctly.
+            html = this.class.condense(Mail.new(msg['raw_msg'])).parts.find do |part|
+              part.content_type == 'text/html; charset=UTF-8'
+            end
+
+            if html
+              html_part do
+                content_type 'text/html; charset=UTF-8'
+                body html.body.decoded
+              end
+            elsif msg.key?('html')
               html_part do
                 content_type 'text/html; charset=UTF-8'
                 body msg['html']
