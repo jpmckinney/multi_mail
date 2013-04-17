@@ -73,34 +73,19 @@ task :mandrill do
   require 'mandrill'
 
   api = Mandrill::API.new credentials[:mandrill_api_key]
+  domain = api.inbound.domains.first
 
-  domains = api.inbound.domains.each_with_object({}) do |domain,domains|
-    domains[domain['domain']] = domain
+  if domain
+    domain_name = domain['domain']
+    routes = api.inbound.routes domain_name
+    match = routes.find{|route| route['pattern'] == '*'}
+
+    puts "The MX for #{domain_name} is not valid" unless domain['valid_mx']
+    puts "Add a catchall (*) route for #{domain_name}" if match.nil?
+    puts "The catchall route for #{domain_name} POSTs to #{match['url']}?inspect"
+  else
+    abort 'Add an inbound domain at https://mandrillapp.com/ or by sending an email to Mandrill'
   end
-
-  if domains.empty?
-    abort 'Add an inbound domain'
-  elsif domains.size > 1 && ENV['DOMAIN'].nil?
-    abort "ENV['DOMAIN'] must be one of #{domains.keys.join ', '}"
-  end
-
-  if ENV['DOMAIN'] && !domains.keys.include?(ENV['DOMAIN'])
-    abort "#{ENV['DOMAIN']} must be one of #{domains.keys.join ', '}"
-  end
-
-  domain = ENV['DOMAIN'] || domains.keys.first
-
-  unless domains[domain]['valid_mx']
-    puts "The MX for #{domain} is not valid"
-  end
-
-  routes = api.inbound.routes domain
-  match = routes.find{|route| route['pattern'] == '*'}
-  if routes.empty? || match.nil?
-    puts "Add a catchall (*) route for #{domain}"
-  end
-
-  puts "The catchall route for #{domain} POSTs to #{match['url']}?inspect"
 end
 
 desc 'POST a test fixture to an URL'

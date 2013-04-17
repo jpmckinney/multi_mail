@@ -41,7 +41,7 @@ The default HTTP POST format is `raw`. Add a `:http_post_format` option to chang
 
 **Note:** [MultiMail doesn't yet support Cloudmailin's URL attachments (attachment stores).](https://github.com/opennorth/multi_mail/issues/11) Please use regular attachments (always the case if you use the `raw` format) if you are using MultiMail.
 
-**2013-04-15:** If an email contains multiple HTML parts and you are using the `multipart` or `json` HTTP POST formats, Cloudmailin will only include the first HTML part in its `html` parameter. Use the `raw` format to avoid any data loss.
+**2013-04-15:** If an email contains multiple HTML parts and you are using the `multipart` or `json` HTTP POST formats, Cloudmailin will only include the first HTML part in its `html` parameter. Use the `raw` format to avoid data loss. Cloudmailin also removes a newline from the end of each attachment.
 
 ### Additional information provided by the API
 
@@ -88,6 +88,8 @@ The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:s
       :provider => 'mandrill',
       :spamassassin_threshold => 4.5,
     })
+
+**2013-04-15:** If an email contains multiple HTML parts, Mandrill will only include the first HTML part in its `html` parameter. Mandrill also adds a newline to the end of each message part.
 
 ### Additional information provided by the API
 

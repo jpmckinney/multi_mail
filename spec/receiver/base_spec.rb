@@ -48,4 +48,47 @@ describe MultiMail::Receiver::Base do
       expect{ klass.parse(1) }.to raise_error(ArgumentError, "Can't handle Fixnum input")
     end
   end
+
+  describe '#condense' do
+    it "should condense a message's HTML parts to a single HTML part" do
+      message = Mail.new(File.read(File.expand_path('../../fixtures/multipart.txt', __FILE__)))
+      result = klass.condense(message.dup)
+
+      result.parts.size.should == 4
+
+      [ "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block",
+        "<html><head></head><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><b>bold text</b><div><br></div><div></div></body></html><html><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><head></head><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html><html><head></head><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><br><div><b></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><br></span></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><i>some italic text</i></span></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><br></span></b></div><div><blockquote type=\"cite\">multiline</blockquote><blockquote type=\"cite\">quoted</blockquote><blockquote type=\"cite\">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div></body></html>",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "Nam accumsan euismod eros et rhoncus.",
+      ].each_with_index do |body,i|
+        result.parts[i].body.decoded.should == body
+      end
+
+      [ 'text/plain',
+        'text/html; charset=UTF-8',
+      ].each_with_index do |content_type,i|
+        result.parts[i].content_type.should == content_type
+      end
+    end
+  end
+
+  describe '#flatten' do
+    it 'should flatten a hierarchy of message parts' do
+      message = Mail.new(File.read(File.expand_path('../../fixtures/multipart.txt', __FILE__)))
+      result = klass.flatten(Mail.new, message.parts.dup)
+
+      result.parts.size.should == 6
+      result.parts.none?(&:multipart?).should == true
+
+      [ "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block",
+        "<html><head></head><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><b>bold text</b><div><br></div><div></div></body></html>",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "<html><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><head></head><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html>",
+        "Nam accumsan euismod eros et rhoncus.",
+        "<html><head></head><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><br><div><b></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><br></span></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><i>some italic text</i></span></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><br></span></b></div><div><blockquote type=\"cite\">multiline</blockquote><blockquote type=\"cite\">quoted</blockquote><blockquote type=\"cite\">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div></body></html>",
+      ].each_with_index do |body,i|
+        result.parts[i].body.decoded.should == body
+      end
+    end
+  end
 end

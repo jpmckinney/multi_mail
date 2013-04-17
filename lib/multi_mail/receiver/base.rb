@@ -97,6 +97,68 @@ module MultiMail
             raise ArgumentError, "Can't handle #{raw.class.name} input"
           end
         end
+
+        # Condenses a message's HTML parts to a single HTML part.
+        #
+        # @example
+        #   flat = self.class.condense(message.dup)
+        #
+        # @param [Mail::Message] message a message with zero or more HTML parts
+        # @return [Mail::Message] the message with a single HTML part
+        def condense(message)
+          if message.multipart? && message.parts.any?(&:multipart?)
+            # Get the message parts as a flat array.
+            result = flatten(Mail.new, message.parts.dup)
+
+            # Rebuild the message's parts.
+            message.parts.clear
+
+            # Merge non-attachments with the same content type.
+            (result.parts - result.attachments).group_by(&:content_type).each do |content_type,group|
+              body = group.map{|part| part.body.decoded}.join
+
+              # Make content types match across all APIs.
+              if content_type == 'text/plain; charset=us-ascii'
+                # `text/plain; charset=us-ascii` is the default content type.
+                content_type = 'text/plain'
+              elsif content_type == 'text/html; charset=us-ascii'
+                content_type = 'text/html; charset=UTF-8'
+                body = body.encode('UTF-8') if body.respond_to?(:encode)
+              end
+
+              message.parts << Mail::Part.new({
+                :content_type => content_type,
+                :body => body,
+              })
+            end
+
+            # Add attachments last.
+            result.attachments.each do |part|
+              message.parts << part
+            end
+          end
+
+          message
+        end
+
+        # Flattens a hierarchy of message parts.
+        #
+        # @example
+        #   flat = self.class.flatten(Mail.new, parts.dup)
+        #
+        # @param [Mail::Message] message a message
+        # @param [Mail::PartsList] parts parts to add to the message
+        # @return [Mail::Message] the message with all the parts
+        def flatten(message, parts)
+          parts.each do |part|
+            if part.multipart?
+              flatten(message, part.parts)
+            else
+              message.parts << part
+            end
+          end
+          message
+        end
       end
     end
   end
