@@ -48,10 +48,10 @@ describe MultiMail::Receiver::Mandrill do
         message.parts[1].body.decoded.should == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div></div></body></html>\n)
 
         # Attachments
-        message.attachments[0].filename.should == 'foo.txt'
-        message.attachments[0].read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\n"
-        message.attachments[1].filename.should == 'bar.txt'
-        message.attachments[1].read.should == "Nam accumsan euismod eros et rhoncus.\n\n"
+        attachment0 = message.attachments.find{|attachment| attachment.filename == 'foo.txt'}
+        attachment0.read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\n"
+        attachment1 = message.attachments.find{|attachment| attachment.filename == 'bar.txt'}
+        attachment1.read.should == "Nam accumsan euismod eros et rhoncus.\n\n"
 
         # Extra Mandrill parameters
         message['ts'].value.should == 1366131555
