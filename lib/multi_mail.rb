@@ -43,7 +43,7 @@ module MultiMail
         {
           'Delivered-To'          => 'Autoresponder',
           'Precedence'            => 'auto_reply',
-          'Return-Path'           => nil,
+          'Return-Path'           => nil, # in most cases, this would signify a bounce
           'X-Autoreply'           => 'yes',
           'X-FC-MachineGenerated' => 'true',
           'X-POST-MessageClass'   => '9; Autoresponder',
