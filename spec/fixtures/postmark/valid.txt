@@ -2,37 +2,37 @@ HTTP/1.1 200 OK
 User-Agent: Postmark
 Host: requestb.in
 Content-Type: application/json
-Content-Length: 3010
+Content-Length: 3355
 Connection: close
 Accept: application/json
 
 {
-  "From": "alexi@opennorth.ca",
+  "From": "james@opennorth.ca",
   "FromFull": {
-    "Email": "alexi@opennorth.ca",
-    "Name": "alexi garrow"
+    "Email": "james@opennorth.ca",
+    "Name": "James McKinney"
   },
-  "To": "\"4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com\" <4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com>",
+  "To": "4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com",
   "ToFull": [
     {
       "Email": "4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com",
-      "Name": "4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com"
+      "Name": ""
     }
   ],
   "Cc": "",
   "CcFull": [],
   "ReplyTo": "",
   "Subject": "Test",
-  "MessageID": "ee3ad7f0-121f-461e-895f-7f489d0eba7d",
-  "Date": "Tue, 14 May 2013 15:30:36 -0400",
+  "MessageID": "61c7c8b8-ba7e-43c3-b9ad-0ba865e8caa2",
+  "Date": "Wed, 15 May 2013 14:31:38 -0400",
   "MailboxHash": "",
-  "TextBody": "\nbold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block\n\n",
-  "HtmlBody": "&lt;html&gt;&lt;head&gt;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text\/html charset=us-ascii&quot;&gt;&lt;base href=&quot;file:\/\/\/Users\/alexio\/Desktop\/test.html&quot;&gt;&lt;\/head&gt;&lt;body style=&quot;word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; &quot;&gt;&lt;span class=&quot;Apple-Mail-URLShareWrapperClass&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;Apple-Mail-URLShareUserContentTopClass&quot; style=&quot;font-family: Helvetica !important; font-size: 12px !important; line-height: 14px !important; color: black !important; text-align: left !important; &quot; applecontenteditable=&quot;true&quot;&gt;&lt;br&gt;&lt;\/span&gt;&lt;span class=&quot;Apple-Mail-URLShareSharedContentClass&quot; style=&quot;position: relative !important; &quot; applecontenteditable=&quot;true&quot;&gt;&lt;base href=&quot;file:\/\/\/Users\/alexio\/Desktop\/test.html&quot;&gt;&lt;div style=&quot;word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; &quot;&gt;&lt;b&gt;bold text&lt;\/b&gt;&lt;div&gt;&lt;br&gt;&lt;\/div&gt;&lt;div&gt;&lt;\/div&gt;&lt;br&gt;&lt;div&gt;&lt;\/div&gt;&lt;div&gt;&lt;br&gt;&lt;\/div&gt;&lt;div&gt;&lt;b&gt;some more bold text&lt;\/b&gt;&lt;\/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;\/b&gt;&lt;\/div&gt;&lt;div&gt;&lt;b&gt;&lt;\/b&gt;&lt;\/div&gt;&lt;br&gt;&lt;div&gt;&lt;b&gt;&lt;\/b&gt;&lt;\/div&gt;&lt;div&gt;&lt;b&gt;&lt;span class=&quot;Apple-style-span&quot; style=&quot;font-weight: normal; &quot;&gt;&lt;br&gt;&lt;\/span&gt;&lt;\/b&gt;&lt;\/div&gt;&lt;div&gt;&lt;b&gt;&lt;span class=&quot;Apple-style-span&quot; style=&quot;font-weight: normal; &quot;&gt;&lt;i&gt;some italic text&lt;\/i&gt;&lt;\/span&gt;&lt;\/b&gt;&lt;\/div&gt;&lt;div&gt;&lt;b&gt;&lt;span class=&quot;Apple-style-span&quot; style=&quot;font-weight: normal; &quot;&gt;&lt;br&gt;&lt;\/span&gt;&lt;\/b&gt;&lt;\/div&gt;&lt;div&gt;&lt;blockquote type=&quot;cite&quot;&gt;multiline&lt;\/blockquote&gt;&lt;blockquote type=&quot;cite&quot;&gt;quoted&lt;\/blockquote&gt;&lt;blockquote type=&quot;cite&quot;&gt;text&lt;\/blockquote&gt;&lt;\/div&gt;&lt;div&gt;&lt;br&gt;&lt;\/div&gt;&lt;div&gt;--&lt;\/div&gt;&lt;div&gt;Signature block&lt;\/div&gt;&lt;\/div&gt;&lt;\/span&gt;&lt;span class=&quot;Apple-Mail-URLShareUserContentBottomClass&quot; style=&quot;font-family: Helvetica !important; font-size: 12px !important; line-height: 14px !important; color: black !important; text-align: left !important; &quot; applecontenteditable=&quot;true&quot;&gt;&lt;br&gt;&lt;\/span&gt;&lt;\/span&gt;&lt;\/body&gt;&lt;\/html&gt;",
+  "TextBody": "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block",
+  "HtmlBody": "&lt;html&gt;&lt;head&gt;&lt;\/head&gt;&lt;body style=&quot;word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; &quot;&gt;&lt;b&gt;bold text&lt;\/b&gt;&lt;div&gt;&lt;br&gt;&lt;\/div&gt;&lt;div&gt;&lt;\/div&gt;&lt;\/body&gt;&lt;\/html&gt;",
   "Tag": "",
   "Headers": [
     {
       "Name": "X-Spam-Checker-Version",
-      "Value": "SpamAssassin 3.3.1 (2010-03-16) on ip-10-28-254-160"
+      "Value": "SpamAssassin 3.3.1 (2010-03-16) on ip-10-90-190-53"
     },
     {
       "Name": "X-Spam-Status",
@@ -44,43 +44,49 @@ Accept: application/json
     },
     {
       "Name": "X-Spam-Tests",
-      "Value": "RCVD_IN_DNSWL_LOW,SPF_PASS"
+      "Value": "HTML_MESSAGE,RCVD_IN_DNSWL_LOW,SPF_PASS"
     },
     {
       "Name": "Received-SPF",
-      "Value": "Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.128.170; helo=mail-ve0-f170.google.com; envelope-from=alexi@opennorth.ca; receiver=4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com"
+      "Value": "Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.128.182; helo=mail-ve0-f182.google.com; envelope-from=james@opennorth.ca; receiver=4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com"
     },
     {
       "Name": "X-Google-DKIM-Signature",
-      "Value": "v=1; a=rsa-sha256; c=relaxed\/relaxed;        d=google.com; s=20120113;        h=x-received:from:content-type:subject:message-id:date:to         :mime-version:x-mailer:x-gm-message-state;        bh=M9PP08qLAh4vOLhdgD8wOrwk38i0E8CZ2ysSZsj4QwQ=;        b=pBKb8LBTNtnfFRKAFWTr1Yvj0J5uf752WJakgmSls6v7yRIZY0\/pSfZT+\/nHZZMcwb         ixt4WijzZPjc91wSik8gNSF4U3+RJwwjZMJyM7owNPZlsoY4kFyItwF6IKQ2OkDD1JCc         QxwxCLz+rtfXv6VKIvdO9roi9dDrLXZ4NOI4LG+xT69pV0pD3gNybHaC5xesE7wSEp+Q         IOUmN0C38\/eMJQ\/ncx\/89zm2AwmfU5r7\/fV905a49YuRcy5ucCYR3cNjpDVvCfrBSE9N         AnRJ\/xYJwOPY+1ixO7Hzz7C6dg6Y3RXMG3Y6DN1V0CQTiGyht3lwkya450N9SB6+D2qX         EvKg=="
+      "Value": "v=1; a=rsa-sha256; c=relaxed\/relaxed;        d=google.com; s=20120113;        h=x-received:from:content-type:subject:date:message-id:to         :mime-version:x-mailer:x-gm-message-state;        bh=6BFmo0mUeQt+IiTRnSXv3DGerJst54bEHOqdmK9J6dc=;        b=kZ0dA4IGLc8i8\/esvJLboiTLam2UPsl4vanU5jmd2rHy7UKxG2iW8MPIOkn\/xCLd3r         x1k0Sc20pR6ekCIPtTlDaoTO2MtZ4M5ap0t4zLChQUTXLbtu2vJhCzbdtiYyO9iX8016         da4XyWlSibafevpH67vqeemgTOiN51SDRm8d89QMPeGlN7ZOX6Vlvy3vHjuMwsM2W\/Cw         OsN8dxI7ak\/Zs8bnKNzFidj468vgDmhcTTG7yOkSMCVy9JfYs4PnVKP6FypWU+392WGR         f2KB1WL0nG+jDXf0BwoqiR4m9Xr2iZgQZriBwPjs0mq4PtP8EyZ3cqoGRg8frwXOS+lF         F8hA=="
     },
     {
       "Name": "X-Received",
-      "Value": "by 10.52.16.174 with SMTP id h14mr19216139vdd.59.1368559834886;        Tue, 14 May 2013 12:30:34 -0700 (PDT)"
+      "Value": "by 10.58.220.129 with SMTP id pw1mr25886445vec.32.1368642705636;        Wed, 15 May 2013 11:31:45 -0700 (PDT)"
     },
     {
       "Name": "Message-Id",
-      "Value": "<CC582E53-9887-4460-8049-EB360996EE62@opennorth.ca>"
+      "Value": "<3F47B6AB-FD2E-4BC6-9E1F-666D44341D15@opennorth.ca>"
     },
     {
       "Name": "Mime-Version",
-      "Value": "1.0 (Mac OS X Mail 6.3 \\(1503\\))"
+      "Value": "1.0 (Apple Message framework v1283)"
     },
     {
       "Name": "X-Mailer",
-      "Value": "Apple Mail (2.1503)"
+      "Value": "Apple Mail (2.1283)"
     },
     {
       "Name": "X-Gm-Message-State",
-      "Value": "ALoCoQmUMUPvXPTYkmF6AqGPZxPGUf2m8DzCdeWeQgIefDcuP4q2f9TILTnEWZBzRNuhiqBh5t8h"
+      "Value": "ALoCoQkJ2Fj4y+iFzvfYnN1rFI4mx8y5hskCquYjWJKOWnqxsYHNrZffh99h2AA6Gos8pSmDZhL3"
     }
   ],
   "Attachments": [
     {
       "Name": "foo.txt",
-      "Content": "ZnViYXIgc3RhbmRzIGZvciBmdWNrZWQgdXAgYmV5b25kIGFsbCByZWNvZ25pdGlvbiwgYnV0IHByb2dyYW1tZXJzIHVzZSBmb29iYXIuIEknbSBub3Qgc3VyZSB3aGVyZSBmb29iYXIgYWN0dWFsbHkgY29tZXMgZnJvbS4=",
+      "Content": "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4K",
       "ContentType": "text/plain",
-      "ContentLength": 168
+      "ContentLength": 76
+    },
+    {
+      "Name": "bar.txt",
+      "Content": "TmFtIGFjY3Vtc2FuIGV1aXNtb2QgZXJvcyBldCByaG9uY3VzLgo=",
+      "ContentType": "text/plain",
+      "ContentLength": 52
     }
   ]
 }

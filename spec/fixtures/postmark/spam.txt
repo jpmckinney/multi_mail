@@ -2,37 +2,37 @@ HTTP/1.1 200 OK
 User-Agent: Postmark
 Host: requestb.in
 Content-Type: application/json
-Content-Length: 3010
+Content-Length: 2768
 Connection: close
 Accept: application/json
 
 {
-  "From": "alexi@opennorth.ca",
+  "From": "james@opennorth.ca",
   "FromFull": {
-    "Email": "alexi@opennorth.ca",
-    "Name": "alexi garrow"
+    "Email": "james@opennorth.ca",
+    "Name": "James McKinney"
   },
-  "To": "\"4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com\" <4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com>",
+  "To": "4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com",
   "ToFull": [
     {
       "Email": "4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com",
-      "Name": "4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com"
+      "Name": ""
     }
   ],
   "Cc": "",
   "CcFull": [],
   "ReplyTo": "",
-  "Subject": "Test",
-  "MessageID": "ee3ad7f0-121f-461e-895f-7f489d0eba7d",
-  "Date": "Tue, 14 May 2013 15:30:36 -0400",
+  "Subject": "",
+  "MessageID": "1511e3f0-2341-44ab-b272-6861d3992494",
+  "Date": "Wed, 15 May 2013 14:31:58 -0400",
   "MailboxHash": "",
-  "TextBody": "\nbold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block\n\n",
-  "HtmlBody": "&lt;html&gt;&lt;head&gt;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text\/html charset=us-ascii&quot;&gt;&lt;base href=&quot;file:\/\/\/Users\/alexio\/Desktop\/test.html&quot;&gt;&lt;\/head&gt;&lt;body style=&quot;word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; &quot;&gt;&lt;span class=&quot;Apple-Mail-URLShareWrapperClass&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;Apple-Mail-URLShareUserContentTopClass&quot; style=&quot;font-family: Helvetica !important; font-size: 12px !important; line-height: 14px !important; color: black !important; text-align: left !important; &quot; applecontenteditable=&quot;true&quot;&gt;&lt;br&gt;&lt;\/span&gt;&lt;span class=&quot;Apple-Mail-URLShareSharedContentClass&quot; style=&quot;position: relative !important; &quot; applecontenteditable=&quot;true&quot;&gt;&lt;base href=&quot;file:\/\/\/Users\/alexio\/Desktop\/test.html&quot;&gt;&lt;div style=&quot;word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; &quot;&gt;&lt;b&gt;bold text&lt;\/b&gt;&lt;div&gt;&lt;br&gt;&lt;\/div&gt;&lt;div&gt;&lt;\/div&gt;&lt;br&gt;&lt;div&gt;&lt;\/div&gt;&lt;div&gt;&lt;br&gt;&lt;\/div&gt;&lt;div&gt;&lt;b&gt;some more bold text&lt;\/b&gt;&lt;\/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;\/b&gt;&lt;\/div&gt;&lt;div&gt;&lt;b&gt;&lt;\/b&gt;&lt;\/div&gt;&lt;br&gt;&lt;div&gt;&lt;b&gt;&lt;\/b&gt;&lt;\/div&gt;&lt;div&gt;&lt;b&gt;&lt;span class=&quot;Apple-style-span&quot; style=&quot;font-weight: normal; &quot;&gt;&lt;br&gt;&lt;\/span&gt;&lt;\/b&gt;&lt;\/div&gt;&lt;div&gt;&lt;b&gt;&lt;span class=&quot;Apple-style-span&quot; style=&quot;font-weight: normal; &quot;&gt;&lt;i&gt;some italic text&lt;\/i&gt;&lt;\/span&gt;&lt;\/b&gt;&lt;\/div&gt;&lt;div&gt;&lt;b&gt;&lt;span class=&quot;Apple-style-span&quot; style=&quot;font-weight: normal; &quot;&gt;&lt;br&gt;&lt;\/span&gt;&lt;\/b&gt;&lt;\/div&gt;&lt;div&gt;&lt;blockquote type=&quot;cite&quot;&gt;multiline&lt;\/blockquote&gt;&lt;blockquote type=&quot;cite&quot;&gt;quoted&lt;\/blockquote&gt;&lt;blockquote type=&quot;cite&quot;&gt;text&lt;\/blockquote&gt;&lt;\/div&gt;&lt;div&gt;&lt;br&gt;&lt;\/div&gt;&lt;div&gt;--&lt;\/div&gt;&lt;div&gt;Signature block&lt;\/div&gt;&lt;\/div&gt;&lt;\/span&gt;&lt;span class=&quot;Apple-Mail-URLShareUserContentBottomClass&quot; style=&quot;font-family: Helvetica !important; font-size: 12px !important; line-height: 14px !important; color: black !important; text-align: left !important; &quot; applecontenteditable=&quot;true&quot;&gt;&lt;br&gt;&lt;\/span&gt;&lt;\/span&gt;&lt;\/body&gt;&lt;\/html&gt;",
+  "TextBody": "XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X\n ",
+  "HtmlBody": "",
   "Tag": "",
   "Headers": [
     {
       "Name": "X-Spam-Checker-Version",
-      "Value": "SpamAssassin 3.3.1 (2010-03-16) on ip-10-28-254-160"
+      "Value": "SpamAssassin 3.3.1 (2010-03-16) on ip-10-90-190-53"
     },
     {
       "Name": "X-Spam-Status",
@@ -40,47 +40,44 @@ Accept: application/json
     },
     {
       "Name": "X-Spam-Score",
-      "Value": "6.0"
+      "Value": "1000.0"
     },
     {
       "Name": "X-Spam-Tests",
-      "Value": "RCVD_IN_DNSWL_LOW,SPF_PASS"
+      "Value": "GTUBE,RCVD_IN_DNSWL_BLOCKED,SPF_PASS,TVD_SPACE_RATIO"
     },
     {
       "Name": "Received-SPF",
-      "Value": "Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.128.170; helo=mail-ve0-f170.google.com; envelope-from=alexi@opennorth.ca; receiver=4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com"
+      "Value": "Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.128.173; helo=mail-ve0-f173.google.com; envelope-from=james@opennorth.ca; receiver=4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com"
     },
     {
       "Name": "X-Google-DKIM-Signature",
-      "Value": "v=1; a=rsa-sha256; c=relaxed\/relaxed;        d=google.com; s=20120113;        h=x-received:from:content-type:subject:message-id:date:to         :mime-version:x-mailer:x-gm-message-state;        bh=M9PP08qLAh4vOLhdgD8wOrwk38i0E8CZ2ysSZsj4QwQ=;        b=pBKb8LBTNtnfFRKAFWTr1Yvj0J5uf752WJakgmSls6v7yRIZY0\/pSfZT+\/nHZZMcwb         ixt4WijzZPjc91wSik8gNSF4U3+RJwwjZMJyM7owNPZlsoY4kFyItwF6IKQ2OkDD1JCc         QxwxCLz+rtfXv6VKIvdO9roi9dDrLXZ4NOI4LG+xT69pV0pD3gNybHaC5xesE7wSEp+Q         IOUmN0C38\/eMJQ\/ncx\/89zm2AwmfU5r7\/fV905a49YuRcy5ucCYR3cNjpDVvCfrBSE9N         AnRJ\/xYJwOPY+1ixO7Hzz7C6dg6Y3RXMG3Y6DN1V0CQTiGyht3lwkya450N9SB6+D2qX         EvKg=="
+      "Value": "v=1; a=rsa-sha256; c=relaxed\/relaxed;        d=google.com; s=20120113;        h=x-received:from:content-type:content-transfer-encoding:subject:date         :message-id:to:mime-version:x-mailer:x-gm-message-state;        bh=id84uDPa9SMZAVd+g2pYg3Hl9aPfnapoGlOygxrIuV4=;        b=FBOYbZeMltWT5lSQqGEQeOrI0zlmPh+k+OrdlX0RTfHDNjXKcWUnMNQI5nCLCZmMx2         kc4wjWBhJUyKL49GmXPlsNmklwhtJw9jXykyY3lp67ADeIxvNQap9GdTcmmPD1tbwZCD         MMXVUGOSNc2avykFJVgGGb72ODhXWK0Id+aCGfH2RlQbIiLnZ665ESn4De7LBGBjWM3B         Y50rmKM8p0Y1l487Gr4FYhkbvoPzQRCgnzUSuRhwW8KDD1Wc4pDmZw+xsT8gVs9WE4uU         4pmB17MmH79jNJ1BQmnYGKqVFmfd8qUczGtGvfCJ94TnxY\/ggduXNk+6pGbDGzjMTgYK         VNBQ=="
     },
     {
       "Name": "X-Received",
-      "Value": "by 10.52.16.174 with SMTP id h14mr19216139vdd.59.1368559834886;        Tue, 14 May 2013 12:30:34 -0700 (PDT)"
+      "Value": "by 10.52.33.143 with SMTP id r15mr1480858vdi.27.1368642721260;        Wed, 15 May 2013 11:32:01 -0700 (PDT)"
+    },
+    {
+      "Name": "Content-Transfer-Encoding",
+      "Value": "7bit"
     },
     {
       "Name": "Message-Id",
-      "Value": "<CC582E53-9887-4460-8049-EB360996EE62@opennorth.ca>"
+      "Value": "<F0C4C026-AA7E-4CA6-8995-92364019F748@opennorth.ca>"
     },
     {
       "Name": "Mime-Version",
-      "Value": "1.0 (Mac OS X Mail 6.3 \\(1503\\))"
+      "Value": "1.0 (Apple Message framework v1283)"
     },
     {
       "Name": "X-Mailer",
-      "Value": "Apple Mail (2.1503)"
+      "Value": "Apple Mail (2.1283)"
     },
     {
       "Name": "X-Gm-Message-State",
-      "Value": "ALoCoQmUMUPvXPTYkmF6AqGPZxPGUf2m8DzCdeWeQgIefDcuP4q2f9TILTnEWZBzRNuhiqBh5t8h"
+      "Value": "ALoCoQmUwR7xEUEvsrsXgQsSDgDyR8ovC+5qExdPxXJOIPY85ZYVQj32e3oP0xre4qa3hHQUIxwR"
     }
   ],
-  "Attachments": [
-    {
-      "Name": "foo.txt",
-      "Content": "ZnViYXIgc3RhbmRzIGZvciBmdWNrZWQgdXAgYmV5b25kIGFsbCByZWNvZ25pdGlvbiwgYnV0IHByb2dyYW1tZXJzIHVzZSBmb29iYXIuIEknbSBub3Qgc3VyZSB3aGVyZSBmb29iYXIgYWN0dWFsbHkgY29tZXMgZnJvbS4=",
-      "ContentType": "text/plain",
-      "ContentLength": 168
-    }
-  ]
+  "Attachments": []
 }

@@ -11,8 +11,18 @@ module MultiMail
           address.display_name = params['FromFull']['Name']
           from address
 
-          to params['To']
-          cc params['Cc']
+          to(params['ToFull'].map do |recipient|
+          	address = Mail::Address.new recipient['Email']
+          	address.display_name = recipient['Name']
+          	address.to_s
+          end)
+
+          cc(params['CcFull'].map do |recipient|
+          	address = Mail::Address.new recipient['Email']
+          	address.display_name = recipient['Name']
+          	address.to_s
+          end)
+          
           message_id params['MessageID']
           subject params['Subject']
           date DateTime.parse(params['Date'])
