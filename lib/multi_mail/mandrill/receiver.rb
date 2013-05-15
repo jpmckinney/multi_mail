@@ -94,8 +94,8 @@ module MultiMail
           # `result`, and `raw_msg`.
           message['ts']                = event['ts']
           message['email']             = msg['email']
-          message['dkim-signed']       = msg['dkim']['signed']
-          message['dkim-valid']        = msg['dkim']['valid']
+          message['dkim-signed']       = msg['dkim']['signed'].to_s
+          message['dkim-valid']        = msg['dkim']['valid'].to_s
           message['spam_report-score'] = msg['spam_report']['score']
           message['spf-result']        = msg['spf']['result']
 

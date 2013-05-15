@@ -34,14 +34,14 @@ describe MultiMail::Receiver::Postmark do
 
         # Attachments
         attachment0 = message.attachments.find{|attachment| attachment.filename == 'foo.txt'}
-        attachment0.read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n"
         attachment1 = message.attachments.find{|attachment| attachment.filename == 'bar.txt'}
+        attachment0.read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n"
         attachment1.read.should == "Nam accumsan euismod eros et rhoncus.\n"
 
         # Extra Postmark parameters
-        message['MailboxHash'].value.should == ''
+        message['MailboxHash'].should be_nil
         message['MessageID'].value.should == '61c7c8b8-ba7e-43c3-b9ad-0ba865e8caa2'
-        message['Tag'].value.should == ''
+        message['Tag'].should be_nil
       end
     end
 

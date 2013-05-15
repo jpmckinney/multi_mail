@@ -62,8 +62,8 @@ describe MultiMail::Receiver::Base do
       result.text_part.body.decoded.should == "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block"
       result.html_part.body.decoded.should == "<html><head></head><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><b>bold text</b><div><br></div><div></div></body></html><html><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><head></head><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html><html><head></head><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><br><div><b></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><br></span></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><i>some italic text</i></span></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><br></span></b></div><div><blockquote type=\"cite\">multiline</blockquote><blockquote type=\"cite\">quoted</blockquote><blockquote type=\"cite\">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div></body></html>"
 
-      [ "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "Nam accumsan euismod eros et rhoncus.",
+      [ "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n",
+        "Nam accumsan euismod eros et rhoncus.\n",
       ].each_with_index do |body,i|
         result.attachments[i].body.decoded.should == body
       end
@@ -80,9 +80,9 @@ describe MultiMail::Receiver::Base do
 
       [ "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block",
         "<html><head></head><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><b>bold text</b><div><br></div><div></div></body></html>",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n",
         "<html><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><head></head><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html>",
-        "Nam accumsan euismod eros et rhoncus.",
+        "Nam accumsan euismod eros et rhoncus.\n",
         "<html><head></head><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><br><div><b></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><br></span></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><i>some italic text</i></span></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><br></span></b></div><div><blockquote type=\"cite\">multiline</blockquote><blockquote type=\"cite\">quoted</blockquote><blockquote type=\"cite\">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div></body></html>",
       ].each_with_index do |body,i|
         result.parts[i].body.decoded.should == body

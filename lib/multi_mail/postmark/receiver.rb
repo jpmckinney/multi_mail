@@ -41,7 +41,9 @@ module MultiMail
 
         # Extra Postmark parameters.
         %w(MailboxHash MessageID Tag).each do |key|
-          message[key] = params[key]
+          if params.key?(key) && !params[key].empty?
+            message[key] = params[key]
+          end
         end
 
         [message]
