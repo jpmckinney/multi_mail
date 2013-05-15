@@ -36,8 +36,16 @@ describe MultiMail::Receiver::Base do
   end
 
   describe '#parse' do
+    it 'should parse JSON' do
+      klass.parse('{"foo":1,"bar":1,"bar":1}').should == {'foo' => 1, 'bar' => 1}
+    end
+
     it 'should parse raw POST data' do
       klass.parse('foo=1&bar=1&bar=1').should == {'foo' => '1', 'bar' => ['1', '1']}
+    end
+
+    it 'should accept an array' do
+      klass.parse([['foo', 1], ['bar', [1, 1]]]).should == {'foo' => 1, 'bar' => [1, 1]}
     end
 
     it 'should pass-through a hash' do
@@ -46,6 +54,18 @@ describe MultiMail::Receiver::Base do
 
     it 'should raise an error if the argument is invalid' do
       expect{ klass.parse(1) }.to raise_error(ArgumentError, "Can't handle Fixnum input")
+    end
+  end
+
+  describe '#add_file_arguments' do
+    it 'should handle a regular attachment' do
+      params = klass.parse(response('mailgun/parsed', 'valid', false))
+      klass.add_file_arguments(params['attachment-1']).should == {:filename => 'foo.txt', :content => "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\r\n"}
+    end
+
+    it 'should handle a Rails-like attachment' do
+      params = klass.parse(response('mailgun/parsed', 'valid', true))
+      klass.add_file_arguments(params['attachment-1']).should == {:filename => 'foo.txt', :content => "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\r\n"}
     end
   end
 

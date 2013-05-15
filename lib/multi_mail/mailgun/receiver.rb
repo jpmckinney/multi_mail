@@ -6,7 +6,6 @@ module MultiMail
 
       requires :mailgun_api_key
       recognizes :http_post_format
-      attr_reader :http_post_format
 
       # Initializes a Mailgun incoming email receiver.
       #
@@ -38,13 +37,14 @@ module MultiMail
       # @see http://documentation.mailgun.net/user_manual.html#mime-messages-parameters
       # @see http://documentation.mailgun.net/user_manual.html#parsed-messages-parameters
       def transform(params)
-        case http_post_format
+        case @http_post_format
         when 'parsed', '', nil
           headers = Multimap.new
           JSON.parse(params['message-headers']).each do |key,value|
             headers[key] = value
           end
 
+          this = self
           message = Mail.new do
             headers headers
 
@@ -73,16 +73,7 @@ module MultiMail
             if params.key?('attachment-count')
               1.upto(params['attachment-count'].to_i).each do |n|
                 attachment = params["attachment-#{n}"]
-                # ActionDispatch::Http::Request subclasses Rack::Request and
-                # turns attachment hashes into instances of 
-                # ActionDispatch::Http::UploadedFile in Rails 3 and 4 and an
-                # instance of ActionController::UploadedFile in Rails 2.3, both
-                # of which have the same behavior.
-                if Hash === attachment
-                  add_file(:filename => attachment[:filename], :content => attachment[:tempfile].read)
-                else
-                  add_file(:filename => attachment.original_filename, :content => attachment.read)
-                end
+                add_file(this.class.add_file_arguments(attachment))
               end
             end
           end
@@ -110,7 +101,7 @@ module MultiMail
         when 'raw'
           [Mail.new(params['body-mime'])]
         else
-          raise ArgumentError, "Can't handle Mailgun #{http_post_format} HTTP POST format"
+          raise ArgumentError, "Can't handle Mailgun #{@http_post_format} HTTP POST format"
         end
       end
 

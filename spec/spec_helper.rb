@@ -75,6 +75,7 @@ def response(provider, fixture, action_dispatch = false)
   end
 
   if action_dispatch
+    # ActionDispatch would parse the request into a parameters hash.
     klass = Class.new(MultiMail::Service) do
       include MultiMail::Receiver::Base
     end
