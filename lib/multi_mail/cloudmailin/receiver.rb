@@ -86,6 +86,7 @@ module MultiMail
           # the JSON format uses LF. Normalize to LF.
           message['reply_plain'] = params['reply_plain'].gsub("\r\n", "\n")
           message['spf-result'] = params['envelope']['spf']['result']
+
           [message]
         else
           raise ArgumentError, "Can't handle Cloudmailin #{http_post_format} HTTP POST format"
