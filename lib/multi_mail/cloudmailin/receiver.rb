@@ -1,6 +1,11 @@
 module MultiMail
   module Receiver
     # Cloudmailin's incoming email receiver.
+    #
+    # Cloudmailin recommends using basic authentication over HTTPS to ensure
+    # that a request originates from Cloudmailin.
+    #
+    # @see http://docs.cloudmailin.com/receiving_email/securing_your_email_url_target/
     class Cloudmailin < MultiMail::Service
       include MultiMail::Receiver::Base
 
@@ -14,13 +19,6 @@ module MultiMail
       def initialize(options = {})
         super
         @http_post_format = options[:http_post_format]
-      end
-
-      # @param [Hash] params the content of Cloudmailin's webhook
-      # @return [Boolean] whether the request originates from Cloudmailin
-      # @see http://docs.cloudmailin.com/receiving_email/securing_your_email_url_target/
-      def valid?(params)
-        true
       end
 
       # @param [Hash] params the content of Cloudmailin's webhook
