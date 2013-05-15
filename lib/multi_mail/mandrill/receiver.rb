@@ -51,7 +51,7 @@ module MultiMail
 
             # The following are redundant with `message-headers`:
             #
-            # address = Mail::Address.new msg['from_email']
+            # address = Mail::Address.new(msg['from_email'])
             # address.display_name = msg['from_name']
             #
             # from    address.format
@@ -92,12 +92,12 @@ module MultiMail
           # null according to the docs, `matched_rules` within `spam_report`,
           # `detail` within `spf`, which is just a human-readable version of
           # `result`, and `raw_msg`.
-          message['ts'] = event['ts']
-          message['email'] = msg['email']
-          message['dkim-signed'] = msg['dkim']['signed']
-          message['dkim-valid'] = msg['dkim']['valid']
+          message['ts']                = event['ts']
+          message['email']             = msg['email']
+          message['dkim-signed']       = msg['dkim']['signed']
+          message['dkim-valid']        = msg['dkim']['valid']
           message['spam_report-score'] = msg['spam_report']['score']
-          message['spf-result'] = msg['spf']['result']
+          message['spf-result']        = msg['spf']['result']
 
           message
         end
