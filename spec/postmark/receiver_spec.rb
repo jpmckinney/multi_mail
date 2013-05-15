@@ -2,16 +2,16 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'multi_mail/postmark/receiver'
 
 describe MultiMail::Receiver::Postmark do
-	context 'after initialization' do
-		let :service do
-			MultiMail::Receiver.new(:provider => :postmark)
-		end
+  context 'after initialization' do
+    let :service do
+      MultiMail::Receiver.new(:provider => :postmark)
+    end
 
-		def params(fixture)
-			MultiMail::Receiver::Postmark.parse(response('postmark', fixture))
-		end
+    def params(fixture)
+      MultiMail::Receiver::Postmark.parse(response('postmark', fixture))
+    end
 
-		describe '#valid?' do
+    describe '#valid?' do
       it 'should return true if the response is valid' do
         service.valid?(params('valid')).should == true
       end
@@ -23,14 +23,14 @@ describe MultiMail::Receiver::Postmark do
 #      it 'should raise an error if parameters are missing' do
 #        expect{ service.valid?(params('missing')) }.to raise_error(IndexError)
 #      end
-		end
+    end
 
     describe '#transform' do
       it 'should return a mail message' do
  #       messages = service.transform(params('valid'))
  #       messages.size.should == 1
  #       message = messages[0]
-  			message = service.transform(params('valid'))
+        message = service.transform(params('valid'))
 
         # Headers
         message.date.should    == DateTime.parse('Tue, 14 May 2013 15:30:36 -0400')
@@ -62,5 +62,5 @@ describe MultiMail::Receiver::Postmark do
         service.spam?(message).should == false
       end
     end
-	end	
+  end  
 end
