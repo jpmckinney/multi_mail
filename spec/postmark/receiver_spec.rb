@@ -2,14 +2,14 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'multi_mail/postmark/receiver'
 
 describe MultiMail::Receiver::Postmark do
-	context 'after initialization' do
-		let :service do
-			MultiMail::Receiver.new(:provider => :postmark)
-		end
+  context 'after initialization' do
+    let :service do
+      MultiMail::Receiver.new(:provider => :postmark)
+    end
 
-		def params(fixture)
-			MultiMail::Receiver::Postmark.parse(response('postmark', fixture))
-		end
+    def params(fixture)
+      MultiMail::Receiver::Postmark.parse(response('postmark', fixture))
+    end
 
 		describe '#transform' do
 			it 'should return a mail message' do
