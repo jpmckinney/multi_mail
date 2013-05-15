@@ -2,8 +2,7 @@ module MultiMail
   module Receiver
     # Mandrill's incoming email receiver.
     #
-    # Mandrill describes how to ensure a request originates from Mandrill, but
-    # its incoming email webhook don't include a `X-Mandrill-Signature` header.
+    # Mandrill uses an HTTP header to ensure a request originates from Mandrill.
     #
     # @see http://help.mandrill.com/entries/23704122-Authenticating-webhook-requests
     class Mandrill < MultiMail::Service

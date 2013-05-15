@@ -23,8 +23,8 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 # Change the HTTP POST format on Cloudmailin and wait a few minutes. Run
 # `unix2dos` on the fixtures to fix line endings.
 #
-# valid.txt    Send a complex multipart message
 # spam.txt     Change the SPF result to "fail"
+# valid.txt    Send a complex multipart message
 #
 # # Mailgun
 #
@@ -41,6 +41,11 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 #
 # invalid.txt  Send a blank message and change the event parameter value to "xxx"
 # missing.txt  Send a blank message and remove the event parameter
+# spam.txt     Send a subject-less message with message body XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
+# valid.txt    Send a complex multipart message
+#
+# # Postmark
+#
 # spam.txt     Send a subject-less message with message body XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
 # valid.txt    Send a complex multipart message
 #

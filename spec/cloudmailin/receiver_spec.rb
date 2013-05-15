@@ -24,7 +24,7 @@ describe MultiMail::Receiver::Cloudmailin do
       end
 
       ['raw', 'json', 'multipart', '', nil].each do |http_post_format|
-        context "with #{http_post_format.inspect} format" do
+        context "with #{http_post_format.inspect} format and #{action_dispatch ? 'ActionDispatch' : 'Rack'}" do
           let :http_post_format do
             http_post_format
           end
