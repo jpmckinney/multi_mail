@@ -95,9 +95,9 @@ module MultiMail
             'content-id-map',
           ]
 
-          # Other body parts.
+          # Non-plain, non-HTML body parts.
           extra += params.keys.select do |key|
-            key[/\Abody-/]
+            key[/\Abody-(?!html|plain)/]
           end
 
           extra.each do |key|

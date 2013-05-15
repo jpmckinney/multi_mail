@@ -23,6 +23,7 @@ Incoming email:
 
 * [Mailgun](http://www.mailgun.com/)
 * [Mandrill](http://mandrill.com/)
+* [Postmark](http://postmarkapp.com/)
 * [Cloudmailin](http://www.cloudmailin.com/)
 
 Any additional information provided by an API is added to the message as a header. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it with `message['stripped-text'].value`.
@@ -102,6 +103,22 @@ See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is
 * `dkim-valid`
 * `spam_report-score`
 * `spf-result`
+
+## Postmark
+
+    service = MultiMail::Receiver.new({
+      :provider => 'postmark',
+    })
+
+**2013-05-15:** If an email contains multiple HTML parts, Postmark will only include the first HTML part in its `HtmlBody` parameter. You cannot avoid this loss of data. Postmark is therefore not recommended.
+
+### Additional information provided by the API
+
+See [Postmark's documentation](http://developer.postmarkapp.com/developer-inbound-parse.html#mailboxhash):
+
+* `MailboxHash`
+* `MessageID`
+* `Tag`
 
 ## Bugs? Questions?
 

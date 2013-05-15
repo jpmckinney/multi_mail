@@ -85,7 +85,7 @@ module MultiMail
           # Extra Cloudmailin parameters. The multipart format uses CRLF whereas
           # the JSON format uses LF. Normalize to LF.
           message['reply_plain'] = params['reply_plain'].gsub("\r\n", "\n")
-          message['spf-result'] = params['envelope']['spf']['result']
+          message['spf-result']  = params['envelope']['spf']['result']
 
           [message]
         else

@@ -1,6 +1,11 @@
 module MultiMail
   module Receiver
     # Mandrill's incoming email receiver.
+    #
+    # Mandrill describes how to ensure a request originates from Mandrill, but
+    # its incoming email webhook don't include a `X-Mandrill-Signature` header.
+    #
+    # @see http://help.mandrill.com/entries/23704122-Authenticating-webhook-requests
     class Mandrill < MultiMail::Service
       include MultiMail::Receiver::Base
 
@@ -17,16 +22,6 @@ module MultiMail
         @spamassassin_threshold = options[:spamassassin_threshold] || 5
       end
 
-      # Returns whether a request is an inbound event.
-      #
-      # @param [Hash] params the content of Mandrill's webhook
-      # @return [Boolean] whether the request is an inbound event
-      def valid?(params)
-        JSON.parse(params['mandrill_events']).all? do |event|
-          event.fetch('event') == 'inbound'
-        end
-      end
-
       # Transforms the content of Mandrill's webhook into a list of messages.
       #
       # @param [Hash] params the content of Mandrill's webhook
@@ -34,7 +29,9 @@ module MultiMail
       # @see http://help.mandrill.com/entries/22092308-What-is-the-format-of-inbound-email-webhooks-
       def transform(params)
         # JSON is necessarily UTF-8.
-        JSON.parse(params['mandrill_events']).map do |event|
+        JSON.parse(params['mandrill_events']).select do |event|
+          event.fetch('event') == 'inbound'
+        end.map do |event|
           msg = event['msg']
 
           headers = Multimap.new
@@ -54,7 +51,7 @@ module MultiMail
 
             # The following are redundant with `message-headers`:
             #
-            # address = Mail::Address.new msg['from_email']
+            # address = Mail::Address.new(msg['from_email'])
             # address.display_name = msg['from_name']
             #
             # from    address.format
@@ -95,12 +92,12 @@ module MultiMail
           # null according to the docs, `matched_rules` within `spam_report`,
           # `detail` within `spf`, which is just a human-readable version of
           # `result`, and `raw_msg`.
-          message['ts'] = event['ts']
-          message['email'] = msg['email']
-          message['dkim-signed'] = msg['dkim']['signed']
-          message['dkim-valid'] = msg['dkim']['valid']
+          message['ts']                = event['ts']
+          message['email']             = msg['email']
+          message['dkim-signed']       = msg['dkim']['signed']
+          message['dkim-valid']        = msg['dkim']['valid']
           message['spam_report-score'] = msg['spam_report']['score']
-          message['spf-result'] = msg['spf']['result']
+          message['spf-result']        = msg['spf']['result']
 
           message
         end
