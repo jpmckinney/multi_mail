@@ -54,7 +54,10 @@ module MultiMail
         # ActionDispatch::Http::Request subclasses Rack::Request and turns
         # attachment hashes into instances of ActionDispatch::Http::UploadedFile
         # in Rails 3 and 4 and instances of ActionController::UploadedFile in
-        # Rails 2.3, both of which have the same behavior.
+        # Rails 2.3, both of which have the same interface.
+        #
+        # @param [ActionDispatch::Http::UploadedFile,ActionController::UploadedFile,Hash] attachment an attachment
+        # @return [Hash] arguments for `Mail::Message#add_file`
         def add_file_arguments(attachment)
           if Hash === attachment
             {:filename => attachment[:filename], :content => attachment[:tempfile].read}
