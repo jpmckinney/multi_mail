@@ -48,7 +48,7 @@ Accept: application/json
     },
     {
       "Name": "Received-SPF",
-      "Value": "Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.128.170; helo=mail-ve0-f170.google.com; envelope-from=alexi@opennorth.ca; receiver=4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com"
+      "Value": "Fail (sender SPF authorized) identity=mailfrom; client-ip=209.85.128.170; helo=mail-ve0-f170.google.com; envelope-from=alexi@opennorth.ca; receiver=4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com"
     },
     {
       "Name": "X-Google-DKIM-Signature",

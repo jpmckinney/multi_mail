@@ -36,11 +36,11 @@ Accept: application/json
     },
     {
       "Name": "X-Spam-Status",
-      "Value": "No"
+      "Value": "Yes"
     },
     {
       "Name": "X-Spam-Score",
-      "Value": "-0.7"
+      "Value": "6.0"
     },
     {
       "Name": "X-Spam-Tests",
