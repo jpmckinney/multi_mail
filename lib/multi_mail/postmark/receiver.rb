@@ -4,22 +4,8 @@ module MultiMail
 		class Postmark < MultiMail::Service
 			include MultiMail::Receiver::Base
 
-			#Initializes a Postmark incoming email receiver
-			#
-			#
-
-			def initialize(options = {})
-				super
-			end
-
-			#returns wether the Received-SPF field within the header is 
-			#pass or fail
-			def valid?(params)
-				params['Headers'][4]['Value'].include?('Pass')
-			end
-
 			def transform(params)
-				email = Mail.new do
+				message = Mail.new do
 
 					#these fields are not held in the header
 					from params['From']
@@ -41,14 +27,14 @@ module MultiMail
 						value = header['Value']
 						headers[key] = value
 					end
+
 					headers headers
-
-
 
           params['Attachments'].each do |attachment|
           	add_file(:filename => attachment['Name'], :content => Base64.decode64(attachment['Content']))
           end
 				end
+				[message]
 			end
 
 			def spam?(message)
