@@ -17,8 +17,10 @@ module MultiMail
       def transform(params)
         email = Mail.new do
 
-          #these fields are not held in the header
-          from params['From']
+          address = Mail::Address.new params['FromFull']['Email']
+          address.display_name = params['FromFull']['Name']
+          from address
+
           to params['To']
           cc params['Cc']
           message_id params['MessageID']
