@@ -48,6 +48,10 @@ describe MultiMail::Receiver::Base do
       klass.parse([['foo', 1], ['bar', [1, 1]]]).should == {'foo' => 1, 'bar' => [1, 1]}
     end
 
+    it 'should accept a Rack::Request object' do
+      klass.parse(Rack::Request.new(Rack::MockRequest.env_for('/?foo=1&bar[]=1&bar[]=1'))).should == {'foo' => '1', 'bar' => ['1', '1']}
+    end
+
     it 'should pass-through a hash' do
       klass.parse('foo' => 1).should == {'foo' => 1}
     end
