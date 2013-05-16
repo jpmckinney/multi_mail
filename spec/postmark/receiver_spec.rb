@@ -20,7 +20,7 @@ describe MultiMail::Receiver::Postmark do
         # Headers
         message.date.should    == DateTime.parse('Mon, 15 Apr 2013 20:20:12 -0400')
         message.from.should    == ['james@opennorth.ca']
-        message.to.should      == ['4354473e2e6ab001fa836f627a54004e@inbound.postmarkapp.com']
+        message.to.should      == ['4354473e2e6ab001fa836f627a54004e+bar@inbound.postmarkapp.com']
         message.subject.should == 'Test'
 
         # Body
@@ -39,8 +39,8 @@ describe MultiMail::Receiver::Postmark do
         attachment1.read.should == "Nam accumsan euismod eros et rhoncus.\n"
 
         # Extra Postmark parameters
-        message['MailboxHash'].should be_nil
-        message['MessageID'].value.should == '61c7c8b8-ba7e-43c3-b9ad-0ba865e8caa2'
+        message['MailboxHash'].value.should == 'bar'
+        message['MessageID'].value.should == 'e27500eb-142e-4ca0-8529-e32ffd9931d6'
         message['Tag'].should be_nil
       end
     end
