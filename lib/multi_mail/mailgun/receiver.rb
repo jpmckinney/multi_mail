@@ -39,12 +39,10 @@ module MultiMail
       def transform(params)
         case @http_post_format
         when 'parsed', '', nil
-          headers = Multimap.new
-          JSON.parse(params['message-headers']).each do |key,value|
-            headers[key] = value
-          end
-
+          # Mail changes `self`.
+          headers = self.class.multimap(JSON.parse(params['message-headers']))
           this = self
+
           message = Mail.new do
             headers headers
 

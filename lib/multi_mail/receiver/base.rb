@@ -66,6 +66,24 @@ module MultiMail
           end
         end
 
+        # Converts a hash or array to a multimap.
+        #
+        # @param [Hash,Array] object a hash or array
+        # @return [Multimap] a multimap
+        def multimap(object)
+          multimap = Multimap.new
+          object.each do |key,value|
+            if Array === value
+              value.each do |v|
+                multimap[key] = v
+              end
+            else
+              multimap[key] = value
+            end
+          end
+          multimap
+        end
+
         # Parses raw POST data into a params hash.
         #
         # @param [String,Hash] raw raw POST data or a params hash

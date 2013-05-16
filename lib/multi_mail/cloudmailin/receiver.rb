@@ -37,21 +37,11 @@ module MultiMail
           # `helo_domain` and `remote_ip`.
           [message]
         when 'multipart', 'json'
-          headers = Multimap.new
-          params['headers'].each do |key,value|
-            if Array === value
-              value.each do |v|
-                headers[key] = v
-              end
-            else
-              headers[key] = value
-            end
-          end
-
           # Mail changes `self`.
+          headers = self.class.multimap(params['headers'])
           http_post_format = @http_post_format
-
           this = self
+
           message = Mail.new do
             headers headers
 

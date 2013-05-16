@@ -32,18 +32,10 @@ module MultiMail
         end.map do |event|
           msg = event['msg']
 
-          headers = Multimap.new
-          msg['headers'].each do |key,value|
-            if Array === value
-              value.each do |v|
-                headers[key] = v
-              end
-            else
-              headers[key] = value
-            end
-          end
-
+          # Mail changes `self`.
+          headers = self.class.multimap(msg['headers'])
           this = self
+
           message = Mail.new do
             headers headers
 
