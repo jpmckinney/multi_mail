@@ -14,7 +14,7 @@ module MultiMail
       # Ensures a request is authentic, parses it into a params hash, and
       # transforms it into a list of messages.
       #
-      # @param [String,Hash] raw raw POST data or a params hash
+      # @param [String,Array,Hash] raw raw POST data or a params hash
       # @return [Array<Mail::Message>] messages
       # @raise [ForgedRequest] if the request is not authentic
       def process(raw)

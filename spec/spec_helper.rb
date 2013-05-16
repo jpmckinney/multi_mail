@@ -18,6 +18,16 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 # line with "HTTP/1.1 200 OK". Note that messages cannot exceed 10kb. All
 # fixtures are modified to have the same Date header.
 #
+# Sign up for all services, and, in all cases except Cloudmailin, add an API key
+# to `api_keys.yml`, which will look like:
+#
+#     ---
+#     :mailgun_api_key:  ...
+#     :mandrill_api_key: ...
+#     :postmark_api_key: ...
+#
+# For Postmark, you must create a server to get an API key.
+#
 # # Cloudmailin
 #
 # Change the HTTP POST format on Cloudmailin and wait a few minutes. Run
@@ -28,7 +38,7 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 #
 # # Mailgun
 #
-# Run `bundle exec rake mailgun`
+# Run `bundle exec rake mailgun` to set up Mailgun.
 #
 # invalid.txt  Send a blank message and change the signature parameter value to "xxx"
 # missing.txt  Send a blank message and remove the signature parameter
@@ -37,7 +47,7 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 #
 # # Mandrill
 #
-# Run `bundle exec rake mandrill`
+# Run `bundle exec rake mandrill` to ensure Mandrill is properly set up.
 #
 # invalid.txt  Send a blank message and change the event parameter value to "xxx"
 # missing.txt  Send a blank message and remove the event parameter
@@ -45,6 +55,8 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 # valid.txt    Send a complex multipart message
 #
 # # Postmark
+#
+# Run `bundle exec rake postmark` to set up Postmark.
 #
 # spam.txt     Send a subject-less message with message body XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
 # valid.txt    Send a complex multipart message

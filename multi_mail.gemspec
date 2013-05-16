@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'coveralls'
   s.add_development_dependency 'mandrill-api', '~> 1.0.12'
   s.add_development_dependency 'json', '~> 1.7.7' # for coveralls
+  s.add_development_dependency 'postmark'
   s.add_development_dependency 'rest-client', '~> 1.6.7'
   s.add_development_dependency 'rack', '~> 1.4'
   s.add_development_dependency 'rake'
