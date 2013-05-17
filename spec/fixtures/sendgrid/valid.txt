@@ -1,0 +1,136 @@
+HTTP/1.1 200 OK
+User-Agent: SendGrid 1.0
+Host: requestb.in
+Content-Type: multipart/form-data; boundary=xYzZY
+Content-Length: 5860
+Connection: close
+
+--xYzZY
+Content-Disposition: form-data; name="headers"
+
+Received: by 127.0.0.1 with SMTP id BBAJYrZEKu Thu, 16 May 2013 12:33:40 -0500 (CDT)
+Received: from mail-ie0-f172.google.com (mail-ie0-f172.google.com [209.85.223.172]) by mx3.sendgrid.net (Postfix) with ESMTPS id E4D7314F7071 for <foo+bar@parolecitoyenne.com>; Thu, 16 May 2013 12:33:39 -0500 (CDT)
+Received: by mail-ie0-f172.google.com with SMTP id 16so7064763iea.17 for <foo+bar@parolecitoyenne.com>; Thu, 16 May 2013 10:33:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:subject:date:message-id:to :mime-version:x-mailer:x-gm-message-state; bh=insboukvvmkWN/OkZXseuDZ8sRy+P1jJOjaqQLfQuMU=; b=Qk9VGFkMJDig4/LyeKtA7fQfW+gX1R/fIZtk0OU2mXesrcKwtjJaT34qZouhc0aF2M CC8TWKXDcM317+WerEIGgpkn7d5SZQcIV+s/OpKkgbMxHN1N/5FUDUL7c5U/PB15JVVS DHpxxq7L8Xk+nMSqamw4of5ueN4GekEB1vk5+dAUGDkPS3s67U++4YVxKdhlX/44Ve7K m/RoW0vNMljoOYUZvzGDYNX1J5W34uvvgCsQLBVLATCBcnpos1+OVPxdQRV2S/RcFeu6 DOFls2C+53cqelTyLuAuXAEdhuCEmkOh0tepWBwTufDBBB6JCcWdBn/7bdilj+eoyRJ8 MuCA==
+X-Received: by 10.50.16.68 with SMTP id e4mr9914268igd.80.1368725619426; Thu, 16 May 2013 10:33:39 -0700 (PDT)
+Received: from [192.168.0.105] ([69.165.208.137]) by mx.google.com with ESMTPSA id l14sm4926330igf.9.2013.05.16.10.33.36 for <foo+bar@parolecitoyenne.com> (version=TLSv1 cipher=RC4-SHA bits=128/128); Thu, 16 May 2013 10:33:37 -0700 (PDT)
+From: James McKinney <james@opennorth.ca>
+Content-Type: multipart/alternative; boundary="Apple-Mail=_D2F87BF4-87ED-4B84-80B0-22BFFD62EF13"
+Subject: Test
+Date: Thu, 16 May 2013 13:33:35 -0400
+Message-Id: <D0AB77C1-A89D-4D9E-A207-5E20A6D36BEF@opennorth.ca>
+To: foo+bar@parolecitoyenne.com
+Mime-Version: 1.0 (Apple Message framework v1283)
+X-Mailer: Apple Mail (2.1283)
+X-Gm-Message-State: ALoCoQl/KAux/+pRvMs8iE7QCSYS6BETSD78I51Ovyx67I/fZkU7ua7VHv9ClgiquUYY5vjZA6Zq
+
+--xYzZY
+Content-Disposition: form-data; name="attachment2"; filename="msg-12415-313.html"
+Content-Type: text/html
+
+<html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><head></head><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html>
+--xYzZY
+Content-Disposition: form-data; name="dkim"
+
+none
+--xYzZY
+Content-Disposition: form-data; name="to"
+
+foo+bar@parolecitoyenne.com
+--xYzZY
+Content-Disposition: form-data; name="html"
+
+<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div></div></body></html>
+--xYzZY
+Content-Disposition: form-data; name="from"
+
+James McKinney <james@opennorth.ca>
+--xYzZY
+Content-Disposition: form-data; name="text"
+
+bold text
+
+
+
+some more bold text
+
+
+
+some italic text
+
+> multiline
+> quoted
+> text
+
+
+--
+Signature block
+--xYzZY
+Content-Disposition: form-data; name="spam_report"
+
+Spam detection software, running on the system "mx3.sendgrid.net", has
+identified this incoming email as possible spam.  The original message
+has been attached to this so you can view it (if it isn't spam) or label
+similar future email.  If you have any questions, see
+the administrator of that system for details.
+
+Content preview:  bold text some more bold text some italic text [...] 
+
+Content analysis details:   (-2.6 points, 5.0 required)
+
+ pts rule name              description
+---- ---------------------- --------------------------------------------------
+-0.7 RCVD_IN_DNSWL_LOW      RBL: Sender listed at http://www.dnswl.org/, low
+                            trust
+                            [209.85.223.172 listed in list.dnswl.org]
+-1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
+                            [score: 0.0000]
+ 0.0 HTML_MESSAGE           BODY: HTML included in message
+
+
+--xYzZY
+Content-Disposition: form-data; name="attachment1"; filename="foo.txt"
+Content-Type: text/plain
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+--xYzZY
+Content-Disposition: form-data; name="envelope"
+
+{"to":["foo+bar@parolecitoyenne.com"],"from":"james@opennorth.ca"}
+--xYzZY
+Content-Disposition: form-data; name="attachments"
+
+4
+--xYzZY
+Content-Disposition: form-data; name="subject"
+
+Test
+--xYzZY
+Content-Disposition: form-data; name="attachment3"; filename="bar.txt"
+Content-Type: text/plain
+
+Nam accumsan euismod eros et rhoncus.
+
+--xYzZY
+Content-Disposition: form-data; name="spam_score"
+
+-2.599
+--xYzZY
+Content-Disposition: form-data; name="attachment-info"
+
+{"attachment2":{"charset":"us-ascii","type":"text/html"},"attachment3":{"filename":"bar.txt","name":"bar.txt","type":"text/plain"},"attachment1":{"filename":"foo.txt","name":"foo.txt","type":"text/plain"},"attachment4":{"charset":"us-ascii","type":"text/html"}}
+--xYzZY
+Content-Disposition: form-data; name="attachment4"; filename="msg-12415-314.html"
+Content-Type: text/html
+
+<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><br><div><b></b></div><div><b><span class="Apple-style-span" style="font-weight: normal; "><br></span></b></div><div><b><span class="Apple-style-span" style="font-weight: normal; "><i>some italic text</i></span></b></div><div><b><span class="Apple-style-span" style="font-weight: normal; "><br></span></b></div><div><blockquote type="cite">multiline</blockquote><blockquote type="cite">quoted</blockquote><blockquote type="cite">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div></body></html>
+--xYzZY
+Content-Disposition: form-data; name="charsets"
+
+{"to":"UTF-8","html":"us-ascii","subject":"UTF-8","from":"UTF-8","text":"us-ascii"}
+--xYzZY
+Content-Disposition: form-data; name="SPF"
+
+pass
+--xYzZY--
