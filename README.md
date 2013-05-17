@@ -21,10 +21,11 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
 
 Incoming email:
 
-* [Mailgun](http://www.mailgun.com/)
-* [Mandrill](http://mandrill.com/)
-* [Postmark](http://postmarkapp.com/)
-* [Cloudmailin](http://www.cloudmailin.com/)
+* [Cloudmailin](http://www.cloudmailin.com/): [Documentation](#cloudmailin)
+* [Mailgun](http://www.mailgun.com/): [Documentation](#mailgun)
+* [Mandrill](http://mandrill.com/): [Documentation](#mandrill)
+* [Postmark](http://postmarkapp.com/): [Documentation](#postmark)
+* [SendGrid](http://sendgrid.com/): [Documentation](#sendgrid)
 
 Any additional information provided by an API is added to the message as a header. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it with `message['stripped-text'].value`.
 
@@ -119,6 +120,28 @@ See [Postmark's documentation](http://developer.postmarkapp.com/developer-inboun
 * `MailboxHash`
 * `MessageID`
 * `Tag`
+
+## SendGrid
+
+    service = MultiMail::Receiver.new({
+      :provider => 'sendgrid',
+    })
+
+The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:spamassassin_threshold` option to increase or decrease it. For example:
+
+    service = MultiMail::Receiver.new({
+      :provider => 'sendgrid',
+      :spamassassin_threshold => 4.5,
+    })
+
+### Additional information provided by the API
+
+See [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Webhooks/parse.html)
+
+* `dkim`
+* `SPF`
+* `spam_report`
+* `spam_score`
 
 ## Bugs? Questions?
 

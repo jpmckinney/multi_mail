@@ -65,7 +65,8 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 #
 # # SendGrid
 #
-# Run `bundle exec rake sendgrid` to set up SendGrid.
+# Run `bundle exec rake sendgrid` to set up SendGrid once SendGrid has
+# provisioned your account.
 #
 # spam.txt     Send a subject-less message with message body XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
 # valid.txt    Send a complex multipart message

@@ -56,5 +56,5 @@ describe MultiMail::Receiver::Postmark do
         service.spam?(message).should == false
       end
     end
-  end  
+  end
 end

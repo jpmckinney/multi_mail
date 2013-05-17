@@ -80,8 +80,8 @@ module MultiMail
 
           # Extra Mandrill parameters. Discard `sender` and `tags`, which are
           # null according to the docs, `matched_rules` within `spam_report`,
-          # `detail` within `spf`, which is just a human-readable version of
-          # `result`, and `raw_msg`.
+          # and `detail` within `spf`, which is just a human-readable version of
+          # `result`.
           message['ts']                = event['ts']
           message['email']             = msg['email']
           message['dkim-signed']       = msg['dkim']['signed'].to_s
