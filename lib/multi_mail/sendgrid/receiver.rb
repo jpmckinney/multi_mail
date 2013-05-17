@@ -3,37 +3,53 @@ module MultiMail
     class SendGrid < MultiMail::Service
       include MultiMail::Receiver::Base
 
-      requires :sendgrid_username
-      requires :sendgrid_password
-      recognizes :http_post_format
-      attr_reader :http_post_format
-
-      def initialize(options = {})
-        super
-        @sendgrid_username = options[:sendgrid_username]
-        @sendgrid_password = options[:sendgrid_password]
-        @http_post_format = options[:http_post_format]
-      end
-
       def transform(params)
-        attachments = 1.upto(params['attachments'].to_i).map do |num|
-          attachment_from_params(params["attachment#{num}"])
-        end
+        this = self
 
-        @message = Mail.new do
-          header params['headers']
+        message = Mail.new do
 
-          body params['text']
+          #there may be a cleaner way to do this, perhaps using multimap,
+          #but I was unable to do use it because the fields have to be split
+          #by the colon, as params['headers'] is just a string
+          headers = {}
+          params['headers'].split("\n").each do |h|
+            headers[h.split(':')[0]] = h.split(':').drop(1).join(':').strip()
+          end
+          headers['spam_score'] = params['spam_score']
+          headers headers
+
+          # The following are redundant with `with params['headers']
+          #
+          # from    params['from']
+          # sender  params['sender']
+          # to      params['recipient']
+          # subject params['subject']
+
+          subject params['subject']
+          
+          text_part do
+            content_type 'text/plain' 
+            body params['text']
+          end
 
           html_part do
             content_type 'text/html; charset=UTF-8'
             body params['html']
           end if params['html']
-
-          attachments.each do |attachment|
-            add_file(attachment)
+          
+          1.upto(params['attachments'].to_i) do |i|
+            add_file(this.class.add_file_arguments(params["attachment#{i}"]))
           end
+
+
+
+
         end
+        [message]        
+      end
+
+      def spam?(message)
+        message['spam_score'].to_s.to_i > 5
       end
     end
   end
