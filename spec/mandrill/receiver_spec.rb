@@ -35,16 +35,16 @@ describe MultiMail::Receiver::Mandrill do
 
         # Attachments
         attachment0 = message.attachments.find{|attachment| attachment.filename == 'foo.txt'}
-        attachment0.read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\n"
         attachment1 = message.attachments.find{|attachment| attachment.filename == 'bar.txt'}
+        attachment0.read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\n"
         attachment1.read.should == "Nam accumsan euismod eros et rhoncus.\n\n"
 
         # Extra Mandrill parameters
-        message['ts'].value.should == 1366131555
+        message['ts'].value.should == '1368657709'
         message['email'].value.should == 'foo+bar@govkit.org'
-        message['dkim-signed'].value.should == nil
-        message['dkim-valid'].value.should == nil
-        message['spam_report-score'].value.should == 0
+        message['dkim-signed'].value.should == 'false'
+        message['dkim-valid'].value.should == 'false'
+        message['spam_report-score'].value.should == '0'
         message['spf-result'].value.should == 'pass'
       end
     end

@@ -72,7 +72,7 @@ desc 'Ensure a Mandrill catch-all route forwarding to a postbin'
 task :mandrill do
   require 'mandrill'
 
-  api = Mandrill::API.new credentials[:mandrill_api_key]
+  api = Mandrill::API.new(credentials[:mandrill_api_key])
   domain = api.inbound.domains.first
 
   if domain
@@ -84,8 +84,29 @@ task :mandrill do
     puts "Add a catchall (*) route for #{domain_name}" if match.nil?
     puts "The catchall route for #{domain_name} POSTs to #{match['url']}?inspect"
   else
-    abort 'Add an inbound domain at https://mandrillapp.com/ or by sending an email to Mandrill'
+    abort 'Add an inbound domain at https://mandrillapp.com/ or, if you already have your MX records set up, by sending an email through Mandrill'
   end
+end
+
+desc 'Create a Postmark route forwarding to a postbin'
+task :postmark do
+  require 'json'
+  require 'postmark'
+  require 'rest-client'
+
+  api = Postmark::ApiClient.new(credentials[:postmark_api_key])
+
+  info = api.server_info
+
+  if info.key?(:inbound_hook_url)
+    url = info[:inbound_hook_url]
+  else
+    bin_name = JSON.load(RestClient.post('http://requestb.in/api/v1/bins', {}))['name']
+    url = "http://requestb.in/#{bin_name}"
+    api.update_server_info :inbound_hook_url => url
+  end
+
+  puts "#{info[:inbound_hash]}@inbound.postmarkapp.com POSTs to #{url}?inspect"
 end
 
 desc 'POST a test fixture to an URL'

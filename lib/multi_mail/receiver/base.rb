@@ -14,7 +14,7 @@ module MultiMail
       # Ensures a request is authentic, parses it into a params hash, and
       # transforms it into a list of messages.
       #
-      # @param [String,Hash] raw raw POST data or a params hash
+      # @param [String,Array,Hash,Rack::Request] raw raw POST data or a params hash
       # @return [Array<Mail::Message>] messages
       # @raise [ForgedRequest] if the request is not authentic
       def process(raw)
@@ -51,6 +51,39 @@ module MultiMail
       end
 
       module ClassMethods
+        # ActionDispatch::Http::Request subclasses Rack::Request and turns
+        # attachment hashes into instances of ActionDispatch::Http::UploadedFile
+        # in Rails 3 and 4 and instances of ActionController::UploadedFile in
+        # Rails 2.3, both of which have the same interface.
+        #
+        # @param [ActionDispatch::Http::UploadedFile,ActionController::UploadedFile,Hash] attachment an attachment
+        # @return [Hash] arguments for `Mail::Message#add_file`
+        def add_file_arguments(attachment)
+          if Hash === attachment
+            {:filename => attachment[:filename], :content => attachment[:tempfile].read}
+          else
+            {:filename => attachment.original_filename, :content => attachment.read}
+          end
+        end
+
+        # Converts a hash or array to a multimap.
+        #
+        # @param [Hash,Array] object a hash or array
+        # @return [Multimap] a multimap
+        def multimap(object)
+          multimap = Multimap.new
+          object.each do |key,value|
+            if Array === value
+              value.each do |v|
+                multimap[key] = v
+              end
+            else
+              multimap[key] = value
+            end
+          end
+          multimap
+        end
+
         # Parses raw POST data into a params hash.
         #
         # @param [String,Hash] raw raw POST data or a params hash
@@ -91,6 +124,8 @@ module MultiMail
             end
 
             params
+          when Rack::Request
+            raw.params
           when Hash
             raw
           else

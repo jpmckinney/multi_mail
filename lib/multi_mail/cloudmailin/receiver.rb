@@ -10,7 +10,6 @@ module MultiMail
       include MultiMail::Receiver::Base
 
       recognizes :http_post_format
-      attr_reader :http_post_format
 
       # Initializes a Cloudmailin incoming email receiver.
       #
@@ -27,7 +26,7 @@ module MultiMail
       # @see http://docs.cloudmailin.com/http_post_formats/json/
       # @see http://docs.cloudmailin.com/http_post_formats/raw/
       def transform(params)
-        case http_post_format
+        case @http_post_format
         when 'raw', '', nil
           message = self.class.condense(Mail.new(params['message']))
 
@@ -38,18 +37,11 @@ module MultiMail
           # `helo_domain` and `remote_ip`.
           [message]
         when 'multipart', 'json'
-          headers = Multimap.new
-          params['headers'].each do |key,value|
-            if Array === value
-              value.each do |v|
-                headers[key] = v
-              end
-            else
-              headers[key] = value
-            end
-          end
-
+          # Mail changes `self`.
+          headers = self.class.multimap(params['headers'])
+          http_post_format = @http_post_format
           this = self
+
           message = Mail.new do
             headers headers
 
@@ -65,18 +57,13 @@ module MultiMail
             end
 
             if params.key?('attachments')
-              if this.http_post_format == 'json'
+              if http_post_format == 'json'
                 params['attachments'].each do |attachment|
                   add_file(:filename => attachment['file_name'], :content => Base64.decode64(attachment['content']))
                 end
               else
                 params['attachments'].each do |_,attachment|
-                  # See the relevant comment in Mailgun's receiver.
-                  if Hash === attachment
-                    add_file(:filename => attachment[:filename], :content => attachment[:tempfile].read)
-                  else
-                    add_file(:filename => attachment.original_filename, :content => attachment.read)
-                  end
+                  add_file(this.class.add_file_arguments(attachment))
                 end
               end
             end
@@ -89,7 +76,7 @@ module MultiMail
 
           [message]
         else
-          raise ArgumentError, "Can't handle Cloudmailin #{http_post_format} HTTP POST format"
+          raise ArgumentError, "Can't handle Cloudmailin #{@http_post_format} HTTP POST format"
         end
       end
 

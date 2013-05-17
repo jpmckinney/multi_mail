@@ -2,15 +2,13 @@ module MultiMail
   module Receiver
     # Mandrill's incoming email receiver.
     #
-    # Mandrill describes how to ensure a request originates from Mandrill, but
-    # its incoming email webhook don't include a `X-Mandrill-Signature` header.
+    # Mandrill uses an HTTP header to ensure a request originates from Mandrill.
     #
     # @see http://help.mandrill.com/entries/23704122-Authenticating-webhook-requests
     class Mandrill < MultiMail::Service
       include MultiMail::Receiver::Base
 
       recognizes :spamassassin_threshold
-      attr_reader :spamassassin_threshold
 
       # Initializes a Mandrill incoming email receiver.
       #
@@ -34,18 +32,10 @@ module MultiMail
         end.map do |event|
           msg = event['msg']
 
-          headers = Multimap.new
-          msg['headers'].each do |key,value|
-            if Array === value
-              value.each do |v|
-                headers[key] = v
-              end
-            else
-              headers[key] = value
-            end
-          end
-
+          # Mail changes `self`.
+          headers = self.class.multimap(msg['headers'])
           this = self
+
           message = Mail.new do
             headers headers
 
@@ -94,8 +84,8 @@ module MultiMail
           # `result`, and `raw_msg`.
           message['ts']                = event['ts']
           message['email']             = msg['email']
-          message['dkim-signed']       = msg['dkim']['signed']
-          message['dkim-valid']        = msg['dkim']['valid']
+          message['dkim-signed']       = msg['dkim']['signed'].to_s
+          message['dkim-valid']        = msg['dkim']['valid'].to_s
           message['spam_report-score'] = msg['spam_report']['score']
           message['spf-result']        = msg['spf']['result']
 
@@ -108,7 +98,7 @@ module MultiMail
       # @param [Mail::Message] message a message
       # @return [Boolean] whether the message is spam
       def spam?(message)
-        message['spam_report-score'] && message['spam_report-score'].value.to_f > spamassassin_threshold
+        message['spam_report-score'] && message['spam_report-score'].value.to_f > @spamassassin_threshold
       end
     end
   end

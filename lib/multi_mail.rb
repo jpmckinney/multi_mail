@@ -5,6 +5,7 @@ require 'openssl'
 
 require 'mail'
 require 'multimap'
+require 'rack'
 
 module MultiMail
   # @see http://rdoc.info/gems/fog/Fog/Errors

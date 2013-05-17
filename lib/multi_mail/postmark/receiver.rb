@@ -10,12 +10,14 @@ module MultiMail
           headers[header['Name']] = header['Value']
         end
 
-        # Due to scoping issues, we can't call `address` within `Mail.new`.
+        # Due to scoping issues, we can't call `transform_address` within `Mail.new`.
         from = transform_address(params['FromFull'])
         to   = params['ToFull'].map{|hash| transform_address(hash)}
         cc   = params['CcFull'].map{|hash| transform_address(hash)}
 
         message = Mail.new do
+          headers headers
+
           from      from
           to        to
           cc        cc
@@ -32,8 +34,6 @@ module MultiMail
             body CGI.unescapeHTML(params['HtmlBody'])
           end
 
-          headers headers
-
           params['Attachments'].each do |attachment|
             add_file(:filename => attachment['Name'], :content => Base64.decode64(attachment['Content']))
           end
@@ -41,7 +41,9 @@ module MultiMail
 
         # Extra Postmark parameters.
         %w(MailboxHash MessageID Tag).each do |key|
-          message[key] = params[key]
+          if params.key?(key) && !params[key].empty?
+            message[key] = params[key]
+          end
         end
 
         [message]

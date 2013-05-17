@@ -24,7 +24,7 @@ describe MultiMail::Receiver::Cloudmailin do
       end
 
       ['raw', 'json', 'multipart', '', nil].each do |http_post_format|
-        context "with #{http_post_format.inspect} format" do
+        context "with #{http_post_format.inspect} format and #{action_dispatch ? 'ActionDispatch' : 'Rack'}" do
           let :http_post_format do
             http_post_format
           end
@@ -72,11 +72,17 @@ describe MultiMail::Receiver::Cloudmailin do
               end
 
               # Attachments
-              # @note Cloudmailin removes the newline at the end of the file.
               attachment0 = message.attachments.find{|attachment| attachment.filename == 'foo.txt'}
-              attachment0.read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               attachment1 = message.attachments.find{|attachment| attachment.filename == 'bar.txt'}
-              attachment1.read.should == "Nam accumsan euismod eros et rhoncus."
+              # @note Cloudmailin removes the newline at the end of the file,
+              #   unless you use the "raw" HTTP POST format.
+              if actual_http_post_format == 'raw'
+                attachment0.read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n"
+                attachment1.read.should == "Nam accumsan euismod eros et rhoncus.\n"
+              else
+                attachment0.read.should == "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                attachment1.read.should == "Nam accumsan euismod eros et rhoncus."
+              end
 
               # Extra Cloudmailin parameters
               if actual_http_post_format == 'raw'

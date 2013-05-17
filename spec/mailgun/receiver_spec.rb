@@ -35,7 +35,7 @@ describe MultiMail::Receiver::Mailgun do
       #   to get fixtures to test the raw MIME HTTP POST format; all existing
       #   OS code for bins suck. Simple Rack app with in-memory storage?
       ['parsed', '', nil].each do |http_post_format|
-        context "with #{http_post_format.inspect} format" do
+        context "with #{http_post_format.inspect} format and #{action_dispatch ? 'ActionDispatch' : 'Rack'}" do
           let :http_post_format do
             http_post_format
           end
