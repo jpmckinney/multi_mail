@@ -25,6 +25,8 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 #     :mailgun_api_key:  ...
 #     :mandrill_api_key: ...
 #     :postmark_api_key: ...
+#     :sendgrid_username: ...
+#     :sendgrid_password: ...
 #
 # For Postmark, you must create a server to get an API key.
 #
@@ -57,6 +59,13 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 # # Postmark
 #
 # Run `bundle exec rake postmark` to set up Postmark.
+#
+# spam.txt     Send a subject-less message with message body XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
+# valid.txt    Send a complex multipart message
+#
+# # SendGrid
+#
+# Run `bundle exec rake sendgrid` to set up SendGrid.
 #
 # spam.txt     Send a subject-less message with message body XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
 # valid.txt    Send a complex multipart message

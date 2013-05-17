@@ -109,6 +109,15 @@ task :postmark do
   puts "#{info[:inbound_hash]}@inbound.postmarkapp.com POSTs to #{url}?inspect"
 end
 
+desc 'Create a SendGrid route forwarding to a postbin'
+task :sendgrid do
+  require 'sendgrid_webapi'
+
+  api = SendGridWebApi::Client.new(credentials[:sendgrid_username], credentials[:sendgrid_password])
+
+  api.parse_emails.get # returns 'Permission denied, inactive account' ...
+end
+
 desc 'POST a test fixture to an URL'
 task :http_post, :url, :fixture do |t,args|
   require 'rest-client'
