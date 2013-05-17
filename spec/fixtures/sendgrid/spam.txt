@@ -1,0 +1,94 @@
+HTTP/1.1 200 OK
+User-Agent: SendGrid 1.0
+Host: requestb.in
+Content-Type: multipart/form-data; boundary=xYzZY
+Content-Length: 3892
+Connection: close
+
+--xYzZY
+Content-Disposition: form-data; name="headers"
+
+Received: by 127.0.0.1 with SMTP id iYNV3VBGaF Wed, 15 May 2013 16:25:29 -0500 (CDT)
+Received: from mail-oa0-f53.google.com (mail-oa0-f53.google.com [209.85.219.53]) by mx2.sendgrid.net (Postfix) with ESMTPS id E7294178D678 for <foo+bar@parolecitoyenne.com>; Wed, 15 May 2013 16:25:24 -0500 (CDT)
+Received: by mail-oa0-f53.google.com with SMTP id g12so2824684oah.26 for <foo+bar@parolecitoyenne.com>; Wed, 15 May 2013 14:25:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:content-transfer-encoding:subject:date :message-id:to:mime-version:x-mailer:x-gm-message-state; bh=id84uDPa9SMZAVd+g2pYg3Hl9aPfnapoGlOygxrIuV4=; b=XUH8crQQKy5LeCeDHavNS/BJmplE+e+y1q4oHIAPd0B1mR2TWyoB3QzOk2a7RFf+tI pakBf8tNtf2mACCv7KcaXnZ9yjwowDerWAcvMvDyQpdWSUmVHHo29DuCMEQY7H7pkNP2 C78FcQxx+wDCYzvSkF6rO3T2RiGDWfB1uddvdFw51/q3AJnHLuj1ikOp2gba80ky9aa4 ZOYTWoDVWQwxxoJBB1D7fGdyMMNyyqStgFr35XHR3MHoyENd8wDvnbFc5E2B0SN9RZcN 6JyCZwXiXHMb0OXk4nCQqkBwY5SXx70iW+oWAuPghhxNEWrqiz7oEBjt9Lc04ZKfmkxc dOvA==
+X-Received: by 10.60.94.171 with SMTP id dd11mr19882115oeb.76.1368653124118; Wed, 15 May 2013 14:25:24 -0700 (PDT)
+Received: from [10.0.1.91] (MTLXPQAK-1176052872.sdsl.bell.ca. [70.25.36.136]) by mx.google.com with ESMTPSA id q4sm4741295obl.1.2013.05.15.14.25.21 for <foo+bar@parolecitoyenne.com> (version=TLSv1 cipher=RC4-SHA bits=128/128); Wed, 15 May 2013 14:25:22 -0700 (PDT)
+From: James McKinney <james@opennorth.ca>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Subject: 
+Date: Wed, 15 May 2013 17:25:19 -0400
+Message-Id: <6F4EBCC6-E393-4BB5-8140-CFF83C38AD96@opennorth.ca>
+To: foo+bar@parolecitoyenne.com
+Mime-Version: 1.0 (Apple Message framework v1283)
+X-Mailer: Apple Mail (2.1283)
+X-Gm-Message-State: ALoCoQmS55OtyZILtlZ4sMJ51zltcOeKxJ6nIrQhCCT9+4J/uUBlJQYWiae0O0v7MsHgLBSl7pbF
+
+--xYzZY
+Content-Disposition: form-data; name="dkim"
+
+none
+--xYzZY
+Content-Disposition: form-data; name="to"
+
+foo+bar@parolecitoyenne.com
+--xYzZY
+Content-Disposition: form-data; name="from"
+
+James McKinney <james@opennorth.ca>
+--xYzZY
+Content-Disposition: form-data; name="text"
+
+XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
+
+--xYzZY
+Content-Disposition: form-data; name="spam_report"
+
+Spam detection software, running on the system "mx2.sendgrid.net", has
+identified this incoming email as possible spam.  The original message
+has been attached to this so you can view it (if it isn't spam) or label
+similar future email.  If you have any questions, see
+the administrator of that system for details.
+
+Content preview:  XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
+   [...] 
+
+Content analysis details:   (997.4 points, 5.0 required)
+
+ pts rule name              description
+---- ---------------------- --------------------------------------------------
+-0.7 RCVD_IN_DNSWL_LOW      RBL: Sender listed at http://www.dnswl.org/, low
+                            trust
+                            [209.85.219.53 listed in list.dnswl.org]
+1000 GTUBE                  BODY: Generic Test for Unsolicited Bulk Email
+-1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
+                            [score: 0.0000]
+ 0.0 TVD_SPACE_RATIO        TVD_SPACE_RATIO
+
+
+--xYzZY
+Content-Disposition: form-data; name="envelope"
+
+{"to":["foo+bar@parolecitoyenne.com"],"from":"james@opennorth.ca"}
+--xYzZY
+Content-Disposition: form-data; name="attachments"
+
+0
+--xYzZY
+Content-Disposition: form-data; name="subject"
+
+
+--xYzZY
+Content-Disposition: form-data; name="spam_score"
+
+997.401
+--xYzZY
+Content-Disposition: form-data; name="charsets"
+
+{"to":"UTF-8","subject":"UTF-8","from":"UTF-8","text":"us-ascii"}
+--xYzZY
+Content-Disposition: form-data; name="SPF"
+
+pass
+--xYzZY--
