@@ -97,7 +97,8 @@ module MultiMail
 
           [message]
         when 'raw'
-          [Mail.new(params['body-mime'])]
+          message = self.class.condense(Mail.new(params['body-mime']))
+          [message]
         else
           raise ArgumentError, "Can't handle Mailgun #{@http_post_format} HTTP POST format"
         end

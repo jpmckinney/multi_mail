@@ -34,7 +34,7 @@ describe MultiMail::Receiver::Mailgun do
       # @todo Write my own Postbin to have a URL ending with "mime" in order
       #   to get fixtures to test the raw MIME HTTP POST format; all existing
       #   OS code for bins suck. Simple Rack app with in-memory storage?
-      ['parsed', '', nil].each do |http_post_format|
+      ['parsed', 'raw', '', nil].each do |http_post_format|
         context "with #{http_post_format.inspect} format and #{action_dispatch ? 'ActionDispatch' : 'Rack'}" do
           let :http_post_format do
             http_post_format
@@ -114,8 +114,9 @@ describe MultiMail::Receiver::Mailgun do
 
           describe '#spam?' do
             it 'should return true if the response is spam' do
+              # The raw MIME HTTP POST format doesn't perform spam filtering.
               message = service.transform(params('spam'))[0]
-              service.spam?(message).should == true
+              service.spam?(message).should == (actual_http_post_format != 'raw')
             end
 
             it 'should return false if the response is ham' do
