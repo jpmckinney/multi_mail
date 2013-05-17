@@ -3,15 +3,20 @@ module MultiMail
     class SendGrid < MultiMail::Service
       include MultiMail::Receiver::Base
 
-      requires :sendgrid_username
-      requires :sendgrid_password
-      recognizes :http_post_format
-      attr_reader :http_post_format
-
       def transform(params)
-        message = Mail.new do 
+        this = self
 
-          headers params['headers']
+        message = Mail.new do
+
+          #there may be a cleaner way to do this, perhaps using multimap,
+          #but I was unable to do use it because the fields have to be split
+          #by the colon, as params['headers'] is just a string
+          headers = {}
+          params['headers'].split("\n").each do |h|
+            headers[h.split(':')[0]] = h.split(':').drop(1).join(':').strip()
+          end
+          headers['spam_score'] = params['spam_score']
+          headers headers
 
           # The following are redundant with `with params['headers']
           #
@@ -19,26 +24,32 @@ module MultiMail
           # sender  params['sender']
           # to      params['recipient']
           # subject params['subject']
-          envelope params['envelope']
+
           subject params['subject']
-
-
-          1.upto(params['attachments']) do |i|
-            key = 'attachment#{i}'
-            add_file(:filename => params[key]['Name'], :content => params[key]['Content'])
+          
+          text_part do
+            content_type 'text/plain' 
+            body params['text']
           end
 
-
-          body params['text']
           html_part do
             content_type 'text/html; charset=UTF-8'
             body params['html']
           end if params['html']
-        end        
+          
+          1.upto(params['attachments'].to_i) do |i|
+            add_file(this.class.add_file_arguments(params["attachment#{i}"]))
+          end
+
+
+
+
+        end
+        [message]        
       end
 
-      def spam?
-        
+      def spam?(message)
+        message['spam_score'].to_s.to_i > 5
       end
     end
   end

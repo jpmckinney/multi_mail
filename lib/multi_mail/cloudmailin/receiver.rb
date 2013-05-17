@@ -1,4 +1,4 @@
-module MultiMail
+git mmodule MultiMail
   module Receiver
     # Cloudmailin's incoming email receiver.
     #
