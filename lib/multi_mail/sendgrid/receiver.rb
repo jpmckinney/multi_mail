@@ -7,7 +7,6 @@ module MultiMail
         this = self
 
         message = Mail.new do
-
           #there may be a cleaner way to do this, perhaps using multimap,
           #but I was unable to do use it because the fields have to be split
           #by the colon, as params['headers'] is just a string
@@ -28,7 +27,7 @@ module MultiMail
           subject params['subject']
           
           text_part do
-            content_type 'text/plain' 
+            content_type 'text/plain'
             body params['text']
           end
 
@@ -36,16 +35,12 @@ module MultiMail
             content_type 'text/html; charset=UTF-8'
             body params['html']
           end if params['html']
-          
+
           1.upto(params['attachments'].to_i) do |i|
             add_file(this.class.add_file_arguments(params["attachment#{i}"]))
           end
-
-
-
-
         end
-        [message]        
+        [message]
       end
 
       def spam?(message)
@@ -54,5 +49,3 @@ module MultiMail
     end
   end
 end
-
-
