@@ -7,6 +7,13 @@ module MultiMail
         this = self
 
         message = Mail.new do
+          # SendGrid includes a `charsets` parameter, which describes the
+          # encodings of the `from`, `to`, `cc` and `subject` parameters, which
+          # we don't need because we parse the headers directly. It also
+          # describes the encoding of the `text` and `html` parameters, which we
+          # may want to use. An undocumented `attachment-info` parameter
+          # describes the encodings of some of the attachments.
+          # @see http://sendgrid.com/docs/API_Reference/Webhooks/parse.html#-Character-Sets-and-Header-Decoding
           header params['headers']
 
           # The following are redundant with `headers`:
