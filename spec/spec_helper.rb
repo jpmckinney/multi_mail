@@ -82,7 +82,7 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 # @see https://github.com/rack/rack/blob/master/test/spec_multipart.rb
 def response(provider, fixture, action_dispatch = false, encoding = 'UTF-8')
   path     = File.expand_path("../fixtures/#{provider}/#{fixture}.txt", __FILE__)
-  contents = File.read(path, :encoding => encoding)
+  contents = File.open(path, "r:#{encoding}"){|f| f.read}
   io       = StringIO.new(contents)
   socket   = Net::BufferedIO.new(io)
   response = Net::HTTPResponse.read_new(socket)
