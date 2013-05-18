@@ -134,6 +134,8 @@ The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:s
       :spamassassin_threshold => 4.5,
     })
 
+**2013-05-17:** If an email contains multiple HTML parts, SendGrid will create a new attachment for each, with an auto-generated filename. Since we cannot robustly identify these attachments, you must inspect attachments to recover any additional HTML parts.
+
 ### Additional information provided by the API
 
 See [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Webhooks/parse.html)

@@ -4,15 +4,10 @@ module MultiMail
       include MultiMail::Receiver::Base
 
       def transform(params)
-        headers = Multimap.new
-        Mail.new(params['headers']).header.fields.each do |field|
-          headers[field.name] = field.value
-        end
-
         this = self
 
         message = Mail.new do
-          headers headers
+          header params['headers']
 
           # The following are redundant with `headers`:
           #
