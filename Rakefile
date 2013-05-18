@@ -119,7 +119,7 @@ task :sendgrid do
   bin_name = JSON.load(RestClient.post('http://requestb.in/api/v1/bins', {}))['name']
   url = "http://requestb.in/#{bin_name}"
   puts "Setting the POST URL..."
-  result = api.parse_email.set(hostname: domain_name, url: url, spam_check: 0)
+  result = api.parse_email.set(:hostname => domain_name, :url => url, :spam_check => 0)
 
   if result['error']
     puts "HTTP #{result['error']['code']} #{result['error']['message']}"
