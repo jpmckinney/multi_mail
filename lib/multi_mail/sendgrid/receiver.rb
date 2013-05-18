@@ -4,47 +4,50 @@ module MultiMail
       include MultiMail::Receiver::Base
 
       def transform(params)
+        headers = Multimap.new
+        Mail.new(params['headers']).header.fields.each do |field|
+          headers[field.name] = field.value
+        end
+
         this = self
 
         message = Mail.new do
-          #there may be a cleaner way to do this, perhaps using multimap,
-          #but I was unable to do use it because the fields have to be split
-          #by the colon, as params['headers'] is just a string
-          headers = {}
-          params['headers'].split("\n").each do |h|
-            headers[h.split(':')[0]] = h.split(':').drop(1).join(':').strip()
-          end
-          headers['spam_score'] = params['spam_score']
           headers headers
 
-          # The following are redundant with `with params['headers']
+          # The following are redundant with `headers`:
           #
           # from    params['from']
-          # sender  params['sender']
-          # to      params['recipient']
+          # to      params['to']
+          # cc      params['cc']
           # subject params['subject']
 
-          subject params['subject']
-          
           text_part do
-            content_type 'text/plain'
             body params['text']
           end
 
           html_part do
             content_type 'text/html; charset=UTF-8'
             body params['html']
-          end if params['html']
+          end
 
-          1.upto(params['attachments'].to_i) do |i|
-            add_file(this.class.add_file_arguments(params["attachment#{i}"]))
+          1.upto(params['attachments'].to_i) do |n|
+            attachment = params["attachment#{n}"]
+            add_file(this.class.add_file_arguments(attachment))
           end
         end
+
+        # Extra SendGrid parameters. Discard
+        %w(dkim SPF spam_report spam_score).each do |key|
+          message[key] = params[key]
+        end
+
+        # Discard `envelope`, which contains `to` and `from`, and the
+        # undocumented `attachment-info`.
         [message]
       end
 
       def spam?(message)
-        message['spam_score'].to_s.to_i > 5
+        message['spam_score'] && message['spam_score'].value.to_f > 5
       end
     end
   end
