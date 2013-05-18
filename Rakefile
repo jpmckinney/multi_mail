@@ -48,17 +48,9 @@ task :mailgun do
   end
 
   if catch_all_route
-    action = catch_all_route['actions'].find do |action|
-      action[%r{\Aforward\("(http://requestb\.in/\w+)"\)\z}]
-    end
-
-    if action
-      bin_url = $1
-    else
-      bin_url, action = bin_url_and_action
-      puts "Updating the catch_all() route..."
-      JSON.load(RestClient.put("#{base_url}/routes/#{catch_all_route['id']}", :action => action))
-    end
+    bin_url, action = bin_url_and_action
+    puts "Updating the catch_all() route..."
+    JSON.load(RestClient.put("#{base_url}/routes/#{catch_all_route['id']}", :action => action))
   else
     bin_url, action = bin_url_and_action
     puts "Creating a catch_all() route..."
@@ -77,7 +69,7 @@ task :mandrill do
 
   if domain
     domain_name = domain['domain']
-    routes = api.inbound.routes domain_name
+    routes = api.inbound.routes(domain_name)
     match = routes.find{|route| route['pattern'] == '*'}
 
     puts "The MX for #{domain_name} is not valid" unless domain['valid_mx']
@@ -95,27 +87,45 @@ task :postmark do
   require 'rest-client'
 
   api = Postmark::ApiClient.new(credentials[:postmark_api_key])
-
   info = api.server_info
 
-  if info.key?(:inbound_hook_url)
-    url = info[:inbound_hook_url]
-  else
-    bin_name = JSON.load(RestClient.post('http://requestb.in/api/v1/bins', {}))['name']
-    url = "http://requestb.in/#{bin_name}"
-    api.update_server_info :inbound_hook_url => url
-  end
+  bin_name = JSON.load(RestClient.post('http://requestb.in/api/v1/bins', {}))['name']
+  url = "http://requestb.in/#{bin_name}"
+  puts "Setting the POST URL..."
+  api.update_server_info :inbound_hook_url => url
 
   puts "#{info[:inbound_hash]}@inbound.postmarkapp.com POSTs to #{url}?inspect"
 end
 
 desc 'Create a SendGrid route forwarding to a postbin'
 task :sendgrid do
+  require 'json'
+  require 'rest-client'
   require 'sendgrid_webapi'
 
   api = SendGridWebApi::Client.new(credentials[:sendgrid_username], credentials[:sendgrid_password])
+  routes = api.parse_email.get['parse']
 
-  api.parse_emails.get # returns 'Permission denied, inactive account' ...
+  if routes.empty? && ENV['DOMAIN'].nil?
+    abort 'usage: DOMAIN=example.com bundle exec rake sendgrid'
+  end
+
+  domain_name = if routes.any?
+    routes.first['hostname']
+  else
+    ENV['DOMAIN']
+  end
+
+  bin_name = JSON.load(RestClient.post('http://requestb.in/api/v1/bins', {}))['name']
+  url = "http://requestb.in/#{bin_name}"
+  puts "Setting the POST URL..."
+  result = api.parse_email.set(hostname: domain_name, url: url, spam_check: 0)
+
+  if result['error']
+    puts "HTTP #{result['error']['code']} #{result['error']['message']}"
+  else
+    puts "#{domain_name} POSTs to #{url}?inspect"
+  end
 end
 
 desc 'POST a test fixture to an URL'
