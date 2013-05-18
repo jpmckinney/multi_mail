@@ -20,9 +20,11 @@ module MultiMail
             body params['text']
           end
 
-          html_part do
-            content_type 'text/html; charset=UTF-8'
-            body params['html']
+          if params.key?('html')
+            html_part do
+              content_type 'text/html; charset=UTF-8'
+              body params['html']
+            end
           end
 
           1.upto(params['attachments'].to_i) do |n|
