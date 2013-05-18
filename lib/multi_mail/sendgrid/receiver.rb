@@ -14,6 +14,7 @@ module MultiMail
           # may want to use. An undocumented `attachment-info` parameter
           # describes the encodings of some of the attachments.
           # @see http://sendgrid.com/docs/API_Reference/Webhooks/parse.html#-Character-Sets-and-Header-Decoding
+          # @see https://github.com/robforman/sendgrid-parse/blob/master/lib/sendgrid-parse/encodable_hash.rb
           header params['headers']
 
           # The following are redundant with `headers`:
