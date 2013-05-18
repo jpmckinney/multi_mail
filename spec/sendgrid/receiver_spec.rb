@@ -1,3 +1,4 @@
+# coding: utf-8
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'multi_mail/sendgrid/receiver'
 
@@ -7,8 +8,8 @@ describe MultiMail::Receiver::SendGrid do
       MultiMail::Receiver.new(:provider => :sendgrid)
     end
 
-    def params(fixture)
-      MultiMail::Receiver::SendGrid.parse(response('sendgrid', fixture))
+    def params(fixture, encoding = nil)
+      MultiMail::Receiver::SendGrid.parse(response('sendgrid', fixture, false, encoding))
     end
 
     describe '#transform' do
@@ -25,14 +26,16 @@ describe MultiMail::Receiver::SendGrid do
 
         # Body
         message.multipart?.should            == true
+        # @note SendGrid adds additional HTML parts as attachments, which is
+        # sensible, but it does not match the behavior of other email APIs.
         message.parts.size.should            == 6
         message.parts[0].content_type.should == 'text/plain'
         message.parts[1].content_type.should == 'text/html; charset=UTF-8'
         message.parts[0].body.decoded.should == "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block"
         # @note Due to a SendGrid bug, the HTML part is missing content.
         message.parts[1].body.decoded.should == %(<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div></div></body></html>)
-        # @note SendGrid adds additional HTML parts as attachments, which is
-        # sensible, but it does not match the behavior of other email APIs.
+
+        # HTML attachments
         message.parts[3].content_type.should == 'text/html; filename=msg-12415-313.html'
         message.parts[5].content_type.should == 'text/html; filename=msg-12415-314.html'
         message.parts[3].body.decoded.should == %(<html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><head></head><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html>)
@@ -49,6 +52,13 @@ describe MultiMail::Receiver::SendGrid do
         message['SPF'].value.should == 'pass'
         message['spam_report'].value.should == "Spam detection software, running on the system \"mx3.sendgrid.net\", has\r\nidentified this incoming email as possible spam.  The original message\r\nhas been attached to this so you can view it (if it isn't spam) or label\r\nsimilar future email.  If you have any questions, see\r\nthe administrator of that system for details.\r\n\r\nContent preview:  bold text some more bold text some italic text [...] \r\n\r\nContent analysis details:   (-2.6 points, 5.0 required)\r\n\r\n pts rule name              description\r\n---- ---------------------- --------------------------------------------------\r\n-0.7 RCVD_IN_DNSWL_LOW      RBL: Sender listed at http://www.dnswl.org/, low\r\n                            trust\r\n                            [209.85.223.172 listed in list.dnswl.org]\r\n-1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%\r\n                            [score: 0.0000]\r\n 0.0 HTML_MESSAGE           BODY: HTML included in message\r\n\r\n"
         message['spam_score'].value.should == '-2.599'
+      end
+
+      # No postbin is capable of handling mixed encodings, and most fail to even
+      # display the request. http://postbin.hackyon.com/ works best, but we
+      # still need to hand-edit the response.
+      it 'should respect encodings' do
+        service.transform(params('encoding', 'WINDOWS-1252'))[0].text_part.decoded.should == 'World €'
       end
     end
 

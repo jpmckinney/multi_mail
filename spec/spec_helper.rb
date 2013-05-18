@@ -30,6 +30,8 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 #
 # For Postmark, you must create a server to get an API key.
 #
+# If you see `bad content body` exceptions, run `unix2dos` on the fixtures.
+#
 # # Cloudmailin
 #
 # Change the HTTP POST format on Cloudmailin and wait a few minutes. Run
@@ -78,8 +80,9 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 # @return [String] the provider's baked response
 # @see FakeWeb::Responder#baked_response
 # @see https://github.com/rack/rack/blob/master/test/spec_multipart.rb
-def response(provider, fixture, action_dispatch = false)
-  contents = File.read(File.expand_path("../fixtures/#{provider}/#{fixture}.txt", __FILE__))
+def response(provider, fixture, action_dispatch = false, encoding = 'UTF-8')
+  path     = File.expand_path("../fixtures/#{provider}/#{fixture}.txt", __FILE__)
+  contents = File.read(path, :encoding => encoding)
   io       = StringIO.new(contents)
   socket   = Net::BufferedIO.new(io)
   response = Net::HTTPResponse.read_new(socket)

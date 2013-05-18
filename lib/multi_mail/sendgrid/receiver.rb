@@ -4,17 +4,16 @@ module MultiMail
       include MultiMail::Receiver::Base
 
       def transform(params)
+        # Make variables available to the `encode` method.
+        @params = params
+        @charsets = JSON.parse(params['charsets'])
         this = self
 
         message = Mail.new do
           # SendGrid includes a `charsets` parameter, which describes the
           # encodings of the `from`, `to`, `cc` and `subject` parameters, which
-          # we don't need because we parse the headers directly. It also
-          # describes the encoding of the `text` and `html` parameters, which we
-          # may want to use. An undocumented `attachment-info` parameter
-          # describes the encodings of some of the attachments.
+          # we don't need because we parse the headers directly.
           # @see http://sendgrid.com/docs/API_Reference/Webhooks/parse.html#-Character-Sets-and-Header-Decoding
-          # @see https://github.com/robforman/sendgrid-parse/blob/master/lib/sendgrid-parse/encodable_hash.rb
           header params['headers']
 
           # The following are redundant with `headers`:
@@ -25,13 +24,13 @@ module MultiMail
           # subject params['subject']
 
           text_part do
-            body params['text']
+            body this.encode('text')
           end
 
           if params.key?('html')
             html_part do
               content_type 'text/html; charset=UTF-8'
-              body params['html']
+              body this.encode('html')
             end
           end
 
@@ -53,6 +52,18 @@ module MultiMail
 
       def spam?(message)
         message['spam_score'] && message['spam_score'].value.to_f > 5
+      end
+
+      def encode(key)
+        if @charsets.key?(key)
+          if RUBY_VERSION >= '1.9'
+            @params[key].force_encoding(@charsets[key]).encode('UTF-8')
+          else
+            Iconv.conv('UTF-8', @charsets[key])
+          end
+        else
+          @params[key]
+        end
       end
     end
   end
