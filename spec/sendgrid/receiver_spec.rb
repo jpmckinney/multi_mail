@@ -8,7 +8,7 @@ describe MultiMail::Receiver::SendGrid do
       MultiMail::Receiver.new(:provider => :sendgrid)
     end
 
-    def params(fixture, encoding = nil)
+    def params(fixture, encoding = 'UTF-8')
       MultiMail::Receiver::SendGrid.parse(response('sendgrid', fixture, false, encoding))
     end
 

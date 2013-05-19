@@ -56,7 +56,7 @@ module MultiMail
 
       def encode(key)
         if @charsets.key?(key)
-          if RUBY_VERSION >= '1.9'
+          if @params[key].respond_to?(:force_encoding)
             @params[key].force_encoding(@charsets[key]).encode('UTF-8')
           else
             Iconv.conv('UTF-8', @charsets[key], @params[key])

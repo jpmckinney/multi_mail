@@ -1,33 +1,34 @@
 HTTP/1.1 200 OK
-X-Request-Start: 1368845175896
+Content-Length: 3422
+Content-Type: multipart/form-data; boundary=xYzZY
+X-Request-Start: 1368931659041
 X-Forwarded-Proto: http
 X-Forwarded-Port: 80
 X-Forwarded-For: 173.193.154.132
 User-Agent: SendGrid 1.0
-Host: postbin.hackyon.com
-Content-Type: multipart/form-data; boundary=xYzZY
-Content-Length: 3377
+Host: rackbin.herokuapp.com
 Connection: close
+Version: HTTP/1.1
 
 --xYzZY
 Content-Disposition: form-data; name="headers"
 
-Received: by 127.0.0.1 with SMTP id cHWnDUQ6BV Fri, 17 May 2013 21:46:14 -0500 (CDT)
-Received: from mail-yh0-f53.google.com (mail-yh0-f53.google.com [209.85.213.53]) by mx4.sendgrid.net (Postfix) with ESMTPS id 097CB19C1DBE for <foo+bar@parolecitoyenne.com>; Fri, 17 May 2013 21:46:14 -0500 (CDT)
-Received: by mail-yh0-f53.google.com with SMTP id z12so1167997yhz.12 for <foo+bar@parolecitoyenne.com>; Fri, 17 May 2013 19:46:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:content-transfer-encoding:subject:date :message-id:to:mime-version:x-mailer:x-gm-message-state; bh=jJYaZ/iEjw4eqnOLBavWAqLpCB0clW3DYoqoZEzBEDk=; b=mMjSvdr8zJEVjeL+j5aBnkxpmoK5LwXxpNzRK9BJcwrXalsn3cCpEkHayTwccuhlkT G17GzsO+CUufuzuQvpUUwyFTEn3I2SyquC7ntxok9NHW1KGnqXrxeXidzunI0pvbn+K1 Cf6qBuHRkHQSo5AetZNB1LlSQJjl7tTOuFlVjjPOzgyYWDu4Saq/TNuB2P+QExHlCQBf WCMUa3bJjhubMaOxRPoWWIYcPJ+Tm4QUpHbzi0vNW5P3p+WYS6UJNhJR2y4YuWZyhVvQ 3ybh3DxS8uIHn8o937aeO/RmnqBkYcHGdLm+4wPokUQLtJP385NlN8G/QAeWkEYAs94l FKFQ==
-X-Received: by 10.236.128.136 with SMTP id f8mr28633569yhi.159.1368845173668; Fri, 17 May 2013 19:46:13 -0700 (PDT)
-Received: from [10.0.1.91] ([199.168.222.18]) by mx.google.com with ESMTPSA id a24sm21979823yhj.23.2013.05.17.19.46.12 for <foo+bar@parolecitoyenne.com> (version=TLSv1 cipher=RC4-SHA bits=128/128); Fri, 17 May 2013 19:46:12 -0700 (PDT)
+Received: by 127.0.0.1 with SMTP id hR113RHIRR Sat, 18 May 2013 21:47:36 -0500 (CDT)
+Received: from mail-ye0-f177.google.com (mail-ye0-f177.google.com [209.85.213.177]) by mx4.sendgrid.net (Postfix) with ESMTPS id 56B8D19CD31E for <foo+bar@parolecitoyenne.com>; Sat, 18 May 2013 21:47:36 -0500 (CDT)
+Received: by mail-ye0-f177.google.com with SMTP id q3so1239720yen.36 for <foo+bar@parolecitoyenne.com>; Sat, 18 May 2013 19:47:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:content-transfer-encoding:subject:date :message-id:to:mime-version:x-mailer:x-gm-message-state; bh=jJYaZ/iEjw4eqnOLBavWAqLpCB0clW3DYoqoZEzBEDk=; b=eXSxNxiD7pMcMQyAnWfcNx29SfjzuhIlkCc//oyWzNLlgV2cuJXJDFW53JgSrmKLT6 1AFLOzz5bak0X5RFs7hvD/l4/GzOoD7y1LRynzU42iAuVzKMbs33zF2o0l55ubk/S2nr NSJWAJbEuqpllSExUdL0Fl4FBtGVSIg8aiMgwlcAJInuttiwlutrlFTwug8O9Bb6Vild ngZvkPJmze0Lf6HTa/SrHN40CJTXj8whdUWITncDYObOk2EBrcW8N8nQehpWDke7b4qP hh/SBPkhQPY3mAVNXpTmDT1SLnp/OpasTtNZoYkstqnD8u68kYYNZq/mtgmNGm3C/UoM UxHQ==
+X-Received: by 10.236.121.172 with SMTP id r32mr30865136yhh.2.1368931655650; Sat, 18 May 2013 19:47:35 -0700 (PDT)
+Received: from [192.168.2.20] (bas3-montreal50-2925490084.dsl.bell.ca. [174.95.111.164]) by mx.google.com with ESMTPSA id d51sm29758071yho.14.2013.05.18.19.47.33 for <foo+bar@parolecitoyenne.com> (version=TLSv1 cipher=RC4-SHA bits=128/128); Sat, 18 May 2013 19:47:34 -0700 (PDT)
 From: James McKinney <james@opennorth.ca>
 Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: quoted-printable
 Subject: =?windows-1252?Q?Hello_=80?=
-Date: Fri, 17 May 2013 22:46:12 -0400
-Message-Id: <E4F75B56-DBF2-4993-A8B9-A2263C372356@opennorth.ca>
+Date: Sat, 18 May 2013 22:47:32 -0400
+Message-Id: <E9C4088D-5CB1-4A7D-B4E9-C1A16FD16F3E@opennorth.ca>
 To: foo+bar@parolecitoyenne.com
 Mime-Version: 1.0 (Apple Message framework v1283)
 X-Mailer: Apple Mail (2.1283)
-X-Gm-Message-State: ALoCoQm2/E/ebyBNzn6+LCaaT1kkThU8FSuljlAEKLYC3GjqFp2NMdKfkHQVti/RfQ1M6/KxCWj8
+X-Gm-Message-State: ALoCoQmY+gpI+3uCUxBvDyR15ZyRNYgV4/6IXiBu9i+C57TgLvL5pjY/LuZGF7FnBdvb69aE55vP
 
 --xYzZY
 Content-Disposition: form-data; name="attachments"
@@ -40,7 +41,7 @@ none
 --xYzZY
 Content-Disposition: form-data; name="subject"
 
-Hello €
+Hello â‚¬
 --xYzZY
 Content-Disposition: form-data; name="to"
 
@@ -87,4 +88,3 @@ Content-Disposition: form-data; name="SPF"
 
 pass
 --xYzZY--
-just now (Sat May 18 2013 02:46:02 GMT+0000 (UTC), 1368845162273ms)
