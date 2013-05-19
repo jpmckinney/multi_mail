@@ -36,31 +36,35 @@ describe MultiMail::Receiver::Base do
   end
 
   describe '#parse' do
+    let :expected do
+      {'foo' => '1', 'bar' => ['1', '1']}
+    end
+
     it 'should parse JSON' do
-      klass.parse('{"foo":1,"bar":1,"bar":1}').should == {'foo' => 1, 'bar' => 1}
+      klass.parse('{"foo":"1","bar":["1","1"]}').should == expected
     end
 
     it 'should parse raw POST data' do
-      klass.parse('foo=1&bar=1&bar=1').should == {'foo' => '1', 'bar' => ['1', '1']}
+      klass.parse('foo=1&bar=1&bar=1').should == expected
     end
 
     it 'should accept an array' do
-      klass.parse([['foo', 1], ['bar', [1, 1]]]).should == {'foo' => 1, 'bar' => [1, 1]}
+      klass.parse([['foo', '1'], ['bar', ['1', '1']]]).should == expected
+    end
+
+    it 'should pass-through a hash' do
+      klass.parse({'foo' => '1', 'bar' => ['1', '1']}).should == expected
+    end
+
+    it 'should raise an error if the argument is invalid' do
+      expect{ klass.parse(1) }.to raise_error(ArgumentError, "Can't handle Fixnum input")
     end
 
     it 'should accept a Rack::Request object' do
       params = klass.parse(Rack::Request.new(Rack::MockRequest.env_for('/?foo=1&bar[]=1&bar[]=1')))
       params['env'].should be_a(Hash)
       params.delete('env')
-      params.should == {'foo' => '1', 'bar' => ['1', '1']}
-    end
-
-    it 'should pass-through a hash' do
-      klass.parse('foo' => 1).should == {'foo' => 1}
-    end
-
-    it 'should raise an error if the argument is invalid' do
-      expect{ klass.parse(1) }.to raise_error(ArgumentError, "Can't handle Fixnum input")
+      params.should == expected
     end
   end
 
