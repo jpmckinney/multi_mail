@@ -125,7 +125,7 @@ module MultiMail
 
             params
           when Rack::Request
-            raw.params
+            {'env' => raw.env}.merge(raw.params)
           when Hash
             raw
           else
