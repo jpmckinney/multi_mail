@@ -71,7 +71,7 @@ module MultiMail
       # @param [Mail::Message] message a message
       # @return [Boolean] whether the message is spam
       def spam?(message)
-        message['spam_score'] && message['spam_score'].value.to_f > 5
+        message['spam_score'] && message['spam_score'].value.to_f > @spamassassin_threshold
       end
 
       def encode(key)
