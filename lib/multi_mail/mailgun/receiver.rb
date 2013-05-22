@@ -69,7 +69,7 @@ module MultiMail
             end
 
             if params.key?('attachment-count')
-              1.upto(params['attachment-count'].to_i).each do |n|
+              1.upto(params['attachment-count'].to_i) do |n|
                 attachment = params["attachment-#{n}"]
                 add_file(this.class.add_file_arguments(attachment))
               end

@@ -31,9 +31,6 @@ describe MultiMail::Receiver::Mailgun do
         action_dispatch
       end
 
-      # @todo Write my own Postbin to have a URL ending with "mime" in order
-      #   to get fixtures to test the raw MIME HTTP POST format; all existing
-      #   OS code for bins suck. Simple Rack app with in-memory storage?
       ['parsed', 'raw', '', nil].each do |http_post_format|
         context "with #{http_post_format.inspect} format and #{action_dispatch ? 'ActionDispatch' : 'Rack'}" do
           let :http_post_format do

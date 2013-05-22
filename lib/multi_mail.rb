@@ -2,6 +2,7 @@ require 'base64'
 require 'cgi'
 require 'json'
 require 'openssl'
+require 'iconv' unless RUBY_VERSION >= '1.9'
 
 require 'mail'
 require 'multimap'

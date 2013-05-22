@@ -1,0 +1,90 @@
+HTTP/1.1 200 OK
+Content-Length: 3422
+Content-Type: multipart/form-data; boundary=xYzZY
+X-Request-Start: 1368931659041
+X-Forwarded-Proto: http
+X-Forwarded-Port: 80
+X-Forwarded-For: 173.193.154.132
+User-Agent: SendGrid 1.0
+Host: rackbin.herokuapp.com
+Connection: close
+Version: HTTP/1.1
+
+--xYzZY
+Content-Disposition: form-data; name="headers"
+
+Received: by 127.0.0.1 with SMTP id hR113RHIRR Sat, 18 May 2013 21:47:36 -0500 (CDT)
+Received: from mail-ye0-f177.google.com (mail-ye0-f177.google.com [209.85.213.177]) by mx4.sendgrid.net (Postfix) with ESMTPS id 56B8D19CD31E for <foo+bar@parolecitoyenne.com>; Sat, 18 May 2013 21:47:36 -0500 (CDT)
+Received: by mail-ye0-f177.google.com with SMTP id q3so1239720yen.36 for <foo+bar@parolecitoyenne.com>; Sat, 18 May 2013 19:47:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20120113; h=x-received:from:content-type:content-transfer-encoding:subject:date :message-id:to:mime-version:x-mailer:x-gm-message-state; bh=jJYaZ/iEjw4eqnOLBavWAqLpCB0clW3DYoqoZEzBEDk=; b=eXSxNxiD7pMcMQyAnWfcNx29SfjzuhIlkCc//oyWzNLlgV2cuJXJDFW53JgSrmKLT6 1AFLOzz5bak0X5RFs7hvD/l4/GzOoD7y1LRynzU42iAuVzKMbs33zF2o0l55ubk/S2nr NSJWAJbEuqpllSExUdL0Fl4FBtGVSIg8aiMgwlcAJInuttiwlutrlFTwug8O9Bb6Vild ngZvkPJmze0Lf6HTa/SrHN40CJTXj8whdUWITncDYObOk2EBrcW8N8nQehpWDke7b4qP hh/SBPkhQPY3mAVNXpTmDT1SLnp/OpasTtNZoYkstqnD8u68kYYNZq/mtgmNGm3C/UoM UxHQ==
+X-Received: by 10.236.121.172 with SMTP id r32mr30865136yhh.2.1368931655650; Sat, 18 May 2013 19:47:35 -0700 (PDT)
+Received: from [192.168.2.20] (bas3-montreal50-2925490084.dsl.bell.ca. [174.95.111.164]) by mx.google.com with ESMTPSA id d51sm29758071yho.14.2013.05.18.19.47.33 for <foo+bar@parolecitoyenne.com> (version=TLSv1 cipher=RC4-SHA bits=128/128); Sat, 18 May 2013 19:47:34 -0700 (PDT)
+From: James McKinney <james@opennorth.ca>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+Subject: =?windows-1252?Q?Hello_=80?=
+Date: Sat, 18 May 2013 22:47:32 -0400
+Message-Id: <E9C4088D-5CB1-4A7D-B4E9-C1A16FD16F3E@opennorth.ca>
+To: foo+bar@parolecitoyenne.com
+Mime-Version: 1.0 (Apple Message framework v1283)
+X-Mailer: Apple Mail (2.1283)
+X-Gm-Message-State: ALoCoQmY+gpI+3uCUxBvDyR15ZyRNYgV4/6IXiBu9i+C57TgLvL5pjY/LuZGF7FnBdvb69aE55vP
+
+--xYzZY
+Content-Disposition: form-data; name="attachments"
+
+0
+--xYzZY
+Content-Disposition: form-data; name="dkim"
+
+none
+--xYzZY
+Content-Disposition: form-data; name="subject"
+
+Hello â‚¬
+--xYzZY
+Content-Disposition: form-data; name="to"
+
+foo+bar@parolecitoyenne.com
+--xYzZY
+Content-Disposition: form-data; name="spam_score"
+
+0
+--xYzZY
+Content-Disposition: form-data; name="from"
+
+James McKinney <james@opennorth.ca>
+--xYzZY
+Content-Disposition: form-data; name="text"
+
+World €
+--xYzZY
+Content-Disposition: form-data; name="spam_report"
+
+Spam detection software, running on the system "mx4.sendgrid.net", has
+identified this incoming email as possible spam.  The original message
+has been attached to this so you can view it (if it isn't spam) or label
+similar future email.  If you have any questions, see
+the administrator of that system for details.
+
+Content preview:  World € [...] 
+
+Content analysis details:   (0.0 points, 5.0 required)
+
+ pts rule name              description
+---- ---------------------- --------------------------------------------------
+
+
+--xYzZY
+Content-Disposition: form-data; name="envelope"
+
+{"to":["foo+bar@parolecitoyenne.com"],"from":"james@opennorth.ca"}
+--xYzZY
+Content-Disposition: form-data; name="charsets"
+
+{"to":"UTF-8","subject":"UTF-8","from":"UTF-8","text":"windows-1252"}
+--xYzZY
+Content-Disposition: form-data; name="SPF"
+
+pass
+--xYzZY--

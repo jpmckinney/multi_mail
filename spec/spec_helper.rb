@@ -25,8 +25,12 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 #     :mailgun_api_key:  ...
 #     :mandrill_api_key: ...
 #     :postmark_api_key: ...
+#     :sendgrid_username: ...
+#     :sendgrid_password: ...
 #
 # For Postmark, you must create a server to get an API key.
+#
+# If you see `bad content body` exceptions, run `unix2dos` on the fixtures.
 #
 # # Cloudmailin
 #
@@ -61,6 +65,14 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 # spam.txt     Send a subject-less message with message body XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
 # valid.txt    Send a complex multipart message
 #
+# # SendGrid
+#
+# Run `bundle exec rake sendgrid` to set up SendGrid once SendGrid has
+# provisioned your account.
+#
+# spam.txt     Send a subject-less message with message body XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
+# valid.txt    Send a complex multipart message
+#
 # @param [String] provider a provider
 # @param [String] fixture one of "valid", "invalid" or "spam"
 # @param [Boolean] action_dispatch whether uploaded files should be
@@ -68,8 +80,9 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 # @return [String] the provider's baked response
 # @see FakeWeb::Responder#baked_response
 # @see https://github.com/rack/rack/blob/master/test/spec_multipart.rb
-def response(provider, fixture, action_dispatch = false)
-  contents = File.read(File.expand_path("../fixtures/#{provider}/#{fixture}.txt", __FILE__))
+def response(provider, fixture, action_dispatch = false, encoding = 'UTF-8')
+  path     = File.expand_path("../fixtures/#{provider}/#{fixture}.txt", __FILE__)
+  contents = File.open(path, "r:#{encoding}"){|f| f.read}
   io       = StringIO.new(contents)
   socket   = Net::BufferedIO.new(io)
   response = Net::HTTPResponse.read_new(socket)
