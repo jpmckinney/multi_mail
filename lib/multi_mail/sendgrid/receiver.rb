@@ -1,15 +1,27 @@
 module MultiMail
   module Receiver
+    # SendGrid's incoming email receiver
     class SendGrid < MultiMail::Service
       include MultiMail::Receiver::Base
+      # Initializes a SendGrid incoming email receiver
+      #
+      # @param [Hash] options required and optional arguments
+      # @option option [Float] :spamassassin_threshold the Spamassassin score
+      # needed to flag a message as spam
+      def initialize(options = {})
+        super
+        @spamassassin_threshold = options[:spamassassin_threshold] || 5
+      end
 
+      # Transforms the content of SendGrid's webook into a list of messages
+      # @param [Hash] params the content of Mandrill's webhook
+      # @return [Array<Mail::Messages>] messages
+      # @see http://sendgrid.com/docs/API_Reference/Webhooks/parse.html
       def transform(params)
+        # Mail loses self
         this = self
-
         message = Mail.new do
-          #there may be a cleaner way to do this, perhaps using multimap,
-          #but I was unable to do use it because the fields have to be split
-          #by the colon, as params['headers'] is just a string
+
           headers = {}
           params['headers'].split("\n").each do |h|
             headers[h.split(':')[0]] = h.split(':').drop(1).join(':').strip()
@@ -43,8 +55,12 @@ module MultiMail
         [message]
       end
 
+      # Returns whether a message is spam.
+      #
+      # @param [Mail::Message] message a message
+      # @return [Boolean] whether the message is spam
       def spam?(message)
-        message['spam_score'].to_s.to_i > 5
+        message['spam_score'].to_s.to_f > @spamassassin_threshold
       end
     end
   end
