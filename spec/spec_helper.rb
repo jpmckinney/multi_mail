@@ -92,7 +92,13 @@ def response(provider, fixture, action_dispatch = false, encoding = 'UTF-8')
   body = contents[/(?:\r?\n){2,}(.+)\z/m, 1]
 
   # It's kind of crazy that no library has an easier way of doing this.
-  if response.header['content-type']['multipart/form-data']
+  if response.header['x-mandrill-signature']
+    body = Rack::Request.new(Rack::MockRequest.env_for('/', {
+      'HTTP_X_MANDRILL_SIGNATURE' => response.header['x-mandrill-signature'],
+      :method => 'POST',
+      :input => body,
+    }))
+  elsif response.header['content-type']['multipart/form-data']
     body = Rack::Multipart.parse_multipart(Rack::MockRequest.env_for('/', {
       'CONTENT_TYPE' => response.header['content-type'],
       :input => body,
