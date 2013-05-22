@@ -1,36 +1,37 @@
 module MultiMail
   module Receiver
-    # SendGrid's incoming email receiver
+    # SendGrid's incoming email receiver.
     class SendGrid < MultiMail::Service
       include MultiMail::Receiver::Base
-      # Initializes a SendGrid incoming email receiver
+      # Initializes a SendGrid incoming email receiver.
       #
       # @param [Hash] options required and optional arguments
       # @option option [Float] :spamassassin_threshold the Spamassassin score
-      # needed to flag a message as spam
+      #   needed to flag a message as spam
       def initialize(options = {})
         super
         @spamassassin_threshold = options[:spamassassin_threshold] || 5
       end
 
-      # Transforms the content of SendGrid's webook into a list of messages
+      # Transforms the content of SendGrid's webook into a list of messages.
+      #
       # @param [Hash] params the content of Mandrill's webhook
       # @return [Array<Mail::Messages>] messages
       # @see http://sendgrid.com/docs/API_Reference/Webhooks/parse.html
       def transform(params)
-
         # Make variables available to the `encode` method.
         @params = params
         @charsets = JSON.parse(params['charsets'])
-        #Mail loses self
+
+        # Mail changes `self`.
         this = self
+
         message = Mail.new do
           # SendGrid includes a `charsets` parameter, which describes the
           # encodings of the `from`, `to`, `cc` and `subject` parameters, which
           # we don't need because we parse the headers directly.
           # @see http://sendgrid.com/docs/API_Reference/Webhooks/parse.html#-Character-Sets-and-Header-Decoding
           header params['headers']
-
 
           # The following are redundant with `headers`:
           #
