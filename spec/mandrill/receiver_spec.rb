@@ -11,6 +11,27 @@ describe MultiMail::Receiver::Mandrill do
       MultiMail::Receiver::Mandrill.parse(response('mandrill', fixture))
     end
 
+=begin    describe '#valid?' do
+      it 'should return true if the response is valid' do
+        service.valid?(params('valid')).should == true
+      end
+
+      it 'should return false if the response is invalid' do
+        service.valid?(params('invalid')).should == false
+      end
+
+      it 'should raise an error if parameters are missing' do
+        expect{ service.valid?(params('missing')) }.to raise_error(IndexError)
+      end
+    end
+=end
+    describe '#generateKey' do
+      it 'should have the right mandrill validation key' do
+        service.valid?(params('valid2')).should == "H7Zky1B/GShKH4kuQcfUhNrQq+k="
+      end
+    end
+
+
     # @todo Add a spec for multiple Mandrill events.
     describe '#transform' do
       it 'should return a mail message' do

@@ -78,6 +78,8 @@ module MultiMail
             end
           end
 
+
+
           # Extra Mandrill parameters. Discard `sender` and `tags`, which are
           # null according to the docs, `matched_rules` within `spam_report`,
           # and `detail` within `spf`, which is just a human-readable version of
@@ -91,6 +93,19 @@ module MultiMail
 
           message
         end
+      end
+      #mandrill uses an HTTP header to verify that the request isn't forged
+      def valid?(params)
+        wh_key = "Ny_lzk4zxENbNVezqECBxw"
+        url = "http://requestb.in/15wvu0y1"
+        signed_data = url
+        params.sort.each do |key, value|
+          signed_data += (key.to_s + value.to_s)
+        end
+        digest = OpenSSL::Digest::Digest.new('sha1')
+        Base64.encode64("#{OpenSSL::HMAC.digest(digest,signed_data,wh_key)}") 
+
+      #  p params['env']['HTTP_X_MANDRILL_SIGNATURE']
       end
 
       # Returns whether a message is spam.
