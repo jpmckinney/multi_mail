@@ -4,14 +4,18 @@ require 'multi_mail/mandrill/receiver'
 describe MultiMail::Receiver::Mandrill do
   context 'after initialization' do
     let :service do
-      MultiMail::Receiver.new(:provider => :mandrill)
+      MultiMail::Receiver.new(
+        :provider => :mandrill,
+        :mandrill_webhook_key => 'rth_rywL9CWIIZBuwPQIWw',
+        :mandrill_webhook_url => 'http://rackbin.herokuapp.com/'
+        )
     end
 
     def params(fixture)
       MultiMail::Receiver::Mandrill.parse(response('mandrill', fixture))
     end
 
-=begin    describe '#valid?' do
+    describe '#valid?' do
       it 'should return true if the response is valid' do
         service.valid?(params('valid')).should == true
       end
@@ -20,27 +24,23 @@ describe MultiMail::Receiver::Mandrill do
         service.valid?(params('invalid')).should == false
       end
 
-      it 'should raise an error if parameters are missing' do
-        expect{ service.valid?(params('missing')) }.to raise_error(IndexError)
-      end
-    end
-=end
-    describe '#generateKey' do
-      it 'should have the right mandrill validation key' do
-        service.valid?(params('valid2')).should == "H7Zky1B/GShKH4kuQcfUhNrQq+k="
-      end
+#      it 'should raise an error if parameters are missing' do
+#        expect{ service.valid?(params('missing')) }.to raise_error(IndexError)
+#      end
     end
 
-=begin
+
+
     # @todo Add a spec for multiple Mandrill events.
     describe '#transform' do
       it 'should return a mail message' do
         messages = service.transform(params('valid'))
+        #p messages
         messages.size.should == 1
         message = messages[0]
-
+        
         # Headers
-        message.date.should    == DateTime.parse('Mon, 15 Apr 2013 20:20:12 -04:00')
+        message.date.should    == DateTime.parse('Mon, 29 May 2013 16:51:45 -04:00')
         message.from.should    == ['james@opennorth.ca']
         message.to.should      == ['foo+bar@govkit.org']
         message.subject.should == 'Test'
@@ -61,11 +61,11 @@ describe MultiMail::Receiver::Mandrill do
         attachment1.read.should == "Nam accumsan euismod eros et rhoncus.\n\n"
 
         # Extra Mandrill parameters
-        message['ts'].value.should == '1368657709'
+        message['ts'].value.should == '1369860716'
         message['email'].value.should == 'foo+bar@govkit.org'
         message['dkim-signed'].value.should == 'false'
         message['dkim-valid'].value.should == 'false'
-        message['spam_report-score'].value.should == '0'
+        message['spam_report-score'].value.should == '-0.7'
         message['spf-result'].value.should == 'pass'
       end
     end
@@ -81,6 +81,6 @@ describe MultiMail::Receiver::Mandrill do
         service.spam?(message).should == false
       end
     end
-=end    
+    
   end
 end

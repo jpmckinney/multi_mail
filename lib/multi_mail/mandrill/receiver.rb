@@ -9,6 +9,7 @@ module MultiMail
       include MultiMail::Receiver::Base
 
       recognizes :spamassassin_threshold
+      requires :mandrill_webhook_key, :mandrill_webhook_url
 
       # Initializes a Mandrill incoming email receiver.
       #
@@ -18,6 +19,8 @@ module MultiMail
       def initialize(options = {})
         super
         @spamassassin_threshold = options[:spamassassin_threshold] || 5
+        @mandrill_webhook_key = options[:mandrill_webhook_key]
+        @mandrill_webhook_url = options[:mandrill_webhook_url]
       end
 
       # Transforms the content of Mandrill's webhook into a list of messages.
@@ -27,6 +30,9 @@ module MultiMail
       # @see http://help.mandrill.com/entries/22092308-What-is-the-format-of-inbound-email-webhooks-
       def transform(params)
         # JSON is necessarily UTF-8.
+        a=JSON.parse(params['mandrill_events']).select do |event|
+          event.fetch('event') == 'inbound'
+        end
         JSON.parse(params['mandrill_events']).select do |event|
           event.fetch('event') == 'inbound'
         end.map do |event|
@@ -90,21 +96,19 @@ module MultiMail
           message['dkim-valid']        = msg['dkim']['valid'].to_s
           message['spam_report-score'] = msg['spam_report']['score']
           message['spf-result']        = msg['spf']['result']
-
           message
         end
       end
       #mandrill uses an HTTP header to verify that the request isn't forged
       def valid?(params)
-        wh_key = "Ny_lzk4zxENbNVezqECBxw"
-        signed_data = "http://requestb.in/15wvu0y1"
-        params['env'].sort.each do |key, value|
-          signed_data += (key.to_s + value.to_s)
+        tmp = params.dup
+        tmp.delete('env')
+        signed_data = @mandrill_webhook_url
+        tmp.sort.each do |key, value|
+          signed_data << (key.to_s + value.to_s)
         end
-        digest = OpenSSL::Digest.new('sha1')
-        Base64.encode64("#{OpenSSL::HMAC.digest('sha1','signed_data',wh_key)}") 
-
-      #  p params['env']['HTTP_X_MANDRILL_SIGNATURE']
+        key = Base64.encode64(Digest::HMAC.digest(signed_data,@mandrill_webhook_key,Digest::SHA1)).strip
+        key == params['env']['HTTP_X_MANDRILL_SIGNATURE']
       end
 
       # Returns whether a message is spam.

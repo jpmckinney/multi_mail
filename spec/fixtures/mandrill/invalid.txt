@@ -2,7 +2,7 @@ HTTP/1.1 200 OK
 Content-Length: 9888
 Content-Type: application/x-www-form-urlencoded
 X-Request-Start: 1369860716611
-X-Mandrill-Signature: MXY+G9y45C1zuDoKdkQH1VhPoy0=
+X-Mandrill-Signature: xxx
 X-Forwarded-Proto: http
 X-Forwarded-Port: 80
 X-Forwarded-For: 50.112.74.191
