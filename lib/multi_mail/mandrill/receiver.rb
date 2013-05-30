@@ -107,7 +107,7 @@ module MultiMail
         tmp.sort.each do |key, value|
           signed_data << (key.to_s + value.to_s)
         end
-        key = Base64.encode64(Digest::HMAC.digest(signed_data,@mandrill_webhook_key,Digest::SHA1)).strip
+        key = Base64.encode64(OpenSSL::HMAC.digest('sha1', @mandrill_webhook_key, signed_data)).strip
         key == params.fetch('env').fetch('HTTP_X_MANDRILL_SIGNATURE')
       end
 

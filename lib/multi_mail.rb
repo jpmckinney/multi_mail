@@ -1,5 +1,4 @@
 require 'base64'
-require 'digest/hmac'
 require 'cgi'
 require 'json'
 require 'openssl'
