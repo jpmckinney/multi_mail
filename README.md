@@ -89,7 +89,7 @@ See [Mailgun's documentation](http://documentation.mailgun.net/user_manual.html#
       :mandrill_webhook_url => 'http://example.com/post',
     })
 
-If you omit the `:mandrill_webhook_key` and `:mandrill_webhook_url` options, MultiMail will not check whether a request originates from Mandrill.
+If you omit the `:mandrill_webhook_key` and `:mandrill_webhook_url` options, MultiMail will not check whether a request originates from Mandrill. You can get your webhook key from [Mandrill's Webhooks Settings](https://mandrillapp.com/settings/webhooks).
 
 The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:spamassassin_threshold` option to increase or decrease it. For example:
 
