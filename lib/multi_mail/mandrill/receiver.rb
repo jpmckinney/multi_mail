@@ -110,17 +110,6 @@ module MultiMail
           message
         end
       end
-      #mandrill uses an HTTP header to verify that the request isn't forged
-      def valid?(params)
-        tmp = params.dup
-        tmp.delete('env')
-        signed_data = @mandrill_webhook_url
-        tmp.sort.each do |key, value|
-          signed_data << (key.to_s + value.to_s)
-        end
-        key = Base64.encode64(OpenSSL::HMAC.digest('sha1', @mandrill_webhook_key, signed_data)).strip
-        key == params.fetch('env').fetch('HTTP_X_MANDRILL_SIGNATURE')
-      end
 
       # Returns whether a message is spam.
       #
