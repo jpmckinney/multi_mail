@@ -34,15 +34,6 @@ describe MultiMail::Receiver::Mandrill do
           service.valid?(params('missing')).should == true
         end
       end
-      it 'should return multiple messages if there are multiple events' do
-        messages = service.transform(params('multiple'))
-        messages.size.should == 2
-        message1 = messages[0]
-        message2 = messages[1]
-
-        message1.date.should == message2.date
-        message1.from.should == message2.from
-      end
     end
 
     context 'with optional arguments' do
@@ -104,7 +95,18 @@ describe MultiMail::Receiver::Mandrill do
           message['spam_report-score'].value.should == '-0.7'
           message['spf-result'].value.should == 'pass'
         end
+
+        it 'should return multiple messages if there are multiple events' do
+          messages = service.transform(params('multiple'))
+          messages.size.should == 2
+          message1 = messages[0]
+          message2 = messages[1]
+
+          message1.date.should == message2.date
+          message1.from.should == message2.from
+        end
       end
+
 
       describe '#spam?' do
         it 'should return true if the response is spam' do
