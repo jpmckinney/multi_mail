@@ -8,8 +8,7 @@ module MultiMail
     class Mandrill < MultiMail::Service
       include MultiMail::Receiver::Base
 
-      recognizes :spamassassin_threshold
-      requires :mandrill_webhook_key, :mandrill_webhook_url
+      recognizes :spamassassin_threshold, :mandrill_webhook_key, :mandrill_webhook_url
 
       # Initializes a Mandrill incoming email receiver.
       #
@@ -21,6 +20,20 @@ module MultiMail
         @spamassassin_threshold = options[:spamassassin_threshold] || 5
         @mandrill_webhook_key = options[:mandrill_webhook_key]
         @mandrill_webhook_url = options[:mandrill_webhook_url]
+      end
+
+      # Returns whether a request originates from Mandrill.
+      #
+      # @param [Hash] params the content of Mandrill's webhook
+      # @return [Boolean] whether the request originates from Mailgun
+      # @raise [IndexError] if the request is missing parameters
+      # @see http://help.mandrill.com/entries/23704122-Authenticating-webhook-requests
+      def valid?(params)
+        if @mandrill_webhook_url && @mandrill_webhook_key
+          params.fetch('env').fetch('HTTP_X_MANDRILL_SIGNATURE') == signature(params)
+        else
+          super
+        end
       end
 
       # Transforms the content of Mandrill's webhook into a list of messages.
@@ -115,6 +128,18 @@ module MultiMail
       # @return [Boolean] whether the message is spam
       def spam?(message)
         message['spam_report-score'] && message['spam_report-score'].value.to_f > @spamassassin_threshold
+      end
+
+    private
+
+      def signature(params)
+        data = @mandrill_webhook_url
+        params.sort.each do |key,value|
+          unless key == 'env'
+            data += "#{key}#{value}"
+          end
+        end
+        Base64.encode64(OpenSSL::HMAC.digest('sha1', @mandrill_webhook_key, data)).strip
       end
     end
   end

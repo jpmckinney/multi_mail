@@ -60,6 +60,8 @@ See [Cloudmailin's documentation](http://docs.cloudmailin.com/http_post_formats/
       :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
     })
 
+If you omit the `:mailgun_api_key` option, MultiMail will not check whether a request originates from Mailgun.
+
 If you have a route with a URL ending with "mime" and you are using the raw MIME format, add a `:http_post_format => 'raw'` option. For example:
 
     service = MultiMail::Receiver.new({
@@ -83,7 +85,11 @@ See [Mailgun's documentation](http://documentation.mailgun.net/user_manual.html#
 
     service = MultiMail::Receiver.new({
       :provider => 'mandrill',
+      :mandrill_webhook_key => 'xxxxxxxxxxxxxxxxxxxxxx',
+      :mandrill_webhook_url => 'http://example.com/post',
     })
+
+If you omit the `:mandrill_webhook_key` and `:mandrill_webhook_url` options, MultiMail will not check whether a request originates from Mandrill. You can get your webhook key from [Mandrill's Webhooks Settings](https://mandrillapp.com/settings/webhooks).
 
 The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:spamassassin_threshold` option to increase or decrease it. For example:
 

@@ -4,8 +4,7 @@ module MultiMail
     class Mailgun < MultiMail::Service
       include MultiMail::Receiver::Base
 
-      requires :mailgun_api_key
-      recognizes :http_post_format
+      recognizes :mailgun_api_key, :http_post_format
 
       # Initializes a Mailgun incoming email receiver.
       #
@@ -25,9 +24,11 @@ module MultiMail
       # @raise [IndexError] if the request is missing parameters
       # @see http://documentation.mailgun.net/user_manual.html#securing-webhooks
       def valid?(params)
-        params.fetch('signature') == OpenSSL::HMAC.hexdigest(
-          OpenSSL::Digest::Digest.new('sha256'), @mailgun_api_key,
-          '%s%s' % [params.fetch('timestamp'), params.fetch('token')])
+        if @mailgun_api_key
+          params.fetch('signature') == signature(params)
+        else
+          super
+        end
       end
 
       # Transforms the content of Mailgun's webhook into a list of messages.
@@ -115,6 +116,13 @@ module MultiMail
       #   possible values are "Pass", "Neutral", "Fail" and "SoftFail".
       def spam?(message)
         message['X-Mailgun-Sflag'] && message['X-Mailgun-Sflag'].value == 'Yes'
+      end
+
+    private
+
+      def signature(params)
+        data = "#{params.fetch('timestamp')}#{params.fetch('token')}"
+        OpenSSL::HMAC.hexdigest('sha256', @mailgun_api_key, data)
       end
     end
   end
