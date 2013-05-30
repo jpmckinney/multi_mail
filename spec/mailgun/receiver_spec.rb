@@ -2,13 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'multi_mail/mailgun/receiver'
 
 describe MultiMail::Receiver::Mailgun do
-  describe '#initialize' do
-    it 'should raise an error if :mailgun_api_key is missing' do
-      expect{ MultiMail::Receiver.new :provider => :mailgun }.to raise_error(ArgumentError)
-      expect{ MultiMail::Receiver.new :provider => :mailgun, :mailgun_api_key => nil }.to raise_error(ArgumentError)
-    end
-  end
-
   context 'after initialization' do
     context 'with invalid HTTP POST format' do
       let :service do
@@ -22,6 +15,30 @@ describe MultiMail::Receiver::Mailgun do
       describe '#transform' do
         it 'should raise an error if :http_post_format is invalid' do
           expect{ service.transform({}) }.to raise_error(ArgumentError)
+        end
+      end
+    end
+
+    context 'without optional arguments' do
+      let :service do
+        MultiMail::Receiver.new(:provider => :mailgun)
+      end
+
+      def params(fixture)
+        MultiMail::Receiver::Mailgun.parse(response('mailgun/parsed', fixture))
+      end
+
+      describe '#valid?' do
+        it 'should return true if the response is valid' do
+          service.valid?(params('valid')).should == true
+        end
+
+        it 'should return true if the response is invalid' do
+          service.valid?(params('invalid')).should == true
+        end
+
+        it 'should return true if parameters are missing' do
+          service.valid?(params('missing')).should == true
         end
       end
     end

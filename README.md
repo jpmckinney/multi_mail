@@ -60,6 +60,8 @@ See [Cloudmailin's documentation](http://docs.cloudmailin.com/http_post_formats/
       :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
     })
 
+If you omit the `:mailgun_api_key` parameter, MultiMail will not check whether a request originates from Mailgun.
+
 If you have a route with a URL ending with "mime" and you are using the raw MIME format, add a `:http_post_format => 'raw'` option. For example:
 
     service = MultiMail::Receiver.new({
