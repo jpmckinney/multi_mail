@@ -30,9 +30,7 @@ module MultiMail
       # @see http://help.mandrill.com/entries/22092308-What-is-the-format-of-inbound-email-webhooks-
       def transform(params)
         # JSON is necessarily UTF-8.
-        a=JSON.parse(params['mandrill_events']).select do |event|
-          event.fetch('event') == 'inbound'
-        end
+
         JSON.parse(params['mandrill_events']).select do |event|
           event.fetch('event') == 'inbound'
         end.map do |event|

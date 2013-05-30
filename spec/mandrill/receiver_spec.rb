@@ -35,7 +35,6 @@ describe MultiMail::Receiver::Mandrill do
     describe '#transform' do
       it 'should return a mail message' do
         messages = service.transform(params('valid'))
-        #p messages
         messages.size.should == 1
         message = messages[0]
         
@@ -67,6 +66,15 @@ describe MultiMail::Receiver::Mandrill do
         message['dkim-valid'].value.should == 'false'
         message['spam_report-score'].value.should == '-0.7'
         message['spf-result'].value.should == 'pass'
+      end
+      it 'should return multiple messages if there are multiple events' do
+        messages = service.transform(params('multiple'))
+        messages.size.should == 2
+        message1 = messages[0]
+        message2 = messages[1]
+
+        message1.date.should == message2.date
+        message1.from.should == message2.from
       end
     end
 
