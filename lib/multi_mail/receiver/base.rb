@@ -125,7 +125,10 @@ module MultiMail
 
             params
           when Rack::Request
-            {'env' => raw.env}.merge(raw.params)
+            env = raw.env.dup
+            env.delete('rack.input')
+            env.delete('rack.errors')
+            {'env' => env}.merge(raw.params)
           when Hash
             raw
           else
