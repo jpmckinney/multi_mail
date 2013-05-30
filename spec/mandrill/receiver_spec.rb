@@ -24,9 +24,9 @@ describe MultiMail::Receiver::Mandrill do
         service.valid?(params('invalid')).should == false
       end
 
-#      it 'should raise an error if parameters are missing' do
-#        expect{ service.valid?(params('missing')) }.to raise_error(IndexError)
-#      end
+      it 'should raise an error if parameters are missing' do
+        expect{ service.valid?(params('missing')) }.to raise_error(IndexError)
+      end
     end
 
 

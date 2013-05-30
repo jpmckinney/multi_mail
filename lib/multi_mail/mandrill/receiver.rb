@@ -108,7 +108,7 @@ module MultiMail
           signed_data << (key.to_s + value.to_s)
         end
         key = Base64.encode64(Digest::HMAC.digest(signed_data,@mandrill_webhook_key,Digest::SHA1)).strip
-        key == params['env']['HTTP_X_MANDRILL_SIGNATURE']
+        key == params.fetch('env').fetch('HTTP_X_MANDRILL_SIGNATURE')
       end
 
       # Returns whether a message is spam.
