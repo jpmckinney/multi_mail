@@ -17,6 +17,8 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
 
 `message` is an array of [Mail::Message](https://github.com/mikel/mail) instances.
 
+Any additional parameters provided by an API is added to the message as a header. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it with `message['stripped-text'].value`.
+
 ## Supported APIs
 
 Incoming email:
@@ -27,7 +29,9 @@ Incoming email:
 * [Postmark](http://postmarkapp.com/): [Documentation](#postmark)
 * [SendGrid](http://sendgrid.com/): [Documentation](#sendgrid)
 
-Any additional information provided by an API is added to the message as a header. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it with `message['stripped-text'].value`.
+Outgoing email:
+
+* [Postmark](http://postmarkapp.com/): [Documentation](#postmark)
 
 ## Cloudmailin
 
@@ -46,14 +50,14 @@ The default HTTP POST format is `raw`. Add a `:http_post_format` option to chang
 
 **2013-04-15:** If an email contains multiple HTML parts and you are using the `multipart` or `json` HTTP POST formats, Cloudmailin will only include the first HTML part in its `html` parameter. Use the `raw` format to avoid data loss. Cloudmailin also removes a newline from the end of each attachment.
 
-### Additional information provided by the API
-
-See [Cloudmailin's documentation](http://docs.cloudmailin.com/http_post_formats/):
+See [Cloudmailin's documentation](http://docs.cloudmailin.com/http_post_formats/) for these additional parameters provided by the API:
 
 * `reply_plain`
 * `spf-result`
 
 ## Mailgun
+
+### Incoming
 
     service = MultiMail::Receiver.new({
       :provider => 'mailgun',
@@ -72,9 +76,7 @@ If you have a route with a URL ending with "mime" and you are using the raw MIME
 
 **2013-04-15:** Mailgun's `stripped-text` and `stripped-html` parameters do not return the same parts of the message. `stripped-html` sometimes incorrectly drops non-quoted, non-signature parts of the message; `stripped-text` doesn't.
 
-### Additional information provided by the API
-
-See [Mailgun's documentation](http://documentation.mailgun.net/user_manual.html#parsed-messages-parameters):
+See [Mailgun's documentation](http://documentation.mailgun.net/user_manual.html#parsed-messages-parameters) for these additional parameters provided by the API:
 
 * `stripped-text`
 * `stripped-signature`
@@ -82,6 +84,8 @@ See [Mailgun's documentation](http://documentation.mailgun.net/user_manual.html#
 * `content-id-map`
 
 ## Mandrill
+
+### Incoming
 
     service = MultiMail::Receiver.new({
       :provider => 'mandrill',
@@ -100,9 +104,7 @@ The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:s
 
 **2013-04-15:** If an email contains multiple HTML parts, Mandrill will only include the first HTML part in its `html` parameter. We therefore parse its `raw_msg` parameter to set the HTML part correctly. Mandrill also adds a newline to the end of each message part.
 
-### Additional information provided by the API
-
-See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is-the-format-of-inbound-email-webhooks-):
+See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is-the-format-of-inbound-email-webhooks-) for these additional parameters provided by the API:
 
 * `ts`
 * `email`
@@ -113,21 +115,39 @@ See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is
 
 ## Postmark
 
+### Incoming
+
     service = MultiMail::Receiver.new({
       :provider => 'postmark',
     })
 
 **2013-05-15:** If an email contains multiple HTML parts, Postmark will only include the first HTML part in its `HtmlBody` parameter. You cannot avoid this loss of data. Postmark is therefore not recommended.
 
-### Additional information provided by the API
-
-See [Postmark's documentation](http://developer.postmarkapp.com/developer-inbound-parse.html#mailboxhash):
+See [Postmark's documentation](http://developer.postmarkapp.com/developer-inbound-parse.html#mailboxhash) for these additional parameters provided by the API:
 
 * `MailboxHash`
 * `MessageID`
 * `Tag`
 
+### Outgoing
+
+Instead of MultiMail, use the [Postmark gem](https://github.com/wildbit/postmark-gem) to send mail with the [Mail gem](https://github.com/mikel/mail), [as documented by the Postmark gem](https://github.com/wildbit/postmark-gem#using-postmark-with-the-mail-library):
+
+    require 'postmark'
+
+    message = Mail.new do
+      delivery_method Mail::Postmark, :api_key => 'your-postmark-api-key'
+      from 'foo@example.com'
+      to 'bar@example.com'
+      subject 'test'
+      body 'hello'
+    end
+
+See the [Postmark gem's documentation](https://github.com/wildbit/postmark-gem#communicating-with-the-api) for all `delivery_method` options. See the [Mail gem's documentation](https://github.com/mikel/mail#usage) for creating messages.
+
 ## SendGrid
+
+### Oncoming
 
     service = MultiMail::Receiver.new({
       :provider => 'sendgrid',
@@ -142,9 +162,7 @@ The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:s
 
 **2013-05-17:** If an email contains multiple HTML parts, SendGrid will create a new attachment for each, with an auto-generated filename. Since we cannot robustly identify these attachments, you must inspect attachments to recover any additional HTML parts.
 
-### Additional information provided by the API
-
-See [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Webhooks/parse.html)
+See [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Webhooks/parse.html) for these additional parameters provided by the API:
 
 * `dkim`
 * `SPF`
