@@ -90,11 +90,6 @@ describe MultiMail::Receiver::Mandrill do
         it 'should return multiple messages if there are multiple events' do
           messages = service.transform(params('multiple'))
           messages.size.should == 2
-          message1 = messages[0]
-          message2 = messages[1]
-
-          message1.date.should == message2.date
-          message1.from.should == message2.from
         end
       end
 
