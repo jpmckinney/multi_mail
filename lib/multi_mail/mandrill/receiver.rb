@@ -43,7 +43,6 @@ module MultiMail
       # @see http://help.mandrill.com/entries/22092308-What-is-the-format-of-inbound-email-webhooks-
       def transform(params)
         # JSON is necessarily UTF-8.
-
         JSON.parse(params['mandrill_events']).select do |event|
           event.fetch('event') == 'inbound'
         end.map do |event|
@@ -95,8 +94,6 @@ module MultiMail
             end
           end
 
-
-
           # Extra Mandrill parameters. Discard `sender` and `tags`, which are
           # null according to the docs, `matched_rules` within `spam_report`,
           # and `detail` within `spf`, which is just a human-readable version of
@@ -107,6 +104,7 @@ module MultiMail
           message['dkim-valid']        = msg['dkim']['valid'].to_s
           message['spam_report-score'] = msg['spam_report']['score']
           message['spf-result']        = msg['spf']['result']
+
           message
         end
       end

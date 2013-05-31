@@ -63,7 +63,7 @@ end
 desc 'Ensure a Mandrill catch-all route forwarding to a postbin'
 task :mandrill do
   require 'mandrill'
-  
+
   api = Mandrill::API.new(credentials[:mandrill_api_key])
   domain = api.inbound.domains.first
 

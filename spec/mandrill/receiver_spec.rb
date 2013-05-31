@@ -3,15 +3,6 @@ require 'multi_mail/mandrill/receiver'
 
 describe MultiMail::Receiver::Mandrill do
   context 'after initialization' do
-
-    let :service do
-      MultiMail::Receiver.new(
-        :provider => :mandrill,
-        :mandrill_webhook_key => 'rth_rywL9CWIIZBuwPQIWw',
-        :mandrill_webhook_url => 'http://rackbin.herokuapp.com/'
-        )
-    end
-
     def params(fixture)
       MultiMail::Receiver::Mandrill.parse(response('mandrill', fixture))
     end
@@ -107,7 +98,6 @@ describe MultiMail::Receiver::Mandrill do
         end
       end
 
-
       describe '#spam?' do
         it 'should return true if the response is spam' do
           message = service.transform(params('spam'))[0]
@@ -120,6 +110,5 @@ describe MultiMail::Receiver::Mandrill do
         end
       end
     end
-    
   end
 end

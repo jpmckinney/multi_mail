@@ -30,5 +30,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'postmark'
   s.add_development_dependency 'rest-client', '~> 1.6.7'
   s.add_development_dependency 'sendgrid_webapi'
-
 end
