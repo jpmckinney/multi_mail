@@ -38,9 +38,6 @@ module MultiMail
       when :simple
         require 'multi_mail/simple/receiver'
         MultiMail::Receiver::Simple.new(attributes)
-      when :mock
-        # for testing
-        MultiMail::Receiver::Mock.new(attributes)
       else
         raise ArgumentError.new("#{provider} is not a recognized provider")
       end
