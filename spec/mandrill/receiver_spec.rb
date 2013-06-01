@@ -50,7 +50,6 @@ describe MultiMail::Receiver::Mandrill do
         end
       end
 
-      # @todo Add a spec for multiple Mandrill events.
       describe '#transform' do
         it 'should return a mail message' do
           messages = service.transform(params('valid'))
