@@ -7,11 +7,11 @@ module MultiMail
       
       def initialize(options = {})
         super
-        @postmark_api_key = options[:api_key]
+        self.settings = options
       end
 
       def deliver!(mail)
-        mail.delivery_method Mail::Postmark, :api_key => @postmark_api_key   
+        mail.delivery_method Mail::Postmark, self.settings   
         mail.deliver 
       end
     end
