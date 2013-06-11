@@ -30,10 +30,10 @@ describe MultiMail::Sender::Postmark do
 
     it 'should raise an error' do
       message = Mail.new({
-        :from =>    'alexi@opennorth.ca',
-        :to =>      'alexio2@mac.com',
+        :from =>    'test@example.com',
+        :to =>      'example@test.com',
         :subject => 'this is a test',
-        :body =>    'There\'s a snake in my boots',
+        :body =>    'test text body',
       })
       expect{ service.deliver!(message) }.to raise_error
     end

@@ -28,6 +28,7 @@ module MultiMail
         MultiMail::Sender::Mailgun.new(attributes)
       when :mandrill
         require 'multi_mail/mandrill/sender'
+        require 'mandrill'
         MultiMail::Sender::Mandrill.new(attributes)
       when :postmark
         require 'multi_mail/postmark/sender'
