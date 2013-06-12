@@ -11,8 +11,8 @@ module MultiMail
       end
 
       def deliver!(mail)
-        mail.delivery_method Mail::Postmark, self.settings   
-        mail.deliver 
+        mail.delivery_method Mail::Postmark, self.settings
+        mail.deliver
       end
     end
   end

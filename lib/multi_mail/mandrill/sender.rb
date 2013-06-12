@@ -16,20 +16,47 @@ module MultiMail
       def deliver!(mail)
         smtp_from, smtp_to, tmp_message = check_delivery_params(mail)
         m = ::Mandrill::API.new(settings[:api_key])
+
+        ## extract recipients
+        to = []
+        smtp_to.each_with_index do |recipient , i|
+          to << {
+            :email => recipient,
+            :name => mail[:to].display_names[i]
+          }
+        end
+
+        ## extract text and html parts
+        if mail.multipart?
+          text = mail.body.preamble 
+#          text << mail.body.epilogue if mail.body.epilogue
+        else
+          text = mail.body.decoded
+        end
+
+        html = mail.parts.find do |part|
+          part.content_type == 'text/html; charset=UTF-8'
+        end
+        html = html.body if html
+
         message = {
           :subject => mail[:subject].to_s,
-          :from_name => smtp_from,    #change this
-          :text => tmp_message,
-          :to =>[
-            {
-              :email => smtp_to[0],     #had to access first element since smtp_to is array, will fix.
-              :name => mail[:to],       #change this
-            }
-          ],
-          :html => "placeholder",
+          :from_name => mail[:from].display_names.first,    #change this
+          :text => text,
+          :to => to,
+          :html => html,
           :from_email => smtp_from
         }
-        sending = m.messages.send message
+
+
+
+        response = m.messages.send message
+
+        if settings[:return_response]
+          response
+        else
+          self
+        end
         # @todo Send API requests
       end
     end
