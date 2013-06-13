@@ -26,42 +26,27 @@ module MultiMail
           }
         end
 
-        ## extract attachments
-        attachments  = []
-        if mail.multipart?
-          attachments = mail.attachments.map do |a|
-            {
-              :name => a.filename,
-              :type => a.mime_type,
-              :content => a.decoded
-
-            }
-          end
-          p attachments
-        end
-
-        ## extract text part
-        if mail.multipart?
-          text = mail.parts.find do |part|
-            part.content_type == 'text/plain; charset=UTF-8'
-            !part.attachment?
-          end
-          text = text.body.to_s if text
-        else
-          text = mail.body.decoded
-        end
-
+        
         ## extract html part
         html = mail.parts.find do |part|
           part.content_type == 'text/html; charset=UTF-8'
         end
         html = html.body if html
 
+        ## extract attachments
+        attachments = mail.attachments.map do |a|
+          {
+            :name => a.filename,
+            :type => a.mime_type,
+            :content => Base64.encode64(a.decoded)
+          }
+        end
+
 
         message = {
           :subject => mail[:subject].to_s,
           :from_name => mail[:from].display_names.first,    #change this
-          :text => text,
+          :text => mail.body.decoded,
           :to => to,
           :html => html,
           :from_email => smtp_from,

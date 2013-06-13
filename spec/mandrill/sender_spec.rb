@@ -7,7 +7,7 @@ describe MultiMail::Sender::Mandrill do
     let :service do
       MultiMail::Sender.new({
         :provider => :mandrill,
-        :api_key => 'mE2bie6bBEioJG40ZbWZ6g',
+        :api_key => ENV['MANDRILL_API'],
         :return_response => true
         })
     end
@@ -38,7 +38,6 @@ describe MultiMail::Sender::Mandrill do
     let :message_with_attachment do
       message.tap do |msg|
         msg.attachments["valid"] = response('postmark', 'valid')
-        msg.to = 'alexi@opennorth.ca'
       end
     end
 
@@ -98,7 +97,7 @@ describe MultiMail::Sender::Mandrill do
 #      end
         
         it 'delivers a message with attachment' do
-          service.deliver!(message_with_attachment)[0]["status"].should eq "sent"
+          service.deliver!(message_with_attachment)[0]["status"].should eq "queued"
         end
 
         it 'sends multipart emails' do
