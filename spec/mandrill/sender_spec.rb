@@ -21,11 +21,11 @@ describe MultiMail::Sender::Mandrill do
       })
     end
 
-#    let :tagged_message do
-#      message.tap do |m|
-#        m.tag "postmark-gem"
-#      end
-#    end
+    let :tagged_message do
+      message.tap do |m|
+        m[:tag] = "postmark-gem"
+      end
+    end
 
     let :message_with_no_body do
       Mail.new do
@@ -88,22 +88,22 @@ describe MultiMail::Sender::Mandrill do
         end
       end
 
-      it 'rejects an invalid email address' do
-        expect { service.deliver!(message_with_invalid_to) }.to raise_error
+      it 'delivers a tagged message' do
+        service.deliver!(tagged_message)[0]["status"].should eq "sent"
       end
 
-#      it 'delivers a tagged message' do
-#        service.deliver!(tagged_message)[0]["status"].should eq "sent"
-#      end
-        
-        it 'delivers a message with attachment' do
-          service.deliver!(message_with_attachment)[0]["status"].should eq "queued"
-        end
+      it 'delivers a message with attachment' do
+        service.deliver!(message_with_attachment)[0]["status"].should eq "queued"
+      end
 
-        it 'sends multipart emails' do
-          service.deliver!(multipart_message)[0]['status'].should eq "sent"
-        end
+      it 'delivers multipart emails' do
+        service.deliver!(multipart_message)[0]['status'].should eq "sent"
+      end
 
+      it 'rejects an invalid email' do
+        expect { service.deliver!(message_with_invalid_to) }.to raise_error
+        expect { service.deliver!(message_with_no_body) }.to raise_error
+      end
     end
   end
 

@@ -61,6 +61,7 @@ describe MultiMail::Sender::Postmark do
     end
 
     describe '#deliver' do
+
       it 'sends email' do
         service.deliver!(message)
         message.delivered.should eq true
@@ -69,6 +70,11 @@ describe MultiMail::Sender::Postmark do
       it 'sends to correct recipients' do
         response = service.deliver!(message).postmark_response
         response["To"].should eq message[:to].to_s
+      end
+
+      it 'sends to multiple recipients' do 
+        response = service.deliver!(message).postmark_response
+        response["To"].split(',').size.should eq 2
       end
 
       it 'updates a message object with full postmark response' do
@@ -91,11 +97,7 @@ describe MultiMail::Sender::Postmark do
         expect { service.deliver!(message_with_invalid_to) }.to raise_error
         expect { service.deliver!(message_with_no_body) }.to raise_error
       end
-
     end
-
-
-
   end
 
   context 'after initialization without api_key' do

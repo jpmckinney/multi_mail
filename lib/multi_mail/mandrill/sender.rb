@@ -27,7 +27,7 @@ module MultiMail
         end
 
         
-        ## extract html part
+        ## extract html 
         html = mail.parts.find do |part|
           part.content_type == 'text/html; charset=UTF-8'
         end
@@ -42,15 +42,25 @@ module MultiMail
           }
         end
 
+        ## extract images
+        images = attachments.find do |a|
+          a[:type].start_with?('image/')
+        end
+        attachments.reject! {|a| a[:type].start_with?('image/')}
+
 
         message = {
-          :subject => mail[:subject].to_s,
-          :from_name => mail[:from].display_names.first,    #change this
-          :text => mail.body.decoded,
-          :to => to,
           :html => html,
+          :text => mail.body.decoded,
+          :subject => mail[:subject].to_s,
           :from_email => smtp_from,
-          :attachments => attachments
+          :from_name => mail[:from].display_names.first,    #change this
+          :to => to,
+          :headers => mail[:headers],
+          :bcc_address => mail.bcc,
+          :attachments => attachments,
+          :images => images,
+          :tags => mail[:tags]
         }
         response = m.messages.send message
 
