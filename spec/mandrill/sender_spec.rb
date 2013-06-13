@@ -15,7 +15,7 @@ describe MultiMail::Sender::Mandrill do
     let :message do 
       Mail.new({
         :from =>    'test@example.com',
-        :to =>      ['to@example.com','alexio2@mac.com'],
+        :to =>      ['to@example.com','to2@example.com'],
         :subject => 'this is a test',
         :body =>    'test text body',
       })
@@ -38,6 +38,7 @@ describe MultiMail::Sender::Mandrill do
     let :message_with_attachment do
       message.tap do |msg|
         msg.attachments["valid"] = response('postmark', 'valid')
+        msg.to = 'alexi@opennorth.ca'
       end
     end
 
@@ -101,7 +102,7 @@ describe MultiMail::Sender::Mandrill do
         end
 
         it 'sends multipart emails' do
-          service.deliver!(multipart_message)
+          service.deliver!(multipart_message)[0]['status'].should eq "sent"
         end
 
     end

@@ -40,6 +40,18 @@ describe MultiMail::Sender::Postmark do
       end
     end
 
+    let :multipart_message do
+
+      html_part = Mail::Part.new do
+        content_type 'text/html; charset=UTF-8'
+        body '<h1>This is HTML</h1>'
+      end
+      message.tap do |msg|
+        msg.html_part = html_part
+      end
+      
+    end
+
     let :message_with_invalid_to do
       Mail.new do
         from "sender@postmarkapp.com"
@@ -71,8 +83,13 @@ describe MultiMail::Sender::Postmark do
         expect { service.deliver!(message_with_attachment) }.to change{message_with_attachment.delivered?}.to(true)
       end
 
-      it 'rejects invalid email address' do
+      it 'delivers multipart message' do
+        expect { service.deliver!(multipart_message) }.to change{multipart_message.delivered?}.to(true)
+      end
+
+      it 'rejects invalid email' do
         expect { service.deliver!(message_with_invalid_to) }.to raise_error
+        expect { service.deliver!(message_with_no_body) }.to raise_error
       end
 
     end

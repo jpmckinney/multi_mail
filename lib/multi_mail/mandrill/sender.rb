@@ -13,7 +13,7 @@ module MultiMail
       end
 
       # @param [Mail::Message] mail a message
-      def deliver!(mail)
+      def deliver!(mail)        
         smtp_from, smtp_to, tmp_message = check_delivery_params(mail)
         m = ::Mandrill::API.new(settings[:api_key])
 
@@ -26,18 +26,37 @@ module MultiMail
           }
         end
 
-        ## extract text and html parts
+        ## extract attachments
+        attachments  = []
         if mail.multipart?
-          text = mail.body.preamble 
-#          text << mail.body.epilogue if mail.body.epilogue
+          attachments = mail.attachments.map do |a|
+            {
+              :name => a.filename,
+              :type => a.mime_type,
+              :content => a.decoded
+
+            }
+          end
+          p attachments
+        end
+
+        ## extract text part
+        if mail.multipart?
+          text = mail.parts.find do |part|
+            part.content_type == 'text/plain; charset=UTF-8'
+            !part.attachment?
+          end
+          text = text.body.to_s if text
         else
           text = mail.body.decoded
         end
 
+        ## extract html part
         html = mail.parts.find do |part|
           part.content_type == 'text/html; charset=UTF-8'
         end
         html = html.body if html
+
 
         message = {
           :subject => mail[:subject].to_s,
@@ -45,11 +64,9 @@ module MultiMail
           :text => text,
           :to => to,
           :html => html,
-          :from_email => smtp_from
+          :from_email => smtp_from,
+          :attachments => attachments
         }
-
-
-
         response = m.messages.send message
 
         if settings[:return_response]
