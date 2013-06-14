@@ -8,7 +8,10 @@ describe MultiMail::Sender::Mandrill do
       MultiMail::Sender.new({
         :provider => :mandrill,
         :api_key => ENV['MANDRILL_API'],
-        :return_response => true
+        :return_response => true,
+        :message_options => {
+          :important => false 
+        }
         })
     end
 

@@ -62,6 +62,7 @@ module MultiMail
           :images => images,
           :tags => mail[:tags]
         }
+        message.merge!(settings[:message_options]) if settings[:message_options]
         response = m.messages.send message
 
         if settings[:return_response]
