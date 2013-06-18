@@ -61,7 +61,11 @@ Incoming email:
 
 Outgoing email:
 
+* [Cloudmailin](http://www.cloudmailin.com/): [Documentation](#cloudmailin)
+* [Mailgun](http://www.mailgun.com/): [Documentation](#mailgun)
+* [Mandrill](http://mandrill.com/): [Documentation](#mandrill)
 * [Postmark](http://postmarkapp.com/): [Documentation](#postmark)
+* [SendGrid](http://sendgrid.com/): [Documentation](#sendgrid)
 
 ## Cloudmailin
 
