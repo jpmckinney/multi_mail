@@ -61,7 +61,6 @@ Incoming email:
 
 Outgoing email:
 
-* [Cloudmailin](http://www.cloudmailin.com/): [Documentation](#cloudmailin)
 * [Mailgun](http://www.mailgun.com/): [Documentation](#mailgun)
 * [Mandrill](http://mandrill.com/): [Documentation](#mandrill)
 * [Postmark](http://postmarkapp.com/): [Documentation](#postmark)
@@ -120,8 +119,8 @@ See [Mailgun's documentation](http://documentation.mailgun.net/user_manual.html#
 ### Outgoing
     service = MultiMail::Sender.new({
       :provider => 'mailgun',
-      :api_key => <mailgun-api-key>,
-      :domain_name => <mailgun-domain-name>,
+      :api_key => key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx,
+      :domain_name => yourdomain.mailgun.org,
       :message_options => <optional>
       })
 
@@ -199,7 +198,7 @@ See [Postmark's documentation](http://developer.postmarkapp.com/developer-inboun
 ### Outgoing
 
     service = MultiMail::Sender.new({
-      :provider => "postmark",
+      :provider => 'postmark',
       :api_key => <postmark-api-key>
       })
 
