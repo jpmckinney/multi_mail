@@ -96,15 +96,15 @@ once you have created your mail message, call
 
 See [Mailgun's documentation](http://documentation.mailgun.com/api-sending.html) for these additional parameters provided by the api
 
-*`o:campaign`
-*`o:dkim`
-*`o:deliverytime`
-*`o:testmode`
-*`o:tracking`
-*`o:tracking-clicks`
-*`o:tracking-opens`
-*`h:X-My-Header`
-*`v:my-var`
+* `o:campaign`
+* `o:dkim`
+* `o:deliverytime`
+* `o:testmode`
+* `o:tracking`
+* `o:tracking-clicks`
+* `o:tracking-opens`
+* `h:X-My-Header`
+* `v:my-var`
 
 these can be inserted into :message_options as a hash. Ex:
     :message_options => {'o:tracking-clicks' => 'yes'}
@@ -170,6 +170,7 @@ See [Postmark's documentation](http://developer.postmarkapp.com/developer-inboun
       })
 
 once you have created your mail message, call
+
     service.deliver!(message)
 
 
@@ -214,13 +215,14 @@ once you have created your mail message, call
 
 see [Sendgrid's documentation](http://sendgrid.com/docs/API_Reference/Web_API/mail.html) for these additional parameters provided by the API:
 
-*`x-smtpapi`
-*`replyto`
-*`date`
-*`content`
-*`headers`
+* `x-smtpapi`
+* `replyto`
+* `date`
+* `content`
+* `headers`
 
-these can be inserted into the :message_options field as a hash. Ex: 
+these can be inserted into the :message_options field as a hash. Ex:
+
     :message_options => {"headers" => {"X-Accept-Language":"en"} } 
 
 
