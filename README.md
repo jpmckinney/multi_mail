@@ -25,7 +25,7 @@ Any additional parameters provided by an API is added to the message as a header
       :message_options => {
         :important => false 
       },
-      })
+    })
 
     message = Mail.new({
       :from =>    'from@example.com',
@@ -34,7 +34,18 @@ Any additional parameters provided by an API is added to the message as a header
       :body =>    'test text body',
     })
 
-    service.deliver!(message) 
+    service.deliver!(message)
+
+the deliver! will return an instance of `MultiMail::Sender::Mandrill` in this case. If you wish to return the response provided by the provider (in this case Mandrill), you can initialize service using `:return_response` as such:
+
+    service = MultiMail::Sender.new({
+      :provider => :mandrill,
+      :api_key => <mandrill-api-key>,
+      :message_options => {
+        :important => false 
+      },
+      :return_response => true
+    })
 
 ## Supported APIs
 
