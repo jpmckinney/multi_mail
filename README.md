@@ -19,6 +19,23 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
 
 Any additional parameters provided by an API is added to the message as a header. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it with `message['stripped-text'].value`.
 
+    service = MultiMail::Sender.new({
+      :provider => :mandrill,
+      :api_key => <mandrill-api-key>,
+      :message_options => {
+        :important => false 
+      },
+      })
+
+    message = Mail.new({
+      :from =>    'from@example.com',
+      :to =>      ['to@example.com','to2@example.com'],
+      :subject => 'this is a test',
+      :body =>    'test text body',
+    })
+
+    service.deliver!(message) 
+
 ## Supported APIs
 
 Incoming email:
@@ -107,6 +124,7 @@ See [Mailgun's documentation](http://documentation.mailgun.com/api-sending.html)
 * `v:my-var`
 
 these can be inserted into :message_options as a hash. Ex:
+
     :message_options => {'o:tracking-clicks' => 'yes'}
 
 ## Mandrill
@@ -143,7 +161,6 @@ See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is
     service = MultiMail::Sender.new({
       :provider => 'mandrill',
       :api_key => <mandrill-api-key>,
-      :return
       })
 
 ## Postmark
@@ -174,8 +191,6 @@ once you have created your mail message, call
     service.deliver!(message)
 
 
-
-See the [Postmark gem's documentation](https://github.com/wildbit/postmark-gem#communicating-with-the-api) for all `delivery_method` options. See the [Mail gem's documentation](https://github.com/mikel/mail#usage) for creating messages.
 
 ## SendGrid
 
