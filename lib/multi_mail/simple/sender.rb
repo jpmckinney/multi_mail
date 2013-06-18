@@ -10,7 +10,13 @@ module MultiMail
       end
 
       def deliver!(mail)
-        mail.deliver
+        response = mail.deliver
+
+        if settings[:return_response]
+          response
+        else
+          self
+        end
       end
 
     end

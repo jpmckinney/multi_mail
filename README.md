@@ -83,6 +83,32 @@ See [Mailgun's documentation](http://documentation.mailgun.net/user_manual.html#
 * `stripped-html`
 * `content-id-map`
 
+### Outgoing
+    service = MultiMail::Sender.new({
+      :provider => 'mailgun',
+      :api_key => <mailgun-api-key>,
+      :domain_name => <mailgun-domain-name>,
+      :message_options => <optional>
+      })
+
+once you have created your mail message, call
+    service.deliver!(message)
+
+See [Mailgun's documentation](http://documentation.mailgun.com/api-sending.html) for these additional parameters provided by the api
+
+*`o:campaign`
+*`o:dkim`
+*`o:deliverytime`
+*`o:testmode`
+*`o:tracking`
+*`o:tracking-clicks`
+*`o:tracking-opens`
+*`h:X-My-Header`
+*`v:my-var`
+
+these can be inserted into :message_options as a hash. Ex:
+    :message_options => {'o:tracking-clicks' => 'yes'}
+
 ## Mandrill
 
 ### Incoming
@@ -113,6 +139,13 @@ See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is
 * `spam_report-score`
 * `spf-result`
 
+### Outgoing
+    service = MultiMail::Sender.new({
+      :provider => 'mandrill',
+      :api_key => <mandrill-api-key>,
+      :return
+      })
+
 ## Postmark
 
 ### Incoming
@@ -131,23 +164,21 @@ See [Postmark's documentation](http://developer.postmarkapp.com/developer-inboun
 
 ### Outgoing
 
-Instead of MultiMail, use the [Postmark gem](https://github.com/wildbit/postmark-gem) to send mail with the [Mail gem](https://github.com/mikel/mail), [as documented by the Postmark gem](https://github.com/wildbit/postmark-gem#using-postmark-with-the-mail-library):
+    service = MultiMail::Sender.new({
+      :provider => "postmark",
+      :api_key => <postmark-api-key>
+      })
 
-    require 'postmark'
+once you have created your mail message, call
+    service.deliver!(message)
 
-    message = Mail.new do
-      delivery_method Mail::Postmark, :api_key => 'your-postmark-api-key'
-      from 'foo@example.com'
-      to 'bar@example.com'
-      subject 'test'
-      body 'hello'
-    end
+
 
 See the [Postmark gem's documentation](https://github.com/wildbit/postmark-gem#communicating-with-the-api) for all `delivery_method` options. See the [Mail gem's documentation](https://github.com/mikel/mail#usage) for creating messages.
 
 ## SendGrid
 
-### Oncoming
+### Incoming
 
     service = MultiMail::Receiver.new({
       :provider => 'sendgrid',
@@ -168,6 +199,30 @@ See [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Webhooks/p
 * `SPF`
 * `spam_report`
 * `spam_score`
+
+### Outgoing
+    
+    service = MultiMail::Sender.new({
+      :provider => 'sendgrid',
+      :user_name => <sendgrid_username>,
+      :api_key => <sendgrid_api_key>,
+      :message_options => <optional>
+      })
+
+once you have created your mail message, call
+    service.deliver!(message)
+
+see [Sendgrid's documentation](http://sendgrid.com/docs/API_Reference/Web_API/mail.html) for these additional parameters provided by the API:
+
+*`x-smtpapi`
+*`replyto`
+*`date`
+*`content`
+*`headers`
+
+these can be inserted into the :message_options field as a hash. Ex: 
+    :message_options => {"headers" => {"X-Accept-Language":"en"} } 
+
 
 ## Bugs? Questions?
 

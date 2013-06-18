@@ -42,21 +42,23 @@ module MultiMail
           :from => smtp_from,
           :bcc => mail.bcc,
           :fromname => mail[:from].display_names.first,
-          :replyto => nil,                        #nil for now
           :files => attachments,
-          :content => nil,                        #nil for now
-          :headers => nil,                        #nil for now
         }
         params = {:api_user => @user_name, :api_key => @api_key}.merge(message)
 
-        RestClient.post(
+        response = RestClient.post(
           "https://sendgrid.com/api/mail.send.json",
           params,
           :content_type => :json
-          ) {|response, request, result, &block|
-          p request.args
+          ) {|response,request|
           response
         }
+
+        if settings[:return_response]
+          response
+        else
+          self
+        end
         # @todo Send API requests
       end
     end

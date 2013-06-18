@@ -12,7 +12,13 @@ module MultiMail
 
       def deliver!(mail)
         mail.delivery_method Mail::Postmark, self.settings
-        mail.deliver
+        response = mail.deliver
+        
+        if settings[:return_response]
+          response
+        else
+          self  
+        end
       end
     end
   end

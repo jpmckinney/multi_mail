@@ -7,7 +7,8 @@ describe MultiMail::Sender::Postmark do
     let :service do
       MultiMail::Sender.new({
         :provider => :postmark,
-        :api_key => 'POSTMARK_API_TEST'
+        :api_key => 'POSTMARK_API_TEST',
+        :return_response => true
         })
     end
 

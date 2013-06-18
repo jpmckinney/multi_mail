@@ -53,10 +53,16 @@ module MultiMail
         
         message.merge!(settings[:message_options]) if settings[:message_options]
 
-        RestClient.post(
+        response = RestClient.post(
           "https://api:#{@api_key}@api.mailgun.net/v2/#{@domain_name}/messages",
           message
         )
+
+        if settings[:return_response]
+          response
+        else
+          self
+        end
 
       end
     end

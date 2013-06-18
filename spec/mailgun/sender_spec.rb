@@ -9,6 +9,7 @@ describe MultiMail::Sender::Mailgun do
         :provider => :mailgun,
         :api_key => ENV['MAILGUN_API_KEY'],
         :domain_name => ENV['MAILGUN_DOMAIN'],
+        :return_response => true
         })
     end
 
@@ -83,7 +84,6 @@ describe MultiMail::Sender::Mailgun do
       end
 
       it 'delivers a message with attachment' do
-        p message_with_attachment.class
         service.deliver!(message_with_attachment).should include("Queued. Thank you.") 
       end
 

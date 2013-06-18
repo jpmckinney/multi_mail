@@ -9,7 +9,8 @@ describe MultiMail::Sender::SendGrid do
       MultiMail::Sender.new({
         :provider => :sendgrid,
         :user_name => ENV['SENDGRID_USERNAME'],
-        :api_key => ENV['SENDGRID_API_KEY']
+        :api_key => ENV['SENDGRID_API_KEY'],
+        :return_response => true
         })
     end
 
@@ -59,7 +60,6 @@ describe MultiMail::Sender::SendGrid do
         to "@postmarkapp.com"
       end
     end
-
     describe '#deliver' do
 
       it 'sends email' do
@@ -93,7 +93,7 @@ describe MultiMail::Sender::SendGrid do
 
       it 'rejects invalid email' do
         expect { service.deliver!(message_with_invalid_to) }.to raise_error
-        expect { service.deliver!(message_with_no_body) }.to raise_error
+        service.deliver!(message_with_no_body).should eq "{\"message\": \"error\", \"errors\": [\"Missing subject\"]}"
       end
     end
   end

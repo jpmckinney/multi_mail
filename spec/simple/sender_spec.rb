@@ -8,6 +8,7 @@ describe MultiMail::Sender::Simple do
     let :service do
       MultiMail::Sender.new({
         :provider => :simple,
+        :return_response => true
       })
     end
 
