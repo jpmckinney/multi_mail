@@ -7,8 +7,8 @@ rvm:
 - 2.0.0
 - ree
 env:
-  matrix:
-  - TRAVIS_SECURE_ENV_VARS=true
+  global:
+  - TRAVIS_SECURE_ENV_VARS: true 
   - secure: ! 'kEs/wTgsDc6z6074xcedmoPa0gkR92CdGoSyvq2a3/EelBL2dHOXFhe5mF+X
 
       Bk4F0NR5Yfq/SHcSCrh6qf5fHKqBSrqkdKk+wDrbh0Dz9uYMjvUmo+di9yHg
