@@ -8,7 +8,7 @@ rvm:
 - ree
 env:
   global:
-  - TRAVIS_SECURE_ENV_VARS: true 
+  - TRAVIS_SECURE_ENV_VARS: true
   - secure: ! 'kEs/wTgsDc6z6074xcedmoPa0gkR92CdGoSyvq2a3/EelBL2dHOXFhe5mF+X
 
       Bk4F0NR5Yfq/SHcSCrh6qf5fHKqBSrqkdKk+wDrbh0Dz9uYMjvUmo+di9yHg
@@ -34,3 +34,13 @@ env:
       cI55AMkCg/sfsc+ZcqbB/ijnSSIglOnqchyG9ki/njSctuBpWcd0DQfBEFuP
 
       En9iT8fvE8ZsSPvSrnu+lrnd0+YzNAo3qzeeZtj9J3mFepqA8a4='
+  - secure: ! 'ukurSjUaNFna13msI5HWgnh28tHQ6rKmD/yO5/uWfy3j7id1gFEkir/ewYnT
+
+      m9aExK5I2KFUFU5EBsh9dhsldXCBbK+vF66wSqoJAtQGuqqIPITqToIAscnZ
+
+      jvEr6J3FdpcFmJ7Q5MZ/hm1p4cDzxzRRoGgWEMnOVIOjyKv0E5c='
+  - secure: ! 'QP9Y7sptp1XZwVhkbgm3imDBh+0MRjaNIL4i5Kl4lLdcOgqPVRDKfFINpXDz
+
+      q5iT5aLTjnayssGYyowzrvr78NsJUpAqbBsjWMf5ME+W7O7W/IK3kplkNlw8
+
+      AThGxw+OpENXP4KoOFF3vMXoKs5G2Tp5KhfCOjc3//LzD889JYI='

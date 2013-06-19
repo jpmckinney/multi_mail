@@ -205,7 +205,7 @@ See [Mandrill's documentation](https://mandrillapp.com/api/docs/messages.JSON.ht
 * `async`
 * `ip_pool`
 
-these can be inserted into the :message_options field as a hash. Ex:
+these can be inserted into the :message_options field as a hash.
 
 
 ## Postmark

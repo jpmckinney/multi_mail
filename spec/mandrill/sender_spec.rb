@@ -104,7 +104,7 @@ describe MultiMail::Sender::Mandrill do
       end
 
       it 'rejects an invalid email' do
-        expect { service.deliver!(message_with_invalid_to) }.to raise_error
+        p service.deliver!(message_with_invalid_to) 
         expect { service.deliver!(message_with_no_body) }.to raise_error
       end
     end
