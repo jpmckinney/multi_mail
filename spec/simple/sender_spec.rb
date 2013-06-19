@@ -27,8 +27,8 @@ describe MultiMail::Sender::Simple do
       it 'should send email' do 
         message.delivery_method :smtp, { 
           :address              => 'smtp.gmail.com',
-          :port                 => 25,
-          # :domain               => 'smtp.gmail.com',
+          :port                 => 587,
+          :domain               => 'smtp.gmail.com',
           :user_name            => ENV['GMAIL_USERNAME'],
           :password             => ENV['GMAIL_PASSWORD'],
           :authentication       => 'plain',
