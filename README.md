@@ -179,6 +179,35 @@ See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is
       :api_key => <mandrill-api-key>,
       })
 
+Once you have created your mail message, call 
+    service.deliver!(message)
+
+you can insert optional extra headers in the `:headers` field in your mail message, (currently Mandrill only supports Reply-to and X-* headers).
+
+See [Mandrill's documentation](https://mandrillapp.com/api/docs/messages.JSON.html) for these additional parameters provided by the api
+
+* `important`
+* `track_opens`
+* `track_clicks`
+* `auto_text`
+* `auto_html`
+* `inline_css`
+* `url_strip_qs`
+* `preserve_recipients`
+* `tracking_domain`
+* `signing_domain`
+* `merge`
+* `global_merge_vars`
+* `merge_vars`
+* `google_analytics_campaign`
+* `metadata`
+* `recipient_metadata`
+* `async`
+* `ip_pool`
+
+these can be inserted into the :message_options field as a hash. Ex:
+
+
 ## Postmark
 
 ### Incoming
@@ -244,17 +273,22 @@ See [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Webhooks/p
 once you have created your mail message, call
     service.deliver!(message)
 
+you can insert optional extra headers in the `:headers` field in your mail message.
+
+    message[:headers] =>  {"X-Accept-Language" => "en"} 
+
 see [Sendgrid's documentation](http://sendgrid.com/docs/API_Reference/Web_API/mail.html) for these additional parameters provided by the API:
 
 * `x-smtpapi`
 * `replyto`
 * `date`
 * `content`
-* `headers`
 
 these can be inserted into the :message_options field as a hash. Ex:
 
-    :message_options => {"headers" => {"X-Accept-Language":"en"} } 
+    :message_options => {"x-smtpapi" => {"category" => "newuser"} }
+
+Multimail will translate necessary fields into JSON format for you. 
 
 
 ## Bugs? Questions?

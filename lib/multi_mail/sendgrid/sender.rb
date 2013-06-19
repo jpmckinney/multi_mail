@@ -15,6 +15,7 @@ module MultiMail
 
       # @param [Mail::Message] mail a message
       def deliver!(mail)
+
         smtp_from, smtp_to, message = check_delivery_params(mail)
         
         ## extract html
@@ -32,10 +33,10 @@ module MultiMail
           }
         end
 
+        headers = mail[:headers].to_json if mail[:headers]
         message = {
           :to => smtp_to,
           :toname => mail[:to].display_names,
-          "x-smptpapi" => nil,                    #nil for now
           :subject => mail[:subject].to_s,
           :text => mail.body.decoded,
           :html => html,
@@ -43,8 +44,12 @@ module MultiMail
           :bcc => mail.bcc,
           :fromname => mail[:from].display_names.first,
           :files => attachments,
+          :headers => headers,
+
         }
         params = {:api_user => @user_name, :api_key => @api_key}.merge(message)
+        params.merge!(settings[:message_options])
+        params['x-smtpapi'] = params['x-smtpapi'].to_json if params['x-smtpapi']
 
         response = RestClient.post(
           "https://sendgrid.com/api/mail.send.json",

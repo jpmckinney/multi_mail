@@ -10,6 +10,9 @@ describe MultiMail::Sender::SendGrid do
         :provider => :sendgrid,
         :user_name => ENV['SENDGRID_USERNAME'],
         :api_key => ENV['SENDGRID_API_KEY'],
+        :message_options => {
+          "replyto" => 'alexio2@mac.com'
+        },
         :return_response => true
         })
     end
