@@ -143,6 +143,8 @@ these can be inserted into :message_options as a hash. Ex:
 
     :message_options => {'o:tracking-clicks' => 'yes'}
 
+Multimail will translate necessary fields into JSON format or you.
+
 ## Mandrill
 
 ### Incoming

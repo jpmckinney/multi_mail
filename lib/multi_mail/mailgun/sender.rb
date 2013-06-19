@@ -52,6 +52,7 @@ module MultiMail
         end
         
         message.merge!(settings[:message_options]) if settings[:message_options]
+        message['v:my-var'] = message['v:my-var'].to_json if message['v:my-var']
 
         response = RestClient.post(
           "https://api:#{@api_key}@api.mailgun.net/v2/#{@domain_name}/messages",
