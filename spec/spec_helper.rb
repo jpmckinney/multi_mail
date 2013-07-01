@@ -157,3 +157,13 @@ def normalize_encode_params(params)
     params
   end
 end
+
+# @return [String] the path to the GIF file
+def empty_gif_path
+  File.expand_path('../fixtures/empty.gif', __FILE__)
+end
+
+# @return [String] the content of the GIF file
+def empty_gif_content
+  File.read(empty_gif_path)
+end
