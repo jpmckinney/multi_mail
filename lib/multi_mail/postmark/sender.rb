@@ -7,18 +7,15 @@ end
 module MultiMail
   module Sender
     # Postmark's outgoing mail sender.
-    class Postmark < MultiMail::Service
+    class Postmark
       include MultiMail::Sender::Base
 
-      requires :api_key
-      
       # Initializes a Postmark outgoing email sender.
       #
       # @param [Hash] options required and optional arguments
       # @option options [String] :api_key a Postmark API key
       # @see https://github.com/wildbit/postmark-gem#communicating-with-the-api
       def initialize(options = {})
-        super
         self.settings = options
       end
 
@@ -29,6 +26,8 @@ module MultiMail
       def deliver!(mail)
         mail.delivery_method Mail::Postmark, self.settings
         mail.deliver
+      rescue ::Postmark::InvalidApiKeyError
+        raise ArgumentError, "Missing required arguments: :api_key"
       end
     end
   end
