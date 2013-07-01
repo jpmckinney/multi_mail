@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe MultiMail::Message::Base do
-  let :message do
+  let :text_message do
     MultiMail::Message::Base.new do
       from    'foo@example.com'
       to      'bar@example.com'
@@ -39,7 +39,7 @@ describe MultiMail::Message::Base do
 
   describe '#html?' do
     it 'should return false if the message is text only' do
-      message.html?.should == false
+      text_message.html?.should == false
     end
 
     it 'should return true if the message is HTML only' do
@@ -53,7 +53,7 @@ describe MultiMail::Message::Base do
 
   describe '#body_html' do
     it 'should not return the body if the message is text only' do
-      message.body_html.should be_nil
+      text_message.body_html.should be_nil
     end
 
     it 'should return the body if the message is HTML only' do
@@ -67,7 +67,7 @@ describe MultiMail::Message::Base do
 
   describe '#text_part' do
     it 'should return the body if the message is text only' do
-      message.body_text.should == 'hello'
+      text_message.body_text.should == 'hello'
     end
 
     it 'should return not the body if the message is HTML only' do
