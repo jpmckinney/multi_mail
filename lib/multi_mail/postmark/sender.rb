@@ -1,24 +1,34 @@
+begin
+  require 'postmark'
+rescue LoadError
+  raise 'The postmark gem is not available. In order to use the Postmark sender, you must: gem install postmark'
+end
+
 module MultiMail
   module Sender
-    #Postmarks outgoing mail sender
+    # Postmark's outgoing mail sender.
     class Postmark < MultiMail::Service
       include MultiMail::Sender::Base
+
       requires :api_key
       
+      # Initializes a Postmark outgoing email sender.
+      #
+      # @param [Hash] options required and optional arguments
+      # @option options [String] :api_key a Postmark API key
+      # @see https://github.com/wildbit/postmark-gem#communicating-with-the-api
       def initialize(options = {})
         super
         self.settings = options
       end
 
+      # Delivers a message via the Postmark API.
+      #
+      # @param [Mail::Message] mail a message
+      # @see https://github.com/wildbit/postmark-gem#using-postmark-with-the-mail-library
       def deliver!(mail)
         mail.delivery_method Mail::Postmark, self.settings
-        response = mail.deliver
-        
-        if settings[:return_response]
-          response
-        else
-          self  
-        end
+        mail.deliver
       end
     end
   end

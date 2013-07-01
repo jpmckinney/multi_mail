@@ -9,62 +9,54 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
 
 ## Usage
 
+### Incoming
+
     require 'multi_mail'
     
     service = MultiMail::Receiver.new(:provider => 'mandrill')
     
-    message = service.process data # raw POST data or params hash
+    messages = service.process(data) # raw POST data or params hash
 
-`message` is an array of [Mail::Message](https://github.com/mikel/mail) instances.
+`messages` will be an array of [Mail::Message](https://github.com/mikel/mail) instances. Any additional parameters provided by an API are added to each message as a header. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it as `message['stripped-text'].value`.
 
-Any additional parameters provided by an API is added to the message as a header. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it with `message['stripped-text'].value`.
+### Outgoing
 
-    service = MultiMail::Sender.new({
-      :provider => :mandrill,
-      :api_key => <mandrill-api-key>,
-      :message_options => {
-        :important => false 
-      },
-    })
+With MultiMail, you send a message the same way you do with the [Mail](https://github.com/mikel/mail#sending-an-email) gem. You just need to set the `delivery_method` for the message:
 
-    message = Mail.new({
-      :from =>    'from@example.com',
-      :to =>      ['to@example.com','to2@example.com'],
-      :subject => 'this is a test',
-      :body =>    'test text body',
-    })
+    require 'multi_mail/postmark/sender'
 
-    service.deliver!(message)
+    message = Mail.new do
+      delivery_method MultiMail::Sender::Postmark, api_key: 'your-postmark-api-key'
+      from    'foo@example.com'
+      to      'bar@example.com'
+      subject 'test'
+      body    'hello'
+    end
 
-check out the [Mail Gem's Documentation](https://github.com/mikel/mail#usage) for more info on creating Mail messages.  
+    message.deliver
 
-the deliver! will return an instance of `MultiMail::Sender::Mandrill` in this case. If you wish to return the response provided by the provider (in this case Mandrill), you can initialize service using `:return_response` as such:
+Alternatively, instead of setting the `delivery_method` during initialization, you can set it before delivery with:
 
-    service = MultiMail::Sender.new({
-      :provider => :mandrill,
-      :api_key => <mandrill-api-key>,
-      :message_options => {
-        :important => false 
-      },
-      :return_response => true
-    })
+    message.delivery_method MultiMail::Sender::Postmark, api_key: 'your-postmark-api-key'
+
+If you are sending many messages, you can set a default `delivery_method` for all messages:
+
+    Mail.defaults do
+      delivery_method MultiMail::Sender::Postmark, api_key: 'your-postmark-api-key'
+    end
 
 ## Supported APIs
 
-Incoming email:
+Incoming and outgoing email:
+
+* [Mailgun](http://www.mailgun.com/): [Documentation](#mailgun)
+* [Mandrill](http://mandrill.com/): [Documentation](#mandrill)
+* [Postmark](http://postmarkapp.com/): [Documentation](#postmark)
+* [SendGrid](http://sendgrid.com/): [Documentation](#sendgrid)
+
+Incoming email only:
 
 * [Cloudmailin](http://www.cloudmailin.com/): [Documentation](#cloudmailin)
-* [Mailgun](http://www.mailgun.com/): [Documentation](#mailgun)
-* [Mandrill](http://mandrill.com/): [Documentation](#mandrill)
-* [Postmark](http://postmarkapp.com/): [Documentation](#postmark)
-* [SendGrid](http://sendgrid.com/): [Documentation](#sendgrid)
-
-Outgoing email:
-
-* [Mailgun](http://www.mailgun.com/): [Documentation](#mailgun)
-* [Mandrill](http://mandrill.com/): [Documentation](#mandrill)
-* [Postmark](http://postmarkapp.com/): [Documentation](#postmark)
-* [SendGrid](http://sendgrid.com/): [Documentation](#sendgrid)
 
 ## Cloudmailin
 
@@ -209,7 +201,6 @@ See [Mandrill's documentation](https://mandrillapp.com/api/docs/messages.JSON.ht
 
 these can be inserted into the :message_options field as a hash.
 
-
 ## Postmark
 
 ### Incoming
@@ -228,16 +219,14 @@ See [Postmark's documentation](http://developer.postmarkapp.com/developer-inboun
 
 ### Outgoing
 
-    service = MultiMail::Sender.new({
-      :provider => 'postmark',
-      :api_key => <postmark-api-key>
-      })
+MultiMail depends on the `postmark` gem for its Postmark integration. MultiMail implements a simple wrapper around Postmark's [existing integration](https://github.com/wildbit/postmark-gem#using-postmark-with-the-mail-library) with the Mail gem, to be consistent with the other APIs:
 
-once you have created your mail message, call
+    require 'multi_mail/postmark/sender'
 
-    service.deliver!(message)
-
-
+    Mail.deliver do
+      delivery_method MultiMail::Sender::Postmark, api_key: 'your-postmark-api-key'
+      ...
+    end
 
 ## SendGrid
 
@@ -291,7 +280,6 @@ these can be inserted into the :message_options field as a hash. Ex:
     :message_options => {"x-smtpapi" => {"category" => "newuser"} }
 
 Multimail will translate necessary fields into JSON format for you. 
-
 
 ## Bugs? Questions?
 

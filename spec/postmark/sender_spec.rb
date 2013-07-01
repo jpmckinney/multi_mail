@@ -1,119 +1,44 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'multi_mail/postmark/sender'
 
-describe MultiMail::Sender::Postmark do 
-  context 'after initialization' do 
-    
-    let :service do
-      MultiMail::Sender.new({
-        :provider => :postmark,
-        :api_key => 'POSTMARK_API_TEST',
-        :return_response => true
-        })
-    end
-
-    let :message do
-      message = Mail.new({
-        :from =>    'from@example.com',
-        :to =>      ['to@example.com','to2@example.com'],
-        :subject => 'this is a test',
-        :body =>    'test text body',
-      })
-    end
-
-    let :tagged_message do
-      message.tap do |m|
-        m.tag "postmark-gem"
-      end
-    end
-
-    let :message_with_no_body do
-      Mail.new do
-        from "sender@postmarkapp.com"
-        to "recipient@postmarkapp.com"
-        delivery_method Mail::Postmark, :api_key => "POSTMARK_API_TEST"
-      end
-    end
-
-    let :message_with_attachment do
-      message.tap do |msg|
-        msg.attachments["valid"] = response('postmark', 'valid')
-      end
-    end
-
-    let :multipart_message do
-
-      html_part = Mail::Part.new do
-        content_type 'text/html; charset=UTF-8'
-        body '<h1>This is HTML</h1>'
-      end
-      message.tap do |msg|
-        msg.html_part = html_part
-      end
-      
-    end
-
-    let :message_with_invalid_to do
-      Mail.new do
-        from "sender@postmarkapp.com"
-        to "@postmarkapp.com"
-        delivery_method Mail::Postmark, :api_key => "POSTMARK_API_TEST"
-      end
-    end
-
-    describe '#deliver' do
-
-      it 'sends email' do
-        service.deliver!(message)
-        message.delivered.should eq true
-      end
-
-      it 'sends to correct recipients' do
-        response = service.deliver!(message).postmark_response
-        response["To"].should eq message[:to].to_s
-      end
-
-      it 'sends to multiple recipients' do 
-        response = service.deliver!(message).postmark_response
-        response["To"].split(',').size.should eq 2
-      end
-
-      it 'updates a message object with full postmark response' do
-        expect { service.deliver!(message) }.to change{message.postmark_response}.from(nil)
-      end
-
-      it 'delivers a tagged message' do
-        expect { service.deliver!(tagged_message) }.to change{message.delivered?}.to(true)
-      end
-
-      it 'delivers a message with attachment' do
-        expect { service.deliver!(message_with_attachment) }.to change{message_with_attachment.delivered?}.to(true)
-      end
-
-      it 'delivers multipart message' do
-        expect { service.deliver!(multipart_message) }.to change{multipart_message.delivered?}.to(true)
-      end
-
-      it 'rejects invalid email' do
-        expect { service.deliver!(message_with_invalid_to) }.to raise_error
-        expect { service.deliver!(message_with_no_body) }.to raise_error
-      end
+# @see https://github.com/wildbit/postmark-gem/blob/master/spec/unit/postmark/handlers/mail_spec.rb
+# @see https://github.com/wildbit/postmark-gem/blob/master/spec/integration/mail_delivery_method_spec.rb
+describe MultiMail::Sender::Postmark do
+  let :message do
+    Mail.new do
+      from    'foo@example.com'
+      to      'bar@example.com'
+      subject 'test'
+      body    'hello'
     end
   end
 
-  context 'after initialization without api_key' do
-    let :service do 
-      MultiMail::Sender.new({:provider => :postmark})
+  describe '#initialize' do
+    it 'should raise an error if :api_key is missing' do
+      expect{
+        message.delivery_method MultiMail::Sender::Postmark
+        message.deliver
+      }.to raise_error(ArgumentError)
     end
 
-    it 'should raise an error' do
-      message = Mail.new({
-        :from =>    'test@example.com',
-        :to =>      'example@test.com',
-        :subject => 'this is a test',
-        :body =>    'test text body',
-      })
-      expect{ service.deliver!(message) }.to raise_error
+    it 'should raise an error if :api_key is nil' do
+      expect{
+        message.delivery_method MultiMail::Sender::Postmark, :api_key => nil
+        message.deliver
+      }.to raise_error(ArgumentError)
+    end
+  end
+
+  describe '#deliver' do
+    before :all do
+      Mail.defaults do
+        delivery_method MultiMail::Sender::Postmark, :api_key => 'POSTMARK_API_TEST'
+      end
+    end
+
+    it 'sends a message' do
+      message.deliver.should == message
+      message.delivered?.should == true
     end
   end
 end
