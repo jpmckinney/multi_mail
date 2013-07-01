@@ -38,7 +38,7 @@ describe MultiMail::Sender::Postmark do
 
     it 'sends a message' do
       message.deliver.should == message
-      message.delivered?.should == true
+      message['Message-ID'].should_not be_nil
     end
   end
 end
