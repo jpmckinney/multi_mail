@@ -15,7 +15,7 @@ describe MultiMail::Receiver::Simple do
 
     describe '#transform' do
       it 'should return a mail message' do
-        message = service.transform(params('valid'))[0]
+        message = service.transform(params('valid')['message'])[0]
 
         # Headers
         message.date.should    == DateTime.parse('Thu, 27 Dec 2012 15:25:37 -0500')
