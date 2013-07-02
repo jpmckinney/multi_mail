@@ -48,13 +48,13 @@ describe MultiMail::Sender::Mandrill do
 
     it 'should assign custom settings' do
       sender = MultiMail::Sender::Mandrill.new({
-        :api_key         => ENV['MANDRILL_API'],
+        :api_key         => ENV['MANDRILL_API_KEY'],
         :async           => true,
         :ip_pool         => 'Main Pool',
         :send_at         => 'example send_at',
       })
 
-      sender.api_key.should == ENV['MANDRILL_API']
+      sender.api_key.should == ENV['MANDRILL_API_KEY']
       sender.async.should   == true
       sender.ip_pool.should == 'Main Pool'
       sender.send_at.should == 'example send_at'
@@ -64,7 +64,7 @@ describe MultiMail::Sender::Mandrill do
   describe '#deliver' do
     before :all do
       Mail.defaults do
-        delivery_method MultiMail::Sender::Mandrill, :api_key => ENV['MANDRILL_API']
+        delivery_method MultiMail::Sender::Mandrill, :api_key => ENV['MANDRILL_API_KEY']
       end
     end
 
@@ -76,7 +76,7 @@ describe MultiMail::Sender::Mandrill do
   describe '#deliver!' do
     before :all do
       Mail.defaults do
-        delivery_method MultiMail::Sender::Mandrill, :api_key => ENV['MANDRILL_API'], :return_response => true
+        delivery_method MultiMail::Sender::Mandrill, :api_key => ENV['MANDRILL_API_KEY'], :return_response => true
       end
     end
 

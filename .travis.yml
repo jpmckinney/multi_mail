@@ -1,46 +1,11 @@
----
 language: ruby
 rvm:
-- 1.8.7
-- 1.9.2
-- 1.9.3
-- 2.0.0
-- ree
+  - 1.8.7
+  - 1.9.2
+  - 1.9.3
+  - 2.0.0
+  - ree
 env:
   global:
-  - TRAVIS_SECURE_ENV_VARS: true
-  - secure: ! 'kEs/wTgsDc6z6074xcedmoPa0gkR92CdGoSyvq2a3/EelBL2dHOXFhe5mF+X
-
-      Bk4F0NR5Yfq/SHcSCrh6qf5fHKqBSrqkdKk+wDrbh0Dz9uYMjvUmo+di9yHg
-
-      zi7h4O9ADoNyLnJDW2BaVuLACtZqb1RAjzL0PqeA8obZsUL4GCk='
-  - secure: ! 'lSJbH79tyOUcfqHiZ3llhEbT53QqfZM4q8l+30Z9eFNpprD6eMiFh5BR1d5a
-
-      mkcvug026mxrq9Z9FHDkFUlC2Lk79rp2+M/+IfiivCG3IAmInD3qhfj3Jpdy
-
-      jthLH7mB+Hom31+J/4zHcUpe3VgTdwaXZavHTTPzuPqycfXO2VY='
-  - secure: ! 'fmM+PdJGr4GGO14eRfx75nAiNazNdiSzzyipKvlSxWsfTmABxGywQlYaybtq
-
-      MzIBqfsZHqt42hw9RCiS0jMDjpHgmqxk+fsZUo6S4BxxDOuKBHeplXycSETS
-
-      fv5eL4gotM6KKSf68CBkGkPn74QGgtPmdC3gXy7QFwUdPo9AIFI='
-  - secure: ! 'CayYvGmLj2uMtdvcac9tRqBlMtJ0HzKJUKhQJ4F631LUr88+gXpeiJnQrb3o
-
-      TH6ENpa4JAe/l3C2cDNZRBM2qzI+fAlzZaaq01mDuI4ak6VA8iQjawBsXzd8
-
-      nZayVzB1BujiFPhDo1HJZaBqJf7+z1lCHm+x+CpAC7XE8DPNHwQ='
-  - secure: ! 'TGfyjUCn5mWvfpkY3sayVOLKl7KWHdwvn6s4amcVhxz+2yY2VJsRfm6cEUFS
-
-      cI55AMkCg/sfsc+ZcqbB/ijnSSIglOnqchyG9ki/njSctuBpWcd0DQfBEFuP
-
-      En9iT8fvE8ZsSPvSrnu+lrnd0+YzNAo3qzeeZtj9J3mFepqA8a4='
-  - secure: ! 'ukurSjUaNFna13msI5HWgnh28tHQ6rKmD/yO5/uWfy3j7id1gFEkir/ewYnT
-
-      m9aExK5I2KFUFU5EBsh9dhsldXCBbK+vF66wSqoJAtQGuqqIPITqToIAscnZ
-
-      jvEr6J3FdpcFmJ7Q5MZ/hm1p4cDzxzRRoGgWEMnOVIOjyKv0E5c='
-  - secure: ! 'QP9Y7sptp1XZwVhkbgm3imDBh+0MRjaNIL4i5Kl4lLdcOgqPVRDKfFINpXDz
-
-      q5iT5aLTjnayssGYyowzrvr78NsJUpAqbBsjWMf5ME+W7O7W/IK3kplkNlw8
-
-      AThGxw+OpENXP4KoOFF3vMXoKs5G2Tp5KhfCOjc3//LzD889JYI='
+    # MANDRILL_API_KEY
+    - secure: "sjbNGWtWzaPup1yQN+cbtY264NgpNYZrOirVuYj5PMD31emoAiaobS7+cCJH\nx0MUXskjtbzvbJwvzLwkwDpdRA2Hx4dvOKh0HrOVLy1B0bKbVdb7P3eET2aN\nE07nmVNC79jiopD+1pWcbMGXr9s4/sOogK23ktVPegrWH7c0pfI="
