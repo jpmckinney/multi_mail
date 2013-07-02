@@ -26,24 +26,32 @@ With MultiMail, you send a message the same way you do with the [Mail](https://g
     require 'multi_mail/postmark/sender'
 
     message = Mail.new do
-      delivery_method MultiMail::Sender::Postmark, api_key: 'your-postmark-api-key'
-      from    'foo@example.com'
-      to      'bar@example.com'
-      subject 'test'
-      body    'hello'
+      delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
+      ...
     end
 
     message.deliver
 
 Alternatively, instead of setting the `delivery_method` during initialization, you can set it before delivery with:
 
-    message.delivery_method MultiMail::Sender::Postmark, api_key: 'your-postmark-api-key'
+    message.delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
 
 If you are sending many messages, you can set a default `delivery_method` for all messages:
 
     Mail.defaults do
-      delivery_method MultiMail::Sender::Postmark, api_key: 'your-postmark-api-key'
+      delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
     end
+
+If you would like to inspect the API response, pass `:return_response => true` to `delivery_method` and use the `deliver!` method to send the message. Note that the `deliver!` method ignores Mail's `perform_deliveries` and `raise_delivery_errors` flags.
+
+    require 'multi_mail/postmark/sender'
+
+    message = Mail.new do
+      delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key', :return_response => true
+      ...
+    end
+
+    message.deliver!
 
 ## Supported APIs
 
@@ -176,17 +184,6 @@ See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is
       ...
     end
 
-If you would like to inspect the Mandrill API response, pass `:return_response => true` to `delivery_method` and use the `deliver!` method to send the message. Note that the `deliver!` method ignores Mail's `perform_deliveries` and `raise_delivery_errors` flags.
-
-    require 'multi_mail/mandrill/sender'
-
-    message = Mail.new do
-      delivery_method MultiMail::Sender::Mandrill, :api_key => 'your-api-key', :return_response => true
-      ...
-    end
-
-    message.deliver!
-
 You may pass additional arguments to `delivery_method` to take advantage of Mandrill-specific features (see [Mandrill's documentation](https://mandrillapp.com/api/docs/messages.ruby.html#method-send)):
 
 * `important`
@@ -235,7 +232,7 @@ MultiMail depends on the `postmark` gem for its Postmark integration. MultiMail 
     require 'multi_mail/postmark/sender'
 
     Mail.deliver do
-      delivery_method MultiMail::Sender::Postmark, api_key: 'your-api-key'
+      delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
       ...
     end
 
@@ -264,20 +261,13 @@ See [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Webhooks/p
 * `spam_score`
 
 ### Outgoing
-    
-    service = MultiMail::Sender.new({
-      :provider => 'sendgrid',
-      :user_name => <sendgrid_username>,
-      :api_key => <sendgrid_api_key>,
-      :message_options => <optional>
-      })
 
-once you have created your mail message, call
-    service.deliver!(message)
+    require 'multi_mail/sendgrid/sender'
 
-you can insert optional extra headers in the `:headers` field in your mail message.
-
-    message[:headers] =>  {"X-Accept-Language" => "en"} 
+    Mail.deliver do
+      delivery_method MultiMail::Sender::SendGrid, :api_user => 'username', :api_key => 'password'
+      ...
+    end
 
 see [Sendgrid's documentation](http://sendgrid.com/docs/API_Reference/Web_API/mail.html) for these additional parameters provided by the API:
 
