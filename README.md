@@ -269,12 +269,9 @@ See [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Webhooks/p
       ...
     end
 
-see [Sendgrid's documentation](http://sendgrid.com/docs/API_Reference/Web_API/mail.html) for these additional parameters provided by the API:
+You may pass additional arguments to `delivery_method` to take advantage of SendGrid-specific features (see [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Web_API/mail.html)):
 
 * `x-smtpapi`
-* `replyto`
-* `date`
-* `content`
 
 these can be inserted into the :message_options field as a hash. Ex:
 

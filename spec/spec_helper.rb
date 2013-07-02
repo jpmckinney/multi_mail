@@ -12,12 +12,14 @@ require 'rack'
 require 'vcr'
 require File.dirname(__FILE__) + '/../lib/multi_mail'
 
-VCR.configure do |c|
-  c.cassette_library_dir = 'spec/cassettes'
-  c.hook_into :faraday
+if RUBY_VERSION >= '1.9'
+  VCR.configure do |c|
+    c.cassette_library_dir = 'spec/cassettes'
+    c.hook_into :faraday
 
-  c.around_http_request do |request|
-    VCR.use_cassette(Digest::SHA1.hexdigest(request.uri + request.body), &request)
+    c.around_http_request do |request| # Ruby 1.9+
+      VCR.use_cassette(Digest::SHA1.hexdigest(request.uri + request.body), &request)
+    end
   end
 end
 

@@ -1,70 +1,54 @@
+require 'multi_mail/sendgrid/message'
+
 module MultiMail
   module Sender
-    class SendGrid < MultiMail::Service
+    # SendGrid's outgoing mail sender.
+    class SendGrid
       include MultiMail::Sender::Base
 
-      requires :user_name, :api_key
-
-      # @param [Hash] values required and optional arguments
-      def initialize(values)
-        super
-        self.settings = values
-        @user_name = values[:user_name]
-        @api_key = values[:api_key]
+      # Initializes a SendGrid outgoing email sender.
+      #
+      # @param [Hash] options required and optional arguments
+      # @option options [String] :api_user a SendGrid API user
+      # @option options [String] :api_key a SendGrid API key
+      # @see http://sendgrid.com/docs/API_Reference/Web_API/
+      def initialize(options = {})
+        raise ArgumentError, "Missing required arguments: :api_user" unless options[:api_user]
+        raise ArgumentError, "Missing required arguments: :api_key" unless options[:api_key]
+        @settings = options.dup
+        settings['x-smtpapi'] ||= settings.delete(:'x-smtpapi')
+        if settings['x-smtpapi'] && settings['x-smtpapi'] === Hash
+          settings['x-smtpapi'] = JSON.dump(params['x-smtpapi'])
+        end
       end
 
+      # Delivers a message via the SendGrid API.
+      #
       # @param [Mail::Message] mail a message
+      # @see http://sendgrid.com/docs/API_Reference/Web_API/mail.html
       def deliver!(mail)
+        parameters = settings.dup
+        parameters.delete(:return_response)
+        message = MultiMail::Message::SendGrid.new(mail).to_sendgrid_hash.merge(parameters)
 
-        smtp_from, smtp_to, message = check_delivery_params(mail)
-        
-        ## extract html
-        html = mail.parts.find do |part|
-          part.content_type == 'text/html; charset=UTF-8'
-        end
-        html = html.body if html
-
-        ##extract attachments
-        attachments = mail.attachments.map do |a|
-          {
-            :name => a.filename,
-            :type => a.mime_type,
-            :content => Base64.encode64(a.decoded)
-          }
+        connection = Faraday.new do |conn|
+          conn.request :multipart
+          conn.request :url_encoded
         end
 
-        headers = mail[:headers].to_json if mail[:headers]
-        message = {
-          :to => smtp_to,
-          :toname => mail[:to].display_names,
-          :subject => mail[:subject].to_s,
-          :text => mail.body.decoded,
-          :html => html,
-          :from => smtp_from,
-          :bcc => mail.bcc,
-          :fromname => mail[:from].display_names.first,
-          :files => attachments,
-          :headers => headers,
+        response = connection.post('https://sendgrid.com/api/mail.send.json', message)
 
-        }
-        params = {:api_user => @user_name, :api_key => @api_key}.merge(message)
-        params.merge!(settings[:message_options])
-        params['x-smtpapi'] = params['x-smtpapi'].to_json if params['x-smtpapi']
+        body = JSON.load(response.body)
 
-        response = RestClient.post(
-          "https://sendgrid.com/api/mail.send.json",
-          params,
-          :content_type => :json
-          ) {|response,request|
-          response
-        }
+        unless response.status == 200
+          raise body.inspect # @todo
+        end
 
         if settings[:return_response]
           response
         else
           self
         end
-        # @todo Send API requests
       end
     end
   end

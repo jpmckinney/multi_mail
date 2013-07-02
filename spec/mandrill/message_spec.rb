@@ -4,8 +4,9 @@ require 'multi_mail/mandrill/message'
 describe MultiMail::Message::Mandrill do
   let :message do
     headers = {
-      'X-Autoreply' => true,
+      'X-Autoreply'  => true,
       'X-Precedence' => 'auto_reply',
+      'X-Numeric'    => 42,
       'Delivered-To' => 'Autoresponder',
     }
 
@@ -155,10 +156,11 @@ describe MultiMail::Message::Mandrill do
       headers['Reply-To'].should == 'noreply@example.com'
       headers['X-Autoreply'].should == 'true'
       headers['X-Precedence'].should == 'auto_reply'
-      headers.size.should == 3
+      headers['X-Numeric'].should == '42'
+      headers.size.should == 4
     end
 
-    it 'should return only the X-* headers' do
+    it 'should return empty X-* headers' do
       headers = message_with_empty_headers.mandrill_headers
       headers['X-Autoreply'].should == ''
       headers.size.should == 1
@@ -246,6 +248,7 @@ describe MultiMail::Message::Mandrill do
           'Reply-To'     => 'noreply@example.com',
           'X-Autoreply'  => 'true',
           'X-Precedence' => 'auto_reply',
+          'X-Numeric'    => '42',
         },
         'attachments' => [
           {
