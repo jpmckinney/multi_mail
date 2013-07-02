@@ -114,8 +114,7 @@ describe MultiMail::Message::Mandrill do
   end
 
   let :empty_message do
-    MultiMail::Message::Mandrill.new do
-    end
+    MultiMail::Message::Mandrill.new
   end
 
   describe '#mandrill_to' do

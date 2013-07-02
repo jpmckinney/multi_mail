@@ -2,127 +2,99 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'multi_mail/mandrill/sender'
 
 describe MultiMail::Sender::Mandrill do 
-  context 'after initialization with api_key' do
-
-    let :service do
-      MultiMail::Sender.new({
-        :provider => :mandrill,
-        :api_key => ENV['MANDRILL_API'],
-        :message_options => {
-          :important => false 
-        },
-        :return_response => true,
-        })
-    end
-
-    let :message do 
-      Mail.new({
-        :from =>    'test@example.com',
-        :to =>      ['to@example.com','to2@example.com'],
-        :subject => 'this is a test',
-        :body =>    'test text body',
-      })
-    end
-
-    let :tagged_message do
-      message.tap do |m|
-        m[:tag] = "postmark-gem"
-      end
-    end
-
-    let :message_with_no_body do
-      Mail.new do
-        from "sender@postmarkapp.com"
-        to "recipient@postmarkapp.com"
-        delivery_method Mail::Postmark, :api_key => "POSTMARK_API_TEST"
-      end
-    end
-
-    let :message_with_attachment do
-      message.tap do |msg|
-        msg.attachments["valid"] = response('postmark', 'valid')
-      end
-    end
-
-    let :multipart_message do
-
-      html_part = Mail::Part.new do
-        content_type 'text/html; charset=UTF-8'
-        body '<h1>This is HTML</h1>'
-      end
-      message.tap do |msg|
-        msg.html_part = html_part
-      end
-      
-    end
-
-    let :message_with_invalid_to do
-      Mail.new do
-        from "sender@mandrill.com"
-        to "@mandrill.com"
-        delivery_method Mail::Postmark, :api_key => "POSTMARK_API_TEST"
-      end
-    end
-
-
-
-    describe '#deliver' do
- 
-      it 'sends email' do
-        service.deliver!(message)[0]["status"].should eq "sent"
-      end
-
-      it 'sends to correct recipients' do
-        service.deliver!(message).each_with_index do |response,i|
-          response["email"].should eq message[:to].to_s.split(',')[i].strip
-        end
-      end
-
-      it 'sends to multiple recipients' do
-        service.deliver!(message).size.should eq 2
-      end
-
-      it 'returns mandrill response' do
-        response = service.deliver!(message)
-        response.each do |r|
-          r.should have_key "email"
-          r.should have_key "status"
-          r.should have_key "reject_reason"
-        end
-      end
-
-      it 'delivers a tagged message' do
-        service.deliver!(tagged_message)[0]["status"].should eq "sent"
-      end
-
-      it 'delivers a message with attachment' do
-        service.deliver!(message_with_attachment)[0]["status"].should eq "queued"
-      end
-
-      it 'delivers multipart emails' do
-        service.deliver!(multipart_message)[0]['status'].should eq "sent"
-      end
-
-      it 'rejects an invalid email' do
-        expect { service.deliver!(message_with_invalid_to) }.to raise_error
-        expect { service.deliver!(message_with_no_body) }.to raise_error
-      end
+  let :message do
+    Mail.new do
+      from    'foo@example.com'
+      to      'bar@example.com'
+      subject 'test'
+      body    'hello'
     end
   end
 
-  context 'after initialization without api_key' do
-    let :service do 
-      MultiMail::Sender.new({:provider => :mandrill})
+  let :empty_message do
+    Mail.new
+  end
+
+  describe '#initialize' do
+    it 'should raise an error if :api_key is missing' do
+      expect{
+        message.delivery_method MultiMail::Sender::Mandrill
+        message.deliver
+      }.to raise_error(ArgumentError, "Missing required arguments: :api_key")
     end
 
-    it 'should raise an error' do
-      message = Mail.new({
-        :from =>    'test@example.com',
-        :to =>      'example@test.com',
-        :subject => 'this is a test',
-        :body =>    'test text body',
+    it 'should raise an error if :api_key is nil' do
+      expect{
+        message.delivery_method MultiMail::Sender::Mandrill, :api_key => nil
+        message.deliver
+      }.to raise_error(ArgumentError, "Missing required arguments: :api_key")
+    end
+
+    it 'should raise an error if :api_key is invalid' do
+      expect{
+        message.delivery_method MultiMail::Sender::Mandrill, :api_key => 'xxx'
+        message.deliver
+      }.to raise_error(ArgumentError, "Invalid API key")
+    end
+
+    it 'should have default settings' do
+      sender = MultiMail::Sender::Mandrill.new
+
+      sender.api_key.should == nil
+      sender.async.should   == false
+      sender.ip_pool.should == nil
+      sender.send_at.should == nil
+    end
+
+    it 'should assign custom settings' do
+      sender = MultiMail::Sender::Mandrill.new({
+        :api_key         => ENV['MANDRILL_API'],
+        :async           => true,
+        :ip_pool         => 'Main Pool',
+        :send_at         => 'example send_at',
       })
-      expect{ service.deliver!(message) }.to raise_error
+
+      sender.api_key.should == ENV['MANDRILL_API']
+      sender.async.should   == true
+      sender.ip_pool.should == 'Main Pool'
+      sender.send_at.should == 'example send_at'
+    end
+  end
+
+  describe '#deliver' do
+    before :all do
+      Mail.defaults do
+        delivery_method MultiMail::Sender::Mandrill, :api_key => ENV['MANDRILL_API']
+      end
+    end
+
+    it 'should send a message' do
+      message.deliver.should == message
+    end
+  end
+
+  describe '#deliver!' do
+    before :all do
+      Mail.defaults do
+        delivery_method MultiMail::Sender::Mandrill, :api_key => ENV['MANDRILL_API'], :return_response => true
+      end
+    end
+
+    it 'should send a message' do
+      results = message.deliver!
+      results.size.should == 1
+
+      result = results.first
+      result.size.should == 4
+
+      result['reject_reason'].should == nil
+      result['status'].should == "sent"
+      result['email'].should == "bar@example.com"
+      result['_id'].should match(/\A[0-9a-f]{32}\z/)
+    end
+
+    it 'should not send an empty message' do
+      empty_message.deliver!.should == []
     end
   end
 end

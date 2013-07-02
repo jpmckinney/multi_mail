@@ -168,17 +168,30 @@ See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is
 * `spf-result`
 
 ### Outgoing
-    service = MultiMail::Sender.new({
-      :provider => 'mandrill',
-      :api_key => <mandrill-api-key>,
-      })
 
-Once you have created your mail message, call 
-    service.deliver!(message)
+MultiMail depends on the `mandrill-api` gem (version 1.0.35 or later) for its Mandrill integration.
 
-you can insert optional extra headers in the `:headers` field in your mail message, (currently Mandrill only supports Reply-to and X-* headers).
+    require 'multi_mail/mandrill/sender'
 
-See [Mandrill's documentation](https://mandrillapp.com/api/docs/messages.JSON.html) for these additional parameters provided by the api
+    Mail.deliver do
+      delivery_method MultiMail::Sender::Mandrill, :api_key => 'your-api-key'
+      ...
+    end
+
+You must either pass an `:api_key` argument as above, set a `ENV['MANDRILL_APIKEY']` environment variable, or have a `~/.mandrill.key` or `/etc/mandrill.key` file containing the Mandrill API key.
+
+If you would like to inspect the Mandrill API response, pass `:return_response => true` to `delivery_method` and use the `deliver!` method to send the message. Note that the `deliver!` method ignores Mail's `perform_deliveries` and `raise_delivery_errors` flags.
+
+    require 'multi_mail/mandrill/sender'
+
+    message = Mail.new do
+      delivery_method MultiMail::Sender::Mandrill, :api_key => 'your-api-key', :return_response => true
+      ...
+    end
+
+    message.deliver!
+
+You may pass additional arguments to `delivery_method` to take advantage of Mandrill-specific features (see [Mandrill's documentation](https://mandrillapp.com/api/docs/messages.ruby.html#method-send)):
 
 * `important`
 * `track_opens`
@@ -188,18 +201,20 @@ See [Mandrill's documentation](https://mandrillapp.com/api/docs/messages.JSON.ht
 * `inline_css`
 * `url_strip_qs`
 * `preserve_recipients`
+* `bcc_address`
 * `tracking_domain`
 * `signing_domain`
 * `merge`
 * `global_merge_vars`
 * `merge_vars`
+* `tags`
+* `google_analytics_domains`
 * `google_analytics_campaign`
 * `metadata`
 * `recipient_metadata`
 * `async`
 * `ip_pool`
-
-these can be inserted into the :message_options field as a hash.
+* `send_at`
 
 ## Postmark
 
@@ -224,7 +239,7 @@ MultiMail depends on the `postmark` gem for its Postmark integration. MultiMail 
     require 'multi_mail/postmark/sender'
 
     Mail.deliver do
-      delivery_method MultiMail::Sender::Postmark, api_key: 'your-postmark-api-key'
+      delivery_method MultiMail::Sender::Postmark, api_key: 'your-api-key'
       ...
     end
 

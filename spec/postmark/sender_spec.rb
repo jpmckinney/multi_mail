@@ -36,9 +36,9 @@ describe MultiMail::Sender::Postmark do
       end
     end
 
-    it 'sends a message' do
+    it 'should send a message' do
       message.deliver.should == message
-      message['Message-ID'].should_not be_nil
+      message['Message-ID'].should_not be_nil # postmark gem
     end
   end
 end

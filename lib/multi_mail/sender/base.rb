@@ -4,7 +4,7 @@ module MultiMail
     #
     # The `deliver!` instance method must be implemented in sub-classes.
     module Base
-      attr_accessor :settings
+      attr_reader :settings
 
       # Delivers a message.
       #
