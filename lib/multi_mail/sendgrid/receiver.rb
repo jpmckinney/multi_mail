@@ -21,7 +21,7 @@ module MultiMail
       def transform(params)
         # Make variables available to the `encode` method.
         @params = params
-        @charsets = JSON.parse(params['charsets'])
+        @charsets = JSON.load(params['charsets'])
 
         # Mail changes `self`.
         this = self

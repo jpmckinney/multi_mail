@@ -92,7 +92,7 @@ module MultiMail
           case raw
           when String
             begin
-              JSON.parse(raw)
+              JSON.load(raw)
             rescue JSON::ParserError
               params = CGI.parse(raw)
 

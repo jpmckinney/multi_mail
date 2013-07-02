@@ -41,7 +41,7 @@ module MultiMail
         case @http_post_format
         when 'parsed', '', nil
           # Mail changes `self`.
-          headers = self.class.multimap(JSON.parse(params['message-headers']))
+          headers = self.class.multimap(JSON.load(params['message-headers']))
           this = self
 
           message = Mail.new do
