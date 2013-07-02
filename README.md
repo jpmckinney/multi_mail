@@ -169,16 +169,12 @@ See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is
 
 ### Outgoing
 
-MultiMail depends on the `mandrill-api` gem (version 1.0.35 or later) for its Mandrill integration.
-
     require 'multi_mail/mandrill/sender'
 
     Mail.deliver do
       delivery_method MultiMail::Sender::Mandrill, :api_key => 'your-api-key'
       ...
     end
-
-You must either pass an `:api_key` argument as above, set a `ENV['MANDRILL_APIKEY']` environment variable, or have a `~/.mandrill.key` or `/etc/mandrill.key` file containing the Mandrill API key.
 
 If you would like to inspect the Mandrill API response, pass `:return_response => true` to `delivery_method` and use the `deliver!` method to send the message. Note that the `deliver!` method ignores Mail's `perform_deliveries` and `raise_delivery_errors` flags.
 

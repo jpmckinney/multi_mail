@@ -16,7 +16,8 @@ module MultiMail
       # @option options [String] :api_key a Postmark API key
       # @see https://github.com/wildbit/postmark-gem#communicating-with-the-api
       def initialize(options = {})
-        @settings = options
+        raise ArgumentError, "Missing required arguments: :api_key" unless options[:api_key]
+        @settings = options.dup
       end
 
       # Delivers a message via the Postmark API.
@@ -27,7 +28,7 @@ module MultiMail
         mail.delivery_method Mail::Postmark, settings
         mail.deliver
       rescue ::Postmark::InvalidApiKeyError
-        raise ArgumentError, "Missing required arguments: :api_key"
+        raise InvalidAPIKey
       end
     end
   end

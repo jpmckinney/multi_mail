@@ -27,6 +27,13 @@ describe MultiMail::Sender::Postmark do
         message.deliver
       }.to raise_error(ArgumentError, "Missing required arguments: :api_key")
     end
+
+    it 'should raise an error if :api_key is invalid' do
+      expect{
+        message.delivery_method MultiMail::Sender::Postmark, :api_key => 'xxx'
+        message.deliver
+      }.to raise_error(MultiMail::InvalidAPIKey)
+    end
   end
 
   describe '#deliver' do

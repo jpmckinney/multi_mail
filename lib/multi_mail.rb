@@ -4,6 +4,7 @@ require 'json'
 require 'openssl'
 require 'iconv' unless RUBY_VERSION >= '1.9'
 
+require 'faraday'
 require 'mail'
 require 'multimap'
 require 'rack'
@@ -13,6 +14,8 @@ module MultiMail
   class Error < StandardError; end
   # Raise if an incoming POST request is forged.
   class ForgedRequest < MultiMail::Error; end
+  # Raise if an API key is invalid.
+  class InvalidAPIKey < MultiMail::Error; end
 
   class << self
     # @return [RegExp] a message whose subject matches this pattern will be
