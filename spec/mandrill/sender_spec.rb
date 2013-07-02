@@ -19,14 +19,14 @@ describe MultiMail::Sender::Mandrill do
     it 'should raise an error if :api_key is missing' do
       expect{
         message.delivery_method MultiMail::Sender::Mandrill
-        message.deliver
+        message.deliver # request not sent
       }.to raise_error(ArgumentError, "Missing required arguments: :api_key")
     end
 
     it 'should raise an error if :api_key is nil' do
       expect{
         message.delivery_method MultiMail::Sender::Mandrill, :api_key => nil
-        message.deliver
+        message.deliver # request not sent
       }.to raise_error(ArgumentError, "Missing required arguments: :api_key")
     end
 
@@ -94,7 +94,7 @@ describe MultiMail::Sender::Mandrill do
     end
 
     it 'should not send an empty message' do
-      empty_message.deliver!.should == []
+      empty_message.deliver!.should == [] # response not saved
     end
   end
 end

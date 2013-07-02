@@ -26,7 +26,6 @@ module MultiMail
       # Delivers a message via the Mandrill API.
       #
       # @param [Mail::Message] mail a message
-      # @see https://mandrillapp.com/api/docs/messages.ruby.html#method-send
       # @see https://bitbucket.org/mailchimp/mandrill-api-ruby/src/d0950a6f9c4fac1dd2d5198a4f72c12c626ab149/lib/mandrill/api.rb?at=master#cl-738
       # @see https://bitbucket.org/mailchimp/mandrill-api-ruby/src/d0950a6f9c4fac1dd2d5198a4f72c12c626ab149/lib/mandrill.rb?at=master#cl-32
       def deliver!(mail)
