@@ -16,6 +16,8 @@ module MultiMail
   class ForgedRequest < MultiMail::Error; end
   # Raise if an API key is invalid.
   class InvalidAPIKey < MultiMail::Error; end
+  # Raise if a message is invalid.
+  class InvalidMessage < MultiMail::Error; end
 
   class << self
     # @return [RegExp] a message whose subject matches this pattern will be

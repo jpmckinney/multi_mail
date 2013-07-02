@@ -26,9 +26,16 @@ module MultiMail
       # @see https://github.com/wildbit/postmark-gem#using-postmark-with-the-mail-library
       def deliver!(mail)
         mail.delivery_method Mail::Postmark, settings
-        mail.deliver
+
+        if settings[:return_response]
+          mail.deliver!
+        else
+          mail.deliver
+        end
       rescue ::Postmark::InvalidApiKeyError
         raise InvalidAPIKey
+      rescue ::Postmark::InvalidMessageError
+        raise InvalidMessage
       end
     end
   end
