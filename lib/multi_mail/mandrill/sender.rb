@@ -4,9 +4,7 @@ module MultiMail
   module Sender
     # Mandrill's outgoing mail sender.
     class Mandrill
-      include MultiMail::Sender::Base
-
-      attr_reader :api_key, :async, :ip_pool, :send_at
+      attr_reader :settings, :api_key, :async, :ip_pool, :send_at
 
       # Initializes a Mandrill outgoing email sender.
       #

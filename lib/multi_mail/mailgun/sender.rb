@@ -1,9 +1,7 @@
 module MultiMail
   module Sender
     class Mailgun < MultiMail::Service
-      include MultiMail::Sender::Base
-
-      requires :api_key, :domain_name
+      attr_reader :settings, :api_key, :domain_name
 
       # @param [Hash] values required and optional arguments
       def initialize(values)

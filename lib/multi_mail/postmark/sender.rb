@@ -8,7 +8,7 @@ module MultiMail
   module Sender
     # Postmark's outgoing mail sender.
     class Postmark
-      include MultiMail::Sender::Base
+      attr_reader :settings
 
       # Initializes a Postmark outgoing email sender.
       #
