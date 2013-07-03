@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/opennorth/multi_mail/badge.png?branch=master)](https://coveralls.io/r/opennorth/multi_mail)
 [![Code Climate](https://codeclimate.com/github/opennorth/multi_mail.png)](https://codeclimate.com/github/opennorth/multi_mail)
 
-Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailgun](http://www.mailgun.com/), [Mandrill](http://mandrill.com/), [Postmark](http://postmarkapp.com/) and [SendGrid](http://sendgrid.com/) – offer APIs to send, receive, parse and forward email. MultiMail lets you easily switch between these APIs:
+Many providers offer APIs to send, receive, parse and forward email. MultiMail lets you easily switch between these APIs, and integrates tightly with the [Mail](https://github.com/mikel/mail) gem:
 
 * [Cloudmailin](http://www.cloudmailin.com/): [Documentation](#cloudmailin)
 * [Mailgun](http://www.mailgun.com/): [Documentation](#mailgun)
