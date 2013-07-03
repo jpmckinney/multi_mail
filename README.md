@@ -214,7 +214,7 @@ Mail.deliver do
 end
 ```
 
-You may pass additional arguments to `delivery_method` to take advantage of Mandrill-specific features (see [Mandrill's documentation](https://mandrillapp.com/api/docs/messages.ruby.html#method-send)):
+You may pass additional arguments to `delivery_method` to use Mandrill-specific features ([see docs](https://mandrillapp.com/api/docs/messages.ruby.html#method-send)):
 
 * `important`
 * `track_opens` and `track_clicks`
