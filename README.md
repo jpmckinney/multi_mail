@@ -11,11 +11,13 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
 
 ### Incoming
 
-    require 'multi_mail'
-    
-    service = MultiMail::Receiver.new(:provider => 'mandrill')
-    
-    messages = service.process(data) # raw POST data or params hash
+```ruby
+require 'multi_mail'
+
+service = MultiMail::Receiver.new(:provider => 'mandrill')
+
+messages = service.process(data) # raw POST data or params hash
+```
 
 `messages` will be an array of [Mail::Message](https://github.com/mikel/mail) instances. Any additional parameters provided by an API are added to each message as a header. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it as `message['stripped-text'].value`.
 
@@ -23,35 +25,45 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
 
 With MultiMail, you send a message the same way you do with the [Mail](https://github.com/mikel/mail#sending-an-email) gem. You just need to set the `delivery_method` for the message:
 
-    require 'multi_mail/postmark/sender'
+```ruby
+require 'multi_mail'
+require 'multi_mail/postmark/sender'
 
-    message = Mail.new do
-      delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
-      ...
-    end
+message = Mail.new do
+  delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
+  ...
+end
 
-    message.deliver
+message.deliver
+```
 
 Alternatively, instead of setting the `delivery_method` during initialization, you can set it before delivery with:
 
-    message.delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
+```ruby
+message.delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
+```
 
 If you are sending many messages, you can set a default `delivery_method` for all messages:
 
-    Mail.defaults do
-      delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
-    end
+```ruby
+Mail.defaults do
+  delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
+end
+```
 
 If you would like to inspect the API response, pass `:return_response => true` to `delivery_method` and use the `deliver!` method to send the message. Note that the `deliver!` method ignores Mail's `perform_deliveries` and `raise_delivery_errors` flags.
 
-    require 'multi_mail/postmark/sender'
+```ruby
+require 'multi_mail'
+require 'multi_mail/postmark/sender'
 
-    message = Mail.new do
-      delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key', :return_response => true
-      ...
-    end
+message = Mail.new do
+  delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key', :return_response => true
+  ...
+end
 
-    message.deliver!
+message.deliver!
+```
 
 ## Supported APIs
 
@@ -68,20 +80,22 @@ Incoming email only:
 
 ## Cloudmailin
 
-    service = MultiMail::Receiver.new({
-      :provider => 'cloudmailin',
-    })
+```ruby
+service = MultiMail::Receiver.new({
+  :provider => 'cloudmailin',
+})
+```
 
-The default HTTP POST format is `raw`. Add a `:http_post_format` option to change the HTTP POST format, with possible values of `"multipart"`, `"json"` or `"raw"` (default). (The [original format](http://docs.cloudmailin.com/http_post_formats/original/) is deprecated.) For example:
+The default HTTP POST format is `raw`. Add a `:http_post_format` option to change the HTTP POST format, with possible values of `"multipart"`, `"json"` or `"raw"` (default). For example:
 
-    service = MultiMail::Receiver.new({
-      :provider => 'cloudmailin',
-      :http_post_format => 'raw',
-    })
+```ruby
+service = MultiMail::Receiver.new({
+  :provider => 'cloudmailin',
+  :http_post_format => 'raw',
+})
+```
 
 **Note:** [MultiMail doesn't yet support Cloudmailin's URL attachments (attachment stores).](https://github.com/opennorth/multi_mail/issues/11) Please use regular attachments (always the case if you use the `raw` format) if you are using MultiMail.
-
-**2013-04-15:** If an email contains multiple HTML parts and you are using the `multipart` or `json` HTTP POST formats, Cloudmailin will only include the first HTML part in its `html` parameter. Use the `raw` format to avoid data loss. Cloudmailin also removes a newline from the end of each attachment.
 
 See [Cloudmailin's documentation](http://docs.cloudmailin.com/http_post_formats/) for these additional parameters provided by the API:
 
@@ -92,22 +106,24 @@ See [Cloudmailin's documentation](http://docs.cloudmailin.com/http_post_formats/
 
 ### Incoming
 
-    service = MultiMail::Receiver.new({
-      :provider => 'mailgun',
-      :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
-    })
+```ruby
+service = MultiMail::Receiver.new({
+  :provider => 'mailgun',
+  :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
+})
+```
 
 If you omit the `:mailgun_api_key` option, MultiMail will not check whether a request originates from Mailgun.
 
 If you have a route with a URL ending with "mime" and you are using the raw MIME format, add a `:http_post_format => 'raw'` option. For example:
 
-    service = MultiMail::Receiver.new({
-      :provider => 'mailgun',
-      :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
-      :http_post_format => 'raw',
-    })
-
-**2013-04-15:** Mailgun's `stripped-text` and `stripped-html` parameters do not return the same parts of the message. `stripped-html` sometimes incorrectly drops non-quoted, non-signature parts of the message; `stripped-text` doesn't.
+```ruby
+service = MultiMail::Receiver.new({
+  :provider => 'mailgun',
+  :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
+  :http_post_format => 'raw',
+})
+```
 
 See [Mailgun's documentation](http://documentation.mailgun.net/user_manual.html#parsed-messages-parameters) for these additional parameters provided by the API:
 
@@ -149,22 +165,24 @@ Multimail will translate necessary fields into JSON format or you.
 
 ### Incoming
 
-    service = MultiMail::Receiver.new({
-      :provider => 'mandrill',
-      :mandrill_webhook_key => 'xxxxxxxxxxxxxxxxxxxxxx',
-      :mandrill_webhook_url => 'http://example.com/post',
-    })
+```ruby
+service = MultiMail::Receiver.new({
+  :provider => 'mandrill',
+  :mandrill_webhook_key => 'xxxxxxxxxxxxxxxxxxxxxx',
+  :mandrill_webhook_url => 'http://example.com/post',
+})
+```
 
 If you omit the `:mandrill_webhook_key` and `:mandrill_webhook_url` options, MultiMail will not check whether a request originates from Mandrill. You can get your webhook key from [Mandrill's Webhooks Settings](https://mandrillapp.com/settings/webhooks).
 
 The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:spamassassin_threshold` option to increase or decrease it. For example:
 
-    service = MultiMail::Receiver.new({
-      :provider => 'mandrill',
-      :spamassassin_threshold => 4.5,
-    })
-
-**2013-04-15:** If an email contains multiple HTML parts, Mandrill will only include the first HTML part in its `html` parameter. We therefore parse its `raw_msg` parameter to set the HTML part correctly. Mandrill also adds a newline to the end of each message part.
+```ruby
+service = MultiMail::Receiver.new({
+  :provider => 'mandrill',
+  :spamassassin_threshold => 4.5,
+})
+```
 
 See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is-the-format-of-inbound-email-webhooks-) for these additional parameters provided by the API:
 
@@ -177,12 +195,14 @@ See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is
 
 ### Outgoing
 
-    require 'multi_mail/mandrill/sender'
+```ruby
+require 'multi_mail/mandrill/sender'
 
-    Mail.deliver do
-      delivery_method MultiMail::Sender::Mandrill, :api_key => 'your-api-key'
-      ...
-    end
+Mail.deliver do
+  delivery_method MultiMail::Sender::Mandrill, :api_key => 'your-api-key'
+  ...
+end
+```
 
 You may pass additional arguments to `delivery_method` to take advantage of Mandrill-specific features (see [Mandrill's documentation](https://mandrillapp.com/api/docs/messages.ruby.html#method-send)):
 
@@ -213,11 +233,11 @@ You may pass additional arguments to `delivery_method` to take advantage of Mand
 
 ### Incoming
 
-    service = MultiMail::Receiver.new({
-      :provider => 'postmark',
-    })
-
-**2013-05-15:** If an email contains multiple HTML parts, Postmark will only include the first HTML part in its `HtmlBody` parameter. You cannot avoid this loss of data. Postmark is therefore not recommended.
+```ruby
+service = MultiMail::Receiver.new({
+  :provider => 'postmark',
+})
+```
 
 See [Postmark's documentation](http://developer.postmarkapp.com/developer-inbound-parse.html#mailboxhash) for these additional parameters provided by the API:
 
@@ -229,29 +249,33 @@ See [Postmark's documentation](http://developer.postmarkapp.com/developer-inboun
 
 MultiMail depends on the `postmark` gem for its Postmark integration. MultiMail implements a simple wrapper around Postmark's [existing integration](https://github.com/wildbit/postmark-gem#using-postmark-with-the-mail-library) with the Mail gem, to be consistent with the other APIs:
 
-    require 'multi_mail/postmark/sender'
+```ruby
+require 'multi_mail/postmark/sender'
 
-    Mail.deliver do
-      delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
-      ...
-    end
+Mail.deliver do
+  delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
+  ...
+end
+```
 
 ## SendGrid
 
 ### Incoming
 
-    service = MultiMail::Receiver.new({
-      :provider => 'sendgrid',
-    })
+```ruby
+service = MultiMail::Receiver.new({
+  :provider => 'sendgrid',
+})
+```
 
 The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:spamassassin_threshold` option to increase or decrease it. For example:
 
-    service = MultiMail::Receiver.new({
-      :provider => 'sendgrid',
-      :spamassassin_threshold => 4.5,
-    })
-
-**2013-05-17:** If an email contains multiple HTML parts, SendGrid will create a new attachment for each, with an auto-generated filename. Since we cannot robustly identify these attachments, you must inspect attachments to recover any additional HTML parts.
+```ruby
+service = MultiMail::Receiver.new({
+  :provider => 'sendgrid',
+  :spamassassin_threshold => 4.5,
+})
+```
 
 See [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Webhooks/parse.html) for these additional parameters provided by the API:
 
@@ -262,22 +286,18 @@ See [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Webhooks/p
 
 ### Outgoing
 
-    require 'multi_mail/sendgrid/sender'
+```ruby
+require 'multi_mail/sendgrid/sender'
 
-    Mail.deliver do
-      delivery_method MultiMail::Sender::SendGrid, :api_user => 'username', :api_key => 'password'
-      ...
-    end
+Mail.deliver do
+  delivery_method MultiMail::Sender::SendGrid, :api_user => 'username', :api_key => 'password'
+  ...
+end
+```
 
 You may pass additional arguments to `delivery_method` to take advantage of SendGrid-specific features (see [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Web_API/mail.html)):
 
 * `x-smtpapi`
-
-these can be inserted into the :message_options field as a hash. Ex:
-
-    :message_options => {"x-smtpapi" => {"category" => "newuser"} }
-
-Multimail will translate necessary fields into JSON format for you. 
 
 ## Bugs? Questions?
 

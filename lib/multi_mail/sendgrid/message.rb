@@ -28,6 +28,7 @@ module MultiMail
 
       def to_sendgrid_hash
         headers = sendgrid_headers
+
         { 'to'       => to.to_a,
           'toname'   => to && self[:to].display_names.to_a,
           'subject'  => subject,
