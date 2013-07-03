@@ -1,11 +1,17 @@
-# MultiMail: easily switch between email APIs
+# MultiMail: easily switch email APIs
 
 [![Build Status](https://secure.travis-ci.org/opennorth/multi_mail.png)](http://travis-ci.org/opennorth/multi_mail)
 [![Dependency Status](https://gemnasium.com/opennorth/multi_mail.png)](https://gemnasium.com/opennorth/multi_mail)
 [![Coverage Status](https://coveralls.io/repos/opennorth/multi_mail/badge.png?branch=master)](https://coveralls.io/r/opennorth/multi_mail)
 [![Code Climate](https://codeclimate.com/github/opennorth/multi_mail.png)](https://codeclimate.com/github/opennorth/multi_mail)
 
-Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailgun](http://www.mailgun.com/), [Mandrill](http://mandrill.com/), [Postmark](http://postmarkapp.com/) and [SendGrid](http://sendgrid.com/) – offer APIs to send, receive, parse and forward email. MultiMail lets you easily switch between these APIs.
+Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailgun](http://www.mailgun.com/), [Mandrill](http://mandrill.com/), [Postmark](http://postmarkapp.com/) and [SendGrid](http://sendgrid.com/) – offer APIs to send, receive, parse and forward email. MultiMail lets you easily switch between these APIs:
+
+* [Cloudmailin](http://www.cloudmailin.com/): [Documentation](#cloudmailin)
+* [Mailgun](http://www.mailgun.com/): [Documentation](#mailgun)
+* [Mandrill](http://mandrill.com/): [Documentation](#mandrill)
+* [Postmark](http://postmarkapp.com/): [Documentation](#postmark)
+* [SendGrid](http://sendgrid.com/): [Documentation](#sendgrid)
 
 ## Usage
 
@@ -14,9 +20,11 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
 ```ruby
 require 'multi_mail'
 
+# Create an object to consume webhook data.
 service = MultiMail::Receiver.new(:provider => 'mandrill')
 
-messages = service.process(data) # raw POST data or params hash
+# Process the webhook data, whether it's raw POST data, a params hash, a Rack request, etc.
+messages = service.process(data)
 ```
 
 `messages` will be an array of [Mail::Message](https://github.com/mikel/mail) instances. Any additional parameters provided by an API are added to each message as a header. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it as `message['stripped-text'].value`.
@@ -37,10 +45,16 @@ end
 message.deliver
 ```
 
-Alternatively, instead of setting the `delivery_method` during initialization, you can set it before delivery with:
+Alternatively, instead of setting the `delivery_method` during initialization, you can set it before delivery, kike:
 
 ```ruby
+message = Mail.new do
+  ...
+end
+
 message.delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
+
+message.deliver
 ```
 
 If you are sending many messages, you can set a default `delivery_method` for all messages:
@@ -51,12 +65,9 @@ Mail.defaults do
 end
 ```
 
-If you would like to inspect the API response, pass `:return_response => true` to `delivery_method` and use the `deliver!` method to send the message. Note that the `deliver!` method ignores Mail's `perform_deliveries` and `raise_delivery_errors` flags.
+If you want to inspect the API response, pass `:return_response => true` to `delivery_method` and use the `deliver!` method to send the message. Note that `deliver!` ignores Mail's `perform_deliveries` and `raise_delivery_errors` flags.
 
 ```ruby
-require 'multi_mail'
-require 'multi_mail/postmark/sender'
-
 message = Mail.new do
   delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key', :return_response => true
   ...
@@ -64,19 +75,6 @@ end
 
 message.deliver!
 ```
-
-## Supported APIs
-
-Incoming and outgoing email:
-
-* [Mailgun](http://www.mailgun.com/): [Documentation](#mailgun)
-* [Mandrill](http://mandrill.com/): [Documentation](#mandrill)
-* [Postmark](http://postmarkapp.com/): [Documentation](#postmark)
-* [SendGrid](http://sendgrid.com/): [Documentation](#sendgrid)
-
-Incoming email only:
-
-* [Cloudmailin](http://www.cloudmailin.com/): [Documentation](#cloudmailin)
 
 ## Cloudmailin
 
@@ -95,12 +93,12 @@ service = MultiMail::Receiver.new({
 })
 ```
 
-**Note:** [MultiMail doesn't yet support Cloudmailin's URL attachments (attachment stores).](https://github.com/opennorth/multi_mail/issues/11) Please use regular attachments (always the case if you use the `raw` format) if you are using MultiMail.
-
 See [Cloudmailin's documentation](http://docs.cloudmailin.com/http_post_formats/) for these additional parameters provided by the API:
 
 * `reply_plain`
 * `spf-result`
+
+**Note:** [MultiMail doesn't yet support Cloudmailin's URL attachments (attachment stores).](https://github.com/opennorth/multi_mail/issues/11) Please use regular attachments (always the case if you use the `raw` format).
 
 ## Mailgun
 
@@ -109,13 +107,19 @@ See [Cloudmailin's documentation](http://docs.cloudmailin.com/http_post_formats/
 ```ruby
 service = MultiMail::Receiver.new({
   :provider => 'mailgun',
+})
+```
+
+To check whether a request originates from Mailgun, add the `:mailgun_api_key` option:
+
+```ruby
+service = MultiMail::Receiver.new({
+  :provider => 'mailgun',
   :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
 })
 ```
 
-If you omit the `:mailgun_api_key` option, MultiMail will not check whether a request originates from Mailgun.
-
-If you have a route with a URL ending with "mime" and you are using the raw MIME format, add a `:http_post_format => 'raw'` option. For example:
+If you are using the [raw MIME format](http://documentation.mailgun.com/user_manual.html#mime-messages-parameters), add a `:http_post_format => 'raw'` option:
 
 ```ruby
 service = MultiMail::Receiver.new({
@@ -155,15 +159,17 @@ See [Mailgun's documentation](http://documentation.mailgun.com/api-sending.html)
 * `h:X-My-Header`
 * `v:my-var`
 
-these can be inserted into :message_options as a hash. Ex:
-
-    :message_options => {'o:tracking-clicks' => 'yes'}
-
-Multimail will translate necessary fields into JSON format or you.
-
 ## Mandrill
 
 ### Incoming
+
+```ruby
+service = MultiMail::Receiver.new({
+  :provider => 'mandrill',
+})
+```
+
+To check whether a request originates from Mandrill, add the `:mandrill_webhook_key` and `:mandrill_webhook_url` options:
 
 ```ruby
 service = MultiMail::Receiver.new({
@@ -172,10 +178,9 @@ service = MultiMail::Receiver.new({
   :mandrill_webhook_url => 'http://example.com/post',
 })
 ```
+You can get your webhook key from [Mandrill's Webhooks Settings](https://mandrillapp.com/settings/webhooks).
 
-If you omit the `:mandrill_webhook_key` and `:mandrill_webhook_url` options, MultiMail will not check whether a request originates from Mandrill. You can get your webhook key from [Mandrill's Webhooks Settings](https://mandrillapp.com/settings/webhooks).
-
-The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:spamassassin_threshold` option to increase or decrease it. For example:
+The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:spamassassin_threshold` option to increase or decrease it:
 
 ```ruby
 service = MultiMail::Receiver.new({
@@ -206,28 +211,17 @@ end
 
 You may pass additional arguments to `delivery_method` to take advantage of Mandrill-specific features (see [Mandrill's documentation](https://mandrillapp.com/api/docs/messages.ruby.html#method-send)):
 
-* `important`
-* `track_opens`
-* `track_clicks`
-* `auto_text`
-* `auto_html`
-* `inline_css`
-* `url_strip_qs`
-* `preserve_recipients`
-* `bcc_address`
-* `tracking_domain`
-* `signing_domain`
-* `merge`
-* `global_merge_vars`
-* `merge_vars`
-* `tags`
-* `google_analytics_domains`
-* `google_analytics_campaign`
-* `metadata`
-* `recipient_metadata`
-* `async`
-* `ip_pool`
-* `send_at`
+`important`                 | `merge`                     |
+`track_opens`               | `global_merge_vars`         |
+`track_clicks`              | `merge_vars`                |
+`auto_text`                 | `tags`                      |
+`auto_html`                 | `google_analytics_domains`  |
+`inline_css`                | `google_analytics_campaign` |
+`url_strip_qs`              | `metadata`                  |
+`preserve_recipients`       | `recipient_metadata`        |
+`bcc_address`               | `async`                     |
+`tracking_domain`           | `ip_pool`                   |
+`signing_domain`            | `send_at`                   |
 
 ## Postmark
 
