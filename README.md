@@ -5,13 +5,13 @@
 [![Coverage Status](https://coveralls.io/repos/opennorth/multi_mail/badge.png?branch=master)](https://coveralls.io/r/opennorth/multi_mail)
 [![Code Climate](https://codeclimate.com/github/opennorth/multi_mail.png)](https://codeclimate.com/github/opennorth/multi_mail)
 
-Many providers offer APIs to send, receive, parse and forward email. MultiMail lets you easily switch between these APIs, and integrates tightly with the [Mail](https://github.com/mikel/mail) gem:
+Many providers offer APIs to send, receive, and parse email. MultiMail lets you easily switch between these APIs, and integrates tightly with the [Mail](https://github.com/mikel/mail) gem.
 
-* [Cloudmailin](http://www.cloudmailin.com/): [Documentation](#cloudmailin)
-* [Mailgun](http://www.mailgun.com/): [Documentation](#mailgun)
-* [Mandrill](http://mandrill.com/): [Documentation](#mandrill)
-* [Postmark](http://postmarkapp.com/): [Documentation](#postmark)
-* [SendGrid](http://sendgrid.com/): [Documentation](#sendgrid)
+* [Cloudmailin](http://www.cloudmailin.com/): [Example](#cloudmailin)
+* [Mailgun](http://www.mailgun.com/): [Example](#mailgun)
+* [Mandrill](http://mandrill.com/): [Example](#mandrill)
+* [Postmark](http://postmarkapp.com/): [Example](#postmark)
+* [SendGrid](http://sendgrid.com/): [Example](#sendgrid)
 
 ## Usage
 
@@ -47,7 +47,7 @@ end
 message.deliver
 ```
 
-Alternatively, instead of setting `delivery_method` during initialization, you can set it before delivery, like:
+Alternatively, instead of setting `delivery_method` during initialization, you can set it before delivery:
 
 ```ruby
 message = Mail.new do
@@ -59,7 +59,7 @@ message.delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
 message.deliver
 ```
 
-If you are sending many messages, you can set a default `delivery_method` for all messages:
+Or, if you are sending many messages, you can set a default `delivery_method` for all messages:
 
 ```ruby
 Mail.defaults do
@@ -78,9 +78,11 @@ end
 message.deliver!
 ```
 
-Note that `deliver!` ignores Mail's `perform_deliveries` and `raise_delivery_errors` flags.
+Note that the `deliver!` method ignores Mail's `perform_deliveries` and `raise_delivery_errors` flags.
 
 ## Cloudmailin
+
+### Incoming
 
 ```ruby
 service = MultiMail::Receiver.new({
@@ -102,7 +104,7 @@ See [Cloudmailin's documentation](http://docs.cloudmailin.com/http_post_formats/
 * `reply_plain`
 * `spf-result`
 
-**Note:** [MultiMail doesn't yet support Cloudmailin's URL attachments (attachment stores).](https://github.com/opennorth/multi_mail/issues/11) Please use regular attachments (always the case if you use the `raw` format).
+**Note:** [MultiMail doesn't yet support Cloudmailin's URL attachments (attachment stores).](https://github.com/opennorth/multi_mail/issues/11) Please use regular attachments (always the case if you use the default `raw` format).
 
 ## Mailgun
 
@@ -114,7 +116,7 @@ service = MultiMail::Receiver.new({
 })
 ```
 
-To check whether a request originates from Mailgun, add a `:mailgun_api_key` option:
+To check that a request originates from Mailgun, add a `:mailgun_api_key` option:
 
 ```ruby
 service = MultiMail::Receiver.new({
@@ -172,7 +174,7 @@ service = MultiMail::Receiver.new({
 })
 ```
 
-To check whether a request originates from Mandrill, add `:mandrill_webhook_key` and `:mandrill_webhook_url` options:
+To check that a request originates from Mandrill, add `:mandrill_webhook_key` and `:mandrill_webhook_url` options:
 
 ```ruby
 service = MultiMail::Receiver.new({
@@ -252,7 +254,7 @@ Mail.deliver do
 end
 ```
 
-MultiMail depends on the `postmark` gem for its Postmark integration. MultiMail implements a simple wrapper around Postmark's [existing integration](https://github.com/wildbit/postmark-gem#using-postmark-with-the-mail-library) with the Mail gem, to be consistent with the other APIs:
+MultiMail depends on the `postmark` gem for its Postmark integration.
 
 ## SendGrid
 
@@ -291,7 +293,7 @@ Mail.deliver do
 end
 ```
 
-You may also pass a `x-smtpapi` option to `delivery_method` to take advantage of [this SendGrid-specific feature](http://sendgrid.com/docs/API_Reference/Web_API/mail.html).
+You may also pass a `x-smtpapi` option to `delivery_method` ([see SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Web_API/mail.html)).
 
 ## Bugs? Questions?
 
