@@ -216,16 +216,21 @@ end
 
 You may pass additional arguments to `delivery_method` to take advantage of Mandrill-specific features (see [Mandrill's documentation](https://mandrillapp.com/api/docs/messages.ruby.html#method-send)):
 
-|                       |                     |                             |
-| --------------------- | ------------------- | --------------------------- |
-| `important`           | `bcc_address`       | `google_analytics_domains`  |
-| `track_opens`         | `tracking_domain`   | `google_analytics_campaign` |
-| `track_clicks`        | `signing_domain`    | `metadata`                  |
-| `auto_text`           | `merge`             | `recipient_metadata`        |
-| `auto_html`           | `global_merge_vars` | `async`                     |
-| `inline_css`          | `merge_vars`        | `ip_pool`                   |
-| `url_strip_qs`        | `tags`              | `send_at`                   |
-| `preserve_recipients` |                     |                             |
+* `important`
+* `track_opens` and `track_clicks`
+* `auto_text` and `auto_html`
+* `inline_css`
+* `url_strip_qs`
+* `preserve_recipients`
+* `bcc_address`
+* `tracking_domain` and `signing_domain`
+* `merge`, `global_merge_vars` and `merge_vars`
+* `tags`
+* `google_analytics_domains` and `google_analytics_campaign`
+* `metadata` and `recipient_metadata`
+* `async`
+* `ip_pool`
+* `send_at`
 
 ## Postmark
 
