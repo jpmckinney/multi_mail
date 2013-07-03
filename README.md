@@ -20,18 +20,20 @@ Many providers – including [Cloudmailin](http://www.cloudmailin.com/), [Mailg
 ```ruby
 require 'multi_mail'
 
-# Create an object to consume webhook data.
+# Create an object to consume the webhook data.
 service = MultiMail::Receiver.new(:provider => 'mandrill')
 
 # Process the webhook data, whether it's raw POST data, a params hash, a Rack request, etc.
 messages = service.process(data)
 ```
 
-`messages` will be an array of [Mail::Message](https://github.com/mikel/mail) instances. Any additional parameters provided by an API are added to each message as a header. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it as `message['stripped-text'].value`.
+`messages` will be an array of [Mail::Message](https://github.com/mikel/mail) instances.
+
+Any non-standard parameters provided by an API are added to each message as a header. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it as `message['stripped-text'].value`.
 
 ### Outgoing
 
-With MultiMail, you send a message the same way you do with the [Mail](https://github.com/mikel/mail#sending-an-email) gem. You just need to set the `delivery_method` for the message:
+With MultiMail, you send a message the same way you do with the [Mail](https://github.com/mikel/mail#sending-an-email) gem. Just set `delivery_method`:
 
 ```ruby
 require 'multi_mail'
@@ -45,7 +47,7 @@ end
 message.deliver
 ```
 
-Alternatively, instead of setting the `delivery_method` during initialization, you can set it before delivery, kike:
+Alternatively, instead of setting `delivery_method` during initialization, you can set it before delivery, like:
 
 ```ruby
 message = Mail.new do
@@ -65,7 +67,7 @@ Mail.defaults do
 end
 ```
 
-If you want to inspect the API response, pass `:return_response => true` to `delivery_method` and use the `deliver!` method to send the message. Note that `deliver!` ignores Mail's `perform_deliveries` and `raise_delivery_errors` flags.
+If you want to inspect the API response, pass `:return_response => true` to `delivery_method` and use the `deliver!` method to send the message:
 
 ```ruby
 message = Mail.new do
@@ -76,6 +78,8 @@ end
 message.deliver!
 ```
 
+Note that `deliver!` ignores Mail's `perform_deliveries` and `raise_delivery_errors` flags.
+
 ## Cloudmailin
 
 ```ruby
@@ -84,7 +88,7 @@ service = MultiMail::Receiver.new({
 })
 ```
 
-The default HTTP POST format is `raw`. Add a `:http_post_format` option to change the HTTP POST format, with possible values of `"multipart"`, `"json"` or `"raw"` (default). For example:
+The default HTTP POST format is `raw`. Add a `:http_post_format` option to change the HTTP POST format, with possible values of `"multipart"`, `"json"` or `"raw"` (default):
 
 ```ruby
 service = MultiMail::Receiver.new({
@@ -110,7 +114,7 @@ service = MultiMail::Receiver.new({
 })
 ```
 
-To check whether a request originates from Mailgun, add the `:mailgun_api_key` option:
+To check whether a request originates from Mailgun, add a `:mailgun_api_key` option:
 
 ```ruby
 service = MultiMail::Receiver.new({
@@ -124,7 +128,6 @@ If you are using the [raw MIME format](http://documentation.mailgun.com/user_man
 ```ruby
 service = MultiMail::Receiver.new({
   :provider => 'mailgun',
-  :mailgun_api_key => 'key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx',
   :http_post_format => 'raw',
 })
 ```
@@ -169,7 +172,7 @@ service = MultiMail::Receiver.new({
 })
 ```
 
-To check whether a request originates from Mandrill, add the `:mandrill_webhook_key` and `:mandrill_webhook_url` options:
+To check whether a request originates from Mandrill, add `:mandrill_webhook_key` and `:mandrill_webhook_url` options:
 
 ```ruby
 service = MultiMail::Receiver.new({
@@ -240,8 +243,6 @@ See [Postmark's documentation](http://developer.postmarkapp.com/developer-inboun
 
 ### Outgoing
 
-MultiMail depends on the `postmark` gem for its Postmark integration. MultiMail implements a simple wrapper around Postmark's [existing integration](https://github.com/wildbit/postmark-gem#using-postmark-with-the-mail-library) with the Mail gem, to be consistent with the other APIs:
-
 ```ruby
 require 'multi_mail/postmark/sender'
 
@@ -250,6 +251,8 @@ Mail.deliver do
   ...
 end
 ```
+
+MultiMail depends on the `postmark` gem for its Postmark integration. MultiMail implements a simple wrapper around Postmark's [existing integration](https://github.com/wildbit/postmark-gem#using-postmark-with-the-mail-library) with the Mail gem, to be consistent with the other APIs:
 
 ## SendGrid
 
@@ -261,7 +264,7 @@ service = MultiMail::Receiver.new({
 })
 ```
 
-The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:spamassassin_threshold` option to increase or decrease it. For example:
+The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:spamassassin_threshold` option to increase or decrease it:
 
 ```ruby
 service = MultiMail::Receiver.new({
@@ -288,9 +291,7 @@ Mail.deliver do
 end
 ```
 
-You may pass additional arguments to `delivery_method` to take advantage of SendGrid-specific features (see [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Web_API/mail.html)):
-
-* `x-smtpapi`
+You may also pass a `x-smtpapi` option to `delivery_method` to take advantage of [this SendGrid-specific feature](http://sendgrid.com/docs/API_Reference/Web_API/mail.html).
 
 ## Bugs? Questions?
 
