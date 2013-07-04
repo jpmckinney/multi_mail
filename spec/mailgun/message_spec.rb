@@ -123,14 +123,15 @@ describe MultiMail::Message::Mailgun do
 
   describe '#mailgun_attachments' do
     it 'should return the attachments' do
-      attachments = message.mailgun_attachments['attachment']
-      attachments[0].content_type.should == 'image/gif; filename=empty.gif'
-      attachments[0].original_filename.should == 'empty.gif'
-      attachments[0].read.should == File.open(empty_gif_path, 'r:binary'){|f| f.read}
-      attachments[1].content_type.should == 'text/plain; filename=foo.txt'
-      attachments[1].original_filename.should == 'foo.txt'
-      attachments[1].read.should == 'hello world'
-      attachments.size.should == 2
+      attachments = message.mailgun_attachments
+      attachments['inline'][0].content_type.should == 'image/gif; filename=empty.gif'
+      attachments['inline'][0].original_filename.should == 'empty.gif'
+      attachments['inline'][0].read.should == File.open(empty_gif_path, 'r:binary'){|f| f.read}
+      attachments['inline'].size.should == 1
+      attachments['attachment'][0].content_type.should == 'text/plain; filename=foo.txt'
+      attachments['attachment'][0].original_filename.should == 'foo.txt'
+      attachments['attachment'][0].read.should == 'hello world'
+      attachments['attachment'].size.should == 1
     end
 
     it 'should return an attachment with an known extension' do
@@ -183,8 +184,7 @@ describe MultiMail::Message::Mailgun do
 
     it 'should return empty X-* headers' do
       headers = message_with_empty_headers.mailgun_headers
-      headers['h:X-Autoreply'].should == ['']
-      headers.size.should == 1
+      headers.should == {'h:X-Autoreply' => ['']}
     end
 
     it 'should return an empty hash' do
@@ -213,15 +213,16 @@ describe MultiMail::Message::Mailgun do
       hash['h:X-Numeric'].should    == ['42']
       hash['h:Delivered-To'].should == ['Autoresponder']
 
-      hash['attachment'][0].content_type.should == 'image/gif; filename=empty.gif'
-      hash['attachment'][0].original_filename.should == 'empty.gif'
-      hash['attachment'][0].read.should == File.open(empty_gif_path, 'r:binary'){|f| f.read}
-      hash['attachment'][1].content_type.should == 'text/plain; filename=foo.txt'
-      hash['attachment'][1].original_filename.should == 'foo.txt'
-      hash['attachment'][1].read.should == 'hello world'
-      hash['attachment'].size.should == 2
+      hash['inline'][0].content_type.should == 'image/gif; filename=empty.gif'
+      hash['inline'][0].original_filename.should == 'empty.gif'
+      hash['inline'][0].read.should == File.open(empty_gif_path, 'r:binary'){|f| f.read}
+      hash['inline'].size.should == 1
+      hash['attachment'][0].content_type.should == 'text/plain; filename=foo.txt'
+      hash['attachment'][0].original_filename.should == 'foo.txt'
+      hash['attachment'][0].read.should == 'hello world'
+      hash['attachment'].size.should == 1
 
-      hash.size.should == 15 # 17 if Multimap
+      hash.size.should == 16
     end
 
     it 'should convert the message without a text body' do

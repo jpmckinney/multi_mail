@@ -2,25 +2,36 @@ module MultiMail
   module Message
     # @see http://documentation.mailgun.com/api-sending.html
     class Mailgun < MultiMail::Message::Base
-      def mailgun_attachments
-        hash = Multimap.new
-        attachments.each do |attachment|
-          hash['attachment'] = Faraday::UploadIO.new(StringIO.new(attachment.body.decoded), attachment.content_type, attachment.filename)
-        end
-        hash
-      end
-
+      # Returns the message headers in Mailgun format.
+      #
+      # @return [Multimap] the message headers in Mailgun format
       def mailgun_headers
         hash = Multimap.new
         header_fields.each do |field|
           key = field.name.downcase
           unless %w(from to cc bcc subject message-id).include?(key)
-            hash["h:#{field.name}"] = field.value.to_s
+            hash["h:#{field.name}"] = field.value
           end
         end
         hash
       end
 
+      # Returns the message's attachments in Mailgun format.
+      #
+      # @return [Multimap] the attachments in Mailgun format
+      # @see http://documentation.mailgun.com/user_manual.html#inline-image
+      def mailgun_attachments
+        hash = Multimap.new
+        attachments.each do |attachment|
+          key = attachment.content_type.start_with?('image/') ? 'inline' : 'attachment'
+          hash[key] = Faraday::UploadIO.new(StringIO.new(attachment.body.decoded), attachment.content_type, attachment.filename)
+        end
+        hash
+      end
+
+      # Returns the message as parameters to POST to Mailgun.
+      #
+      # @return [Hash] the message as parameters to POST to Mailgun
       def to_mailgun_hash
         hash = Multimap.new
 
