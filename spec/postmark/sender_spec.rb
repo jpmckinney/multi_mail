@@ -13,8 +13,40 @@ describe MultiMail::Sender::Postmark do
     end
   end
 
-  let :empty_message do
-    Mail.new
+  let :message_without_from do
+    Mail.new do
+      date    Time.new(2000, 1, 1)
+      to      'bar@example.com'
+      subject 'test'
+      body    'hello'
+    end
+  end
+
+  let :message_without_to do
+    Mail.new do
+      date    Time.new(2000, 1, 1)
+      from    'foo@example.com'
+      subject 'test'
+      body    'hello'
+    end
+  end
+
+  let :message_without_subject do
+    Mail.new do
+      date    Time.new(2000, 1, 1)
+      from    'foo@example.com'
+      to      'bar@example.com'
+      body    'hello'
+    end
+  end
+
+  let :message_without_body do
+    Mail.new do
+      date    Time.new(2000, 1, 1)
+      from    'foo@example.com'
+      to      'bar@example.com'
+      subject 'test'
+    end
   end
 
   describe '#initialize' do
@@ -71,8 +103,16 @@ describe MultiMail::Sender::Postmark do
       result[:message].should == 'Test job accepted'
     end
 
-    it 'should not send an empty message' do
-      expect{empty_message.deliver!}.to raise_error(MultiMail::InvalidMessage, "Invalid 'From' value.")
+    it 'should not send a message without a From header' do
+      expect{message_without_from.deliver!}.to raise_error(MultiMail::MissingSender, "Invalid 'From' value.")
+    end
+
+    it 'should not send a message without a To header' do
+      expect{message_without_to.deliver!}.to raise_error(MultiMail::MissingRecipients, 'Zero recipients specified')
+    end
+
+    it 'should not send a message without a body' do
+      expect{message_without_body.deliver!}.to raise_error(MultiMail::MissingBody, 'Provide either email TextBody or HtmlBody or both.')
     end
   end
 end

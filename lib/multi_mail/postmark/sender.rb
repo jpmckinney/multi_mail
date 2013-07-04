@@ -28,7 +28,16 @@ module MultiMail
       rescue ::Postmark::InvalidApiKeyError => e
         raise InvalidAPIKey, e.message
       rescue ::Postmark::InvalidMessageError => e
-        raise InvalidMessage, e.message
+        case e.message
+        when "Invalid 'From' value."
+          raise MissingSender, e.message
+        when 'Zero recipients specified'
+          raise MissingRecipients, e.message
+        when 'Provide either email TextBody or HtmlBody or both.'
+          raise MissingBody, e.message
+        else
+          raise InvalidMessage, e.message
+        end
       end
     end
   end
