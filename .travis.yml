@@ -9,3 +9,7 @@ env:
   global:
     # MANDRILL_API_KEY
     - secure: "sjbNGWtWzaPup1yQN+cbtY264NgpNYZrOirVuYj5PMD31emoAiaobS7+cCJH\nx0MUXskjtbzvbJwvzLwkwDpdRA2Hx4dvOKh0HrOVLy1B0bKbVdb7P3eET2aN\nE07nmVNC79jiopD+1pWcbMGXr9s4/sOogK23ktVPegrWH7c0pfI="
+    # SENDGRID_API_USER
+    - secure: "THUH/QdYAVXIFBn24PhcqChMF4XGUzDnzoRxNQMBjVZ3mTM6/dw5lGApx3HQ\nZZy4iUQ0sCWcsPo/tK4AdhZ7/NEcKh/9Uxr1J7GOKBIAJVd5veDe6RCy1eyP\niCmF6QuzVsEgprcxcOPypeybLoUd8TCIhVGPTYaOCamjwx59e3Y="
+    # SENDGRID_API_KEY
+    - secure: "ovfCD7gOOiHteTihQ9YGyUQiSdWrrI15kE2nU8qEfH8suQACBxW4By9D4CY6\ngompkj1svDscXb9u55nbOIH5JWQxM+Uc5OH6vFWBikRdyFPHN0lfsRyUXQj7\nqPkjaEIEAW0Q7bTetdpfTDV1qmCiHALmc2CaexEj9o4JOcN7AeM="

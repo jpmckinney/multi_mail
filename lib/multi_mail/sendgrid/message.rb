@@ -19,7 +19,7 @@ module MultiMail
         headers = {}
         header_fields.each do |field|
           key = field.name.downcase
-          unless %w(bcc date from reply-to subject to).include?(key)
+          unless %w(bcc date from reply-to subject to message-id).include?(key)
             headers[field.name] = field.value.to_s
           end
         end
