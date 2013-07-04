@@ -7,6 +7,8 @@ rvm:
   - ree
 env:
   global:
+    # MAILGUN_API_KEY
+    - secure: "hQrNP1++1GVNuFp7xHIUOp938sbuko/hLdhyw+D/yNn1XXvak7UGNVvKNHvL\n8a+CxP8D3iqHitkcSEccWhzwnALiljZKl7tFfX/OPouYrPpuhhjHtv8X/y3n\nFpeMVNFXaF1QfwSEMYWNMdL24WUgBr+V5WhRsmi/BCIA+4PtCRk="
     # MANDRILL_API_KEY
     - secure: "sjbNGWtWzaPup1yQN+cbtY264NgpNYZrOirVuYj5PMD31emoAiaobS7+cCJH\nx0MUXskjtbzvbJwvzLwkwDpdRA2Hx4dvOKh0HrOVLy1B0bKbVdb7P3eET2aN\nE07nmVNC79jiopD+1pWcbMGXr9s4/sOogK23ktVPegrWH7c0pfI="
     # SENDGRID_API_USER

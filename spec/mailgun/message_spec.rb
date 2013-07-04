@@ -158,11 +158,11 @@ describe MultiMail::Message::Mailgun do
     end
 
     it 'should return an empty array if the attachment is blank' do
-      message_with_empty_file.mailgun_attachments.to_hash.should == {}
+      message_with_empty_file.mailgun_attachments.should == {}
     end
 
     it 'should return an empty array' do
-      empty_message.mailgun_attachments.to_hash.should == {}
+      empty_message.mailgun_attachments.should == {}
     end
   end
 
@@ -221,11 +221,11 @@ describe MultiMail::Message::Mailgun do
       hash['attachment'][1].read.should == 'hello world'
       hash['attachment'].size.should == 2
 
-      hash.size.should == 17
+      hash.size.should == 15 # 17 if Multimap
     end
 
     it 'should convert the message without a text body' do
-      message_without_text_body.to_mailgun_hash.to_hash.should == {
+      message_without_text_body.to_mailgun_hash.should == {
         'from'           => ['foo@example.com'],
         'to'             => ['bar@example.com'],
         'subject'        => ['test'],
@@ -235,7 +235,7 @@ describe MultiMail::Message::Mailgun do
     end
 
     it 'should convert the message without an HTML body' do
-      message_without_html_body.to_mailgun_hash.to_hash.should == {
+      message_without_html_body.to_mailgun_hash.should == {
         'from'    => ['foo@example.com'],
         'to'      => ['bar@example.com'],
         'subject' => ['test'],

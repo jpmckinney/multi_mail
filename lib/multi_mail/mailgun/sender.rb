@@ -1,68 +1,53 @@
+require 'multi_mail/mailgun/message'
+
 module MultiMail
   module Sender
-    class Mailgun < MultiMail::Service
-      attr_reader :settings, :api_key, :domain_name
+    # Mailgun's outgoing mail sender.
+    class Mailgun
+      attr_reader :settings, :api_key, :domain
 
-      # @param [Hash] values required and optional arguments
-      def initialize(values)
-        super
-        @api_key = values.delete(:api_key)
-        @domain_name = values.delete(:domain_name)
-        self.settings = values
-        # @todo Set API keys, etc.
+      # Initializes a Mailgun outgoing email sender.
+      #
+      # @param [Hash] options required and optional arguments
+      # @option options [String] :api_key a Mailgun API key
+      def initialize(options = {})
+        raise ArgumentError, "Missing required arguments: :api_key" unless options[:api_key]
+        raise ArgumentError, "Missing required arguments: :domain" unless options[:domain]
+        @settings = options.dup
+
+        @api_key = settings.delete(:api_key)
+        @domain  = settings.delete(:domain)
       end
 
+      # Delivers a message via the Mailgun API.
+      #
       # @param [Mail::Message] mail a message
       def deliver!(mail)
-        smtp_from, smtp_to, message = check_delivery_params(mail)
-        # @todo Send API requests
+        parameters = settings.dup
+        parameters.delete(:return_response)
+        message = MultiMail::Message::Mailgun.new(mail).to_mailgun_hash.merge(parameters)
 
-        # extract html
-        html = mail.parts.find do |part|
-          part.content_type == 'text/html; charset=UTF-8'
+        connection = Faraday.new do |conn|
+          conn.request :multipart
+          conn.request :url_encoded
+          conn.adapter Faraday.default_adapter
         end
-        html = html.body if html
 
+        response = connection.post("https://api:#{@api_key}@api.mailgun.net/v2/#{@domain}/messages", message)
 
-
-        message = Multimap[
-          :from => smtp_from,
-          :to => smtp_to,
-          :subject => mail[:subject].to_s,
-          :text => mail.body.decoded,
-          :html => html,
-          "o:tag" => mail[:tags]
-        ]
-        message[:cc] = mail.cc if mail.cc
-        message[:bcc] = mail.bcc if mail.bcc
-
-        #extract attachments
-        mail.attachments.each do |a|
-          filename, extension = a.filename.split('.')
-          file = Tempfile.new([filename, extension])
-          file.write(a.decoded)
-          file.close
-          if extension == 'jpg' || extension == 'tiff'
-            message[:inline] = File.new(file.path)
-          else
-            message[:attachment] = File.new(file.path)
-          end
+        if response.status == 401
+          raise InvalidAPIKey
+        elsif response.status == 200
+          body = JSON.load(response.body)
+        else
+          raise response.body.inspect
         end
-        
-        message.merge!(settings[:message_options]) if settings[:message_options]
-        message['v:my-var'] = message['v:my-var'].to_json if message['v:my-var']
-
-        response = RestClient.post(
-          "https://api:#{@api_key}@api.mailgun.net/v2/#{@domain_name}/messages",
-          message
-        )
 
         if settings[:return_response]
-          response
+          body
         else
           self
         end
-
       end
     end
   end

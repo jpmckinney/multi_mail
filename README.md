@@ -142,18 +142,19 @@ See [Mailgun's documentation](http://documentation.mailgun.net/user_manual.html#
 * `content-id-map`
 
 ### Outgoing
-    service = MultiMail::Sender.new({
-      :provider => 'mailgun',
-      :api_key => key-xxxxxxxxxxxxxxxxxxxxxxx-x-xxxxxx,
-      :domain_name => yourdomain.mailgun.org,
-      :message_options => <optional>
-      })
 
-once you have created your mail message, call
-    service.deliver!(message)
+```ruby
+require 'multi_mail/mailgun/sender'
 
-See [Mailgun's documentation](http://documentation.mailgun.com/api-sending.html) for these additional parameters provided by the api
+Mail.deliver do
+  delivery_method MultiMail::Sender::Mailgun, :api_key => 'your-api-key'
+  ...
+end
+```
 
+You may pass additional arguments to `delivery_method` to use Mailgun-specific features ([see docs](http://documentation.mailgun.com/api-sending.html)):
+
+* `o:tag`
 * `o:campaign`
 * `o:dkim`
 * `o:deliverytime`
@@ -161,8 +162,7 @@ See [Mailgun's documentation](http://documentation.mailgun.com/api-sending.html)
 * `o:tracking`
 * `o:tracking-clicks`
 * `o:tracking-opens`
-* `h:X-My-Header`
-* `v:my-var`
+* `v:`
 
 ## Mandrill
 
@@ -260,6 +260,8 @@ end
 ```
 
 MultiMail depends on the `postmark` gem for its Postmark integration.
+
+You may also pass a `Tag` option to `delivery_method` ([see Postmark's documentation](http://developer.postmarkapp.com/developer-build.html#message-format)).
 
 ## SendGrid
 
