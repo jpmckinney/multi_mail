@@ -55,7 +55,8 @@ module MultiMail
           attachment['type'].start_with?('image/')
         end
 
-        { 'html'        => body_html,
+        hash = {
+          'html'        => body_html,
           'text'        => body_text,
           'subject'     => subject,
           'from_email'  => from && from.first,
@@ -64,9 +65,9 @@ module MultiMail
           'headers'     => mandrill_headers,
           'attachments' => attachments,
           'images'      => images,
-        }.delete_if do |_,value|
-          value.nil? || value.empty?
-        end
+        }
+
+        normalize(hash)
       end
     end
   end

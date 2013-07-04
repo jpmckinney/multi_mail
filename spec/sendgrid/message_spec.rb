@@ -208,48 +208,53 @@ describe MultiMail::Message::SendGrid do
   describe '#to_sendgrid_hash' do
     it 'should return the message as SendGrid parameters' do
       hash = message.to_sendgrid_hash
-      p Faraday::Utils.build_nested_query hash
-      hash['to'].should       == ['bar@example.com', 'baz@example.com']
-      hash['toname'].should   == ['Jane Doe', nil]
-      hash['subject'].should  == 'test'
-      hash['text'].should     == 'hello'
-      hash['html'].should     == '<p>hello</p>'
-      hash['from'].should     == 'foo@example.com'
-      hash['bcc'].should      == ['bcc@example.com']
-      hash['fromname'].should == 'John Doe'
-      hash['replyto'].should  == 'noreply@example.com'
-      hash['content'].should  == {'empty.gif' => 'empty.gif'}
 
-      hash['headers'].should match(%r{\A\{"Cc":"cc@example.com","Content-Type":"multipart/alternative; boundary=--==_mimepart_[0-9a-f_]+","X-Autoreply":"true","X-Precedence":"auto_reply","X-Numeric":"42","Delivered-To":"Autoresponder"\}\z})
-      Time.parse(hash['date']).should be_within(1).of(Time.at(946702800))
+      hash[:to].should       == ['bar@example.com', 'baz@example.com']
+      hash[:toname].should   == ['Jane Doe', nil]
+      hash[:subject].should  == 'test'
+      hash[:text].should     == 'hello'
+      hash[:html].should     == '<p>hello</p>'
+      hash[:from].should     == 'foo@example.com'
+      hash[:bcc].should      == ['bcc@example.com']
+      hash[:fromname].should == 'John Doe'
+      hash[:replyto].should  == 'noreply@example.com'
+      hash[:content].should  == {'empty.gif' => 'empty.gif'}
 
-      hash['files']['empty.gif'].content_type.should == 'image/gif; filename=empty.gif'
-      hash['files']['empty.gif'].original_filename.should == 'empty.gif'
-      hash['files']['empty.gif'].read.should == File.open(empty_gif_path, 'r:binary'){|f| f.read}
-      hash['files']['foo.txt'].content_type.should == 'text/plain; filename=foo.txt'
-      hash['files']['foo.txt'].original_filename.should == 'foo.txt'
-      hash['files']['foo.txt'].read.should == 'hello world'
-      hash['files'].size.should == 2
+      hash[:headers].should match(/"Cc":"cc@example.com"/)
+      hash[:headers].should match(%r{"Content-Type":"multipart/alternative; boundary=--==_mimepart_[0-9a-f_]+"})
+      hash[:headers].should match(/"X-Autoreply":"true"/)
+      hash[:headers].should match(/"X-Precedence":"auto_reply"/)
+      hash[:headers].should match(/"X-Numeric":"42"/)
+      hash[:headers].should match(/"Delivered-To":"Autoresponder"/)
+      Time.parse(hash[:'date']).should be_within(1).of(Time.at(946702800))
+
+      hash[:files]['empty.gif'].content_type.should == 'image/gif; filename=empty.gif'
+      hash[:files]['empty.gif'].original_filename.should == 'empty.gif'
+      hash[:files]['empty.gif'].read.should == File.open(empty_gif_path, 'r:binary'){|f| f.read}
+      hash[:files]['foo.txt'].content_type.should == 'text/plain; filename=foo.txt'
+      hash[:files]['foo.txt'].original_filename.should == 'foo.txt'
+      hash[:files]['foo.txt'].read.should == 'hello world'
+      hash[:files].size.should == 2
 
       hash.size.should == 13
     end
 
     it 'should convert the message without a text body' do
       message_without_text_body.to_sendgrid_hash.should == {
-        'to'      => ['bar@example.com'],
-        'subject' => 'test',
-        'html'    => '<p>hello</p>',
-        'from'    => 'foo@example.com',
-        'headers' => %({"Content-Type":"text/html; charset=UTF-8"}),
+        :to      => ['bar@example.com'],
+        :subject => 'test',
+        :html    => '<p>hello</p>',
+        :from    => 'foo@example.com',
+        :headers => %({"Content-Type":"text/html; charset=UTF-8"}),
       }
     end
 
     it 'should convert the message without an HTML body' do
       message_without_html_body.to_sendgrid_hash.should == {
-        'to'      => ['bar@example.com'],
-        'subject' => 'test',
-        'text'    => 'hello',
-        'from'    => 'foo@example.com',
+        :to      => ['bar@example.com'],
+        :subject => 'test',
+        :text    => 'hello',
+        :from    => 'foo@example.com',
       }
     end
 

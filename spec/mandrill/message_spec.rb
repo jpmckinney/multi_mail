@@ -232,12 +232,12 @@ describe MultiMail::Message::Mandrill do
   describe '#to_mandrill_hash' do
     it 'should return the message as Mandrill parameters' do
       message.to_mandrill_hash.should == {
-        'html'       => '<p>hello</p>',
-        'text'       => 'hello',
-        'subject'    => 'test',
-        'from_email' => 'foo@example.com',
-        'from_name'  => 'John Doe',
-        'to'         => [
+        :html       => '<p>hello</p>',
+        :text       => 'hello',
+        :subject    => 'test',
+        :from_email => 'foo@example.com',
+        :from_name  => 'John Doe',
+        :to         => [
           {
           'email' => 'bar@example.com',
           'name'  => 'Jane Doe',
@@ -247,20 +247,20 @@ describe MultiMail::Message::Mandrill do
           'name'  => nil,
           },
         ],
-        'headers' => {
+        :headers => {
           'Reply-To'     => 'noreply@example.com',
           'X-Autoreply'  => 'true',
           'X-Precedence' => 'auto_reply',
           'X-Numeric'    => '42',
         },
-        'attachments' => [
+        :attachments => [
           {
             'type' => 'text/plain; filename=foo.txt',
             'name' => 'foo.txt',
             'content' => Base64.encode64('hello world'),
           },
         ],
-        'images' => [
+        :images => [
           {
             'type' => 'image/gif; filename=empty.gif',
             'name' => 'empty.gif',
@@ -272,10 +272,10 @@ describe MultiMail::Message::Mandrill do
 
     it 'should convert the message without a text body' do
       message_without_text_body.to_mandrill_hash.should == {
-        'html'       => '<p>hello</p>',
-        'subject'    => 'test',
-        'from_email' => 'foo@example.com',
-        'to'         => [
+        :html       => '<p>hello</p>',
+        :subject    => 'test',
+        :from_email => 'foo@example.com',
+        :to         => [
           {
           'email' => 'bar@example.com',
           'name'  => nil,
@@ -286,10 +286,10 @@ describe MultiMail::Message::Mandrill do
 
     it 'should convert the message without an HTML body' do
       message_without_html_body.to_mandrill_hash.should == {
-        'text'       => 'hello',
-        'subject'    => 'test',
-        'from_email' => 'foo@example.com',
-        'to'         => [
+        :text       => 'hello',
+        :subject    => 'test',
+        :from_email => 'foo@example.com',
+        :to         => [
           {
           'email' => 'bar@example.com',
           'name'  => nil,

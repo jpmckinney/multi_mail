@@ -196,51 +196,51 @@ describe MultiMail::Message::Mailgun do
     it 'should return the message as Mailgun parameters' do
       hash = message.to_mailgun_hash
 
-      hash['from'].should       == [%("John Doe" <foo@example.com>)]
-      hash['to'].should         == [%("Jane Doe" <bar@example.com>), '<baz@example.com>']
-      hash['cc'].should         == ['cc@example.com']
-      hash['bcc'].should        == ['bcc@example.com']
-      hash['subject'].should    == ['test']
-      hash['text'].should       == ['hello']
-      hash['html'].should       == ['<p>hello</p>']
-      hash['h:Reply-To'].should == ['noreply@example.com']
+      hash[:from].should       == [%("John Doe" <foo@example.com>)]
+      hash[:to].should         == [%("Jane Doe" <bar@example.com>), '<baz@example.com>']
+      hash[:cc].should         == ['cc@example.com']
+      hash[:bcc].should        == ['bcc@example.com']
+      hash[:subject].should    == ['test']
+      hash[:text].should       == ['hello']
+      hash[:html].should       == ['<p>hello</p>']
+      hash[:'h:Reply-To'].should == ['noreply@example.com']
 
-      Time.parse(hash['h:Date'][0]).should be_within(1).of(Time.at(946702800))
-      hash['h:Content-Type'][0].should match(%r{\Amultipart/alternative; boundary=--==_mimepart_[0-9a-f_]+\z})
+      Time.parse(hash[:'h:Date'][0]).should be_within(1).of(Time.at(946702800))
+      hash[:'h:Content-Type'][0].should match(%r{\Amultipart/alternative; boundary=--==_mimepart_[0-9a-f_]+\z})
 
-      hash['h:X-Autoreply'].should  == ['true']
-      hash['h:X-Precedence'].should == ['auto_reply']
-      hash['h:X-Numeric'].should    == ['42']
-      hash['h:Delivered-To'].should == ['Autoresponder']
+      hash[:'h:X-Autoreply'].should  == ['true']
+      hash[:'h:X-Precedence'].should == ['auto_reply']
+      hash[:'h:X-Numeric'].should    == ['42']
+      hash[:'h:Delivered-To'].should == ['Autoresponder']
 
-      hash['inline'][0].content_type.should == 'image/gif; filename=empty.gif'
-      hash['inline'][0].original_filename.should == 'empty.gif'
-      hash['inline'][0].read.should == File.open(empty_gif_path, 'r:binary'){|f| f.read}
-      hash['inline'].size.should == 1
-      hash['attachment'][0].content_type.should == 'text/plain; filename=foo.txt'
-      hash['attachment'][0].original_filename.should == 'foo.txt'
-      hash['attachment'][0].read.should == 'hello world'
-      hash['attachment'].size.should == 1
+      hash[:inline][0].content_type.should == 'image/gif; filename=empty.gif'
+      hash[:inline][0].original_filename.should == 'empty.gif'
+      hash[:inline][0].read.should == File.open(empty_gif_path, 'r:binary'){|f| f.read}
+      hash[:inline].size.should == 1
+      hash[:attachment][0].content_type.should == 'text/plain; filename=foo.txt'
+      hash[:attachment][0].original_filename.should == 'foo.txt'
+      hash[:attachment][0].read.should == 'hello world'
+      hash[:attachment].size.should == 1
 
       hash.size.should == 16
     end
 
     it 'should convert the message without a text body' do
       message_without_text_body.to_mailgun_hash.should == {
-        'from'           => ['foo@example.com'],
-        'to'             => ['bar@example.com'],
-        'subject'        => ['test'],
-        'html'           => ['<p>hello</p>'],
-        'h:Content-Type' => ['text/html; charset=UTF-8'],
+        :from             => ['foo@example.com'],
+        :to               => ['bar@example.com'],
+        :subject          => ['test'],
+        :html             => ['<p>hello</p>'],
+        :'h:Content-Type' => ['text/html; charset=UTF-8'],
       }
     end
 
     it 'should convert the message without an HTML body' do
       message_without_html_body.to_mailgun_hash.should == {
-        'from'    => ['foo@example.com'],
-        'to'      => ['bar@example.com'],
-        'subject' => ['test'],
-        'text'    => ['hello'],
+        :from    => ['foo@example.com'],
+        :to      => ['bar@example.com'],
+        :subject => ['test'],
+        :text    => ['hello'],
       }
     end
 

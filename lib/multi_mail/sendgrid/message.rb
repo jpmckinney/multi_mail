@@ -51,7 +51,8 @@ module MultiMail
       def to_sendgrid_hash
         headers = sendgrid_headers
 
-        { 'to'       => to.to_a,
+        hash = {
+          'to'       => to.to_a,
           'toname'   => to && self[:to].display_names.to_a,
           'subject'  => subject,
           'text'     => body_text,
@@ -64,9 +65,9 @@ module MultiMail
           'files'    => sendgrid_files,
           'content'  => sendgrid_content,
           'headers'  => headers.empty? ? nil : JSON.dump(headers),
-        }.delete_if do |_,value|
-          value.nil? || value.empty? || Array === value && value.all?{|v| v.nil?}
-        end
+        }
+
+        normalize(hash)
       end
     end
   end

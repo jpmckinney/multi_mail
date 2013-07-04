@@ -60,7 +60,7 @@ module MultiMail
           hash['html'] = body_html
         end
 
-        hash.merge(mailgun_attachments).merge(mailgun_headers).to_hash
+        normalize(hash.merge(mailgun_attachments).merge(mailgun_headers).to_hash)
       end
     end
   end

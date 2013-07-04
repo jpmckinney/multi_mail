@@ -21,6 +21,20 @@ module MultiMail
           body.decoded
         end
       end
+
+    private
+
+      def normalize(hash)
+        hash.delete_if do |_,value|
+          value.nil? || value.empty? || Array === value && value.all?{|v| v.nil?}
+        end
+
+        hash.keys.each do |key| # based on Hash#symbolize_keys! from Rails
+          hash[(key.to_sym rescue key) || key] = hash.delete(key)
+        end
+
+        hash
+      end
     end
   end
 end
