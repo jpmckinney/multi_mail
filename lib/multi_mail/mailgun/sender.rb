@@ -20,12 +20,35 @@ module MultiMail
         @domain  = settings.delete(:domain)
       end
 
+      # Returns the additional parameters for the API call.
+      #
+      # @return [Hash] the additional parameters for the API call
+      def parameters
+        parameters = settings.dup
+        parameters.delete(:return_response)
+
+        [:opens, :clicks].each do |sym|
+          key = :"track_#{sym}"
+          if tracking.key?(key)
+            parameter = :"o:tracking-#{sym}"
+            case tracking[key]
+            when 'yes', 'no', 'htmlonly'
+              parameters[parameter] = tracking[key]
+            when true
+              parameters[parameter] = 'yes'
+            when false
+              parameters[parameter] = 'no'
+            end # ignore nil
+          end
+        end
+
+        parameters
+      end
+
       # Delivers a message via the Mailgun API.
       #
       # @param [Mail::Message] mail a message
       def deliver!(mail)
-        parameters = settings.dup
-        parameters.delete(:return_response)
         message = MultiMail::Message::Mailgun.new(mail).to_mailgun_hash.merge(parameters)
 
         connection = Faraday.new do |conn|

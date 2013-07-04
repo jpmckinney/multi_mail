@@ -23,14 +23,36 @@ module MultiMail
         @send_at = settings.delete(:send_at)
       end
 
+      # Returns the additional parameters for the API call.
+      #
+      # @return [Hash] the additional parameters for the API call
+      def parameters
+        parameters = settings.dup
+        parameters.delete(:return_response)
+
+        [:opens, :clicks].each do |sym|
+          key = :"track_#{sym}"
+          if tracking.key?(key)
+            case tracking[key]
+            when true, false, nil
+              parameters[key] = tracking[key]
+            when 'yes'
+              parameters[key] = true
+            when 'no'
+              parameters[key] = false
+            end # ignore "htmlonly"
+          end
+        end
+
+        parameters
+      end
+
       # Delivers a message via the Mandrill API.
       #
       # @param [Mail::Message] mail a message
       # @see https://bitbucket.org/mailchimp/mandrill-api-ruby/src/d0950a6f9c4fac1dd2d5198a4f72c12c626ab149/lib/mandrill/api.rb?at=master#cl-738
       # @see https://bitbucket.org/mailchimp/mandrill-api-ruby/src/d0950a6f9c4fac1dd2d5198a4f72c12c626ab149/lib/mandrill.rb?at=master#cl-32
       def deliver!(mail)
-        parameters = settings.dup
-        parameters.delete(:return_response)
         message = MultiMail::Message::Mandrill.new(mail).to_mandrill_hash.merge(parameters)
 
         response = Faraday.post('https://mandrillapp.com/api/1.0/messages/send.json', JSON.dump({
