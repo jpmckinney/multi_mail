@@ -11,7 +11,7 @@ describe MultiMail::Message::Mandrill do
     }
 
     MultiMail::Message::Mandrill.new do
-      date     Time.new(2000, 1, 1)
+      date     Time.at(946702800)
       headers  headers
       from     %("John Doe" <foo@example.com>)
       to       [%("Jane Doe" <bar@example.com>), '<baz@example.com>']

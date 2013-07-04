@@ -11,7 +11,7 @@ describe MultiMail::Message::SendGrid do
     }
 
     MultiMail::Message::SendGrid.new do
-      date     Time.new(2000, 1, 1)
+      date     Time.at(946702800)
       headers  headers
       from     %("John Doe" <foo@example.com>)
       to       [%("Jane Doe" <bar@example.com>), '<baz@example.com>']
@@ -221,7 +221,7 @@ describe MultiMail::Message::SendGrid do
       hash['content'].should  == {'empty.gif' => 'empty.gif'}
 
       hash['headers'].should match(%r{\A\{"Cc":"cc@example.com","Content-Type":"multipart/alternative; boundary=--==_mimepart_[0-9a-f_]+","X-Autoreply":"true","X-Precedence":"auto_reply","X-Numeric":"42","Delivered-To":"Autoresponder"\}\z})
-      Time.parse(hash['date']).should be_within(1).of(Time.new(2000, 1, 1))
+      Time.parse(hash['date']).should be_within(1).of(Time.at(946702800))
 
       hash['files']['empty.gif'].content_type.should == 'image/gif; filename=empty.gif'
       hash['files']['empty.gif'].original_filename.should == 'empty.gif'

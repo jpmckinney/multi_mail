@@ -15,7 +15,7 @@ describe MultiMail::Sender::Postmark do
 
   let :message_without_from do
     Mail.new do
-      date    Time.new(2000, 1, 1)
+      date    Time.at(946702800)
       to      'bar@example.com'
       subject 'test'
       body    'hello'
@@ -24,7 +24,7 @@ describe MultiMail::Sender::Postmark do
 
   let :message_without_to do
     Mail.new do
-      date    Time.new(2000, 1, 1)
+      date    Time.at(946702800)
       from    'foo@example.com'
       subject 'test'
       body    'hello'
@@ -33,7 +33,7 @@ describe MultiMail::Sender::Postmark do
 
   let :message_without_subject do
     Mail.new do
-      date    Time.new(2000, 1, 1)
+      date    Time.at(946702800)
       from    'foo@example.com'
       to      'bar@example.com'
       body    'hello'
@@ -42,7 +42,7 @@ describe MultiMail::Sender::Postmark do
 
   let :message_without_body do
     Mail.new do
-      date    Time.new(2000, 1, 1)
+      date    Time.at(946702800)
       from    'foo@example.com'
       to      'bar@example.com'
       subject 'test'

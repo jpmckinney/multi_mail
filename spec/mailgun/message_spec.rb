@@ -11,7 +11,7 @@ describe MultiMail::Message::Mailgun do
     }
 
     MultiMail::Message::Mailgun.new do
-      date     Time.new(2000, 1, 1)
+      date     Time.at(946702800)
       headers  headers
       from     %("John Doe" <foo@example.com>)
       to       [%("Jane Doe" <bar@example.com>), '<baz@example.com>']
@@ -176,7 +176,7 @@ describe MultiMail::Message::Mailgun do
       headers['h:X-Numeric'].should    == ['42']
       headers['h:Delivered-To'].should == ['Autoresponder']
 
-      Time.parse(headers['h:Date'][0]).should be_within(1).of(Time.new(2000, 1, 1))
+      Time.parse(headers['h:Date'][0]).should be_within(1).of(Time.at(946702800))
       headers['h:Content-Type'][0].should match(%r{\Amultipart/alternative; boundary=--==_mimepart_[0-9a-f_]+\z})
 
       headers.size.should == 7
@@ -205,7 +205,7 @@ describe MultiMail::Message::Mailgun do
       hash['html'].should       == ['<p>hello</p>']
       hash['h:Reply-To'].should == ['noreply@example.com']
 
-      Time.parse(hash['h:Date'][0]).should be_within(1).of(Time.new(2000, 1, 1))
+      Time.parse(hash['h:Date'][0]).should be_within(1).of(Time.at(946702800))
       hash['h:Content-Type'][0].should match(%r{\Amultipart/alternative; boundary=--==_mimepart_[0-9a-f_]+\z})
 
       hash['h:X-Autoreply'].should  == ['true']
