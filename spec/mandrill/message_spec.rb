@@ -156,17 +156,17 @@ describe MultiMail::Message::Mandrill do
   describe '#mandrill_headers' do
     it 'should return only the Reply-To and X-* headers' do
       headers = message.mandrill_headers
-      headers['Reply-To'].should == 'noreply@example.com'
-      headers['X-Autoreply'].should == 'true'
-      headers['X-Precedence'].should == 'auto_reply'
-      headers['X-Numeric'].should == '42'
-      headers.size.should == 4
+      headers.should == {
+        'Reply-To'     => 'noreply@example.com',
+        'X-Autoreply'  => 'true',
+        'X-Precedence' => 'auto_reply',
+        'X-Numeric'    => '42',
+      }
     end
 
     it 'should return empty X-* headers' do
       headers = message_with_empty_headers.mandrill_headers
-      headers['X-Autoreply'].should == ''
-      headers.size.should == 1
+      headers.should == {'X-Autoreply' => ''}
     end
 
     it 'should return an empty hash' do

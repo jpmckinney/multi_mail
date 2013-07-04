@@ -2,6 +2,9 @@ module MultiMail
   module Message
     # @see https://mandrillapp.com/api/docs/messages.ruby.html#method-send
     class Mandrill < MultiMail::Message::Base
+      # Returns the To header in Mandrill format.
+      #
+      # @return [Array<Hash>] the To header in Mandrill format
       def mandrill_to
         if to
           to.each_with_index.map do |value,index|
@@ -15,11 +18,15 @@ module MultiMail
         end
       end
 
-      # Mandrill only allows Reply-To and X-* headers for now.
+      # Returns the message headers in Mandrill format.
+      #
+      # @return [Hash] the message headers in Mandrill format
       def mandrill_headers
         headers = {}
         header_fields.each do |field|
           key = field.name.downcase
+          # Mandrill only allows Reply-To and X-* headers currently.
+          # https://mandrillapp.com/api/docs/messages.ruby.html
           if key == 'reply-to' || key.start_with?('x-')
             headers[field.name] = field.value
           end
@@ -27,6 +34,9 @@ module MultiMail
         headers
       end
 
+      # Returns the message's attachments in Mandrill format.
+      #
+      # @return [Array<Faraday::UploadIO>] the attachments in Mandrill format
       def mandrill_attachments
         attachments.map do |attachment|
           {
@@ -37,6 +47,9 @@ module MultiMail
         end
       end
 
+      # Returns the message as parameters to POST to Mandrill.
+      #
+      # @return [Hash] the message as parameters to POST to Mandrill
       def to_mandrill_hash
         images, attachments = mandrill_attachments.partition do |attachment|
           attachment['type'].start_with?('image/')
