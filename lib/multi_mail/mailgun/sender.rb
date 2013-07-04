@@ -51,18 +51,29 @@ module MultiMail
         message = MultiMail::Message::Mailgun.new(mail).to_mailgun_hash.merge(parameters)
 
         connection = Faraday.new do |conn|
+          conn.basic_auth 'api', api_key
           conn.request :multipart
           conn.request :url_encoded
           conn.adapter Faraday.default_adapter
         end
 
-        response = connection.post("https://api:#{api_key}@api.mailgun.net/v2/#{domain}/messages", message)
+        response = connection.post("https://api.mailgun.net/v2/#{domain}/messages", message)
 
         case response.status
         when 401
           raise InvalidAPIKey, response.body
         when 400
-          raise InvalidMessage, JSON.load(response.body)
+          body = JSON.load(response.body)
+          case body['message']
+          when "'from' parameter is missing"
+            raise MissingSender, body['message']
+          when "'to' parameter is missing"
+            raise MissingRecipients, body['message']
+          when "Need at least one of 'text' or 'html' parameters specified"
+            raise MissingBody, body['message']
+          else
+            raise InvalidMessage, body['message']
+          end
         when 200
           body = JSON.load(response.body)
         else

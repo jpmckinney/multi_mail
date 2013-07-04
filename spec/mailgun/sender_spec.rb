@@ -12,9 +12,39 @@ describe MultiMail::Sender::Mailgun do
     end
   end
 
-  let :empty_message do
+  let :message_without_from do
     Mail.new do
       date    Time.new(2000, 1, 1)
+      to      'bar@example.com'
+      subject 'test'
+      body    'hello'
+    end
+  end
+
+  let :message_without_to do
+    Mail.new do
+      date    Time.new(2000, 1, 1)
+      from    'foo@example.com'
+      subject 'test'
+      body    'hello'
+    end
+  end
+
+  let :message_without_subject do
+    Mail.new do
+      date    Time.new(2000, 1, 1)
+      from    'foo@example.com'
+      to      'bar@example.com'
+      body    'hello'
+    end
+  end
+
+  let :message_without_body do
+    Mail.new do
+      date    Time.new(2000, 1, 1)
+      from    'foo@example.com'
+      to      'bar@example.com'
+      subject 'test'
     end
   end
 
@@ -130,8 +160,16 @@ describe MultiMail::Sender::Mailgun do
       result['id'].should match(/<\S+@\S+>/)
     end
 
-    it 'should not send an empty message' do
-      expect{empty_message.deliver!}.to raise_error(MultiMail::InvalidMessage)
+    it 'should not send a message without a From header' do
+      expect{message_without_from.deliver!}.to raise_error(MultiMail::MissingSender, "'from' parameter is missing")
+    end
+
+    it 'should not send a message without a To header' do
+      expect{message_without_to.deliver!}.to raise_error(MultiMail::MissingRecipients, "'to' parameter is missing")
+    end
+
+    it 'should not send a message without a body' do
+      expect{message_without_body.deliver!}.to raise_error(MultiMail::MissingBody, "Need at least one of 'text' or 'html' parameters specified")
     end
   end
 end
