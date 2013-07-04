@@ -79,8 +79,10 @@ message = Mail.new do
   delivery_method MultiMail::Sender::Mailgun,
     :api_key => 'your-api-key',
     :domain => 'your-domain.mailgun.org',
-    :track_opens => true,
-    :track_clicks => false
+    :track => {
+      :opens => true,
+      :clicks => false,
+    }
   ...
 end
 
@@ -89,7 +91,7 @@ message.deliver
 
 [Mailgun](http://documentation.mailgun.com/user_manual.html#tracking-clicks) and [Mandrill](http://help.mandrill.com/entries/21721852-Why-aren-t-clicks-being-tracked-) track whether a recipient has clicked a link in a message by rewriting its URL.
 
-If want to rewrite URLs in HTML parts only – leaving URLs as-is in text parts – use `:track_clicks => 'htmlonly'` if you are using Mailgun; if you are using Mandrill, do not set `:track_clicks` and instead configure click tracking globally in your [Mandrill sending options](https://mandrillapp.com/settings/sending-options).
+If want to rewrite URLs in HTML parts only – leaving URLs as-is in text parts – use `:clicks => 'htmlonly'` if you are using Mailgun; if you are using Mandrill, do not set `:clicks` and instead configure click tracking globally in your [Mandrill sending options](https://mandrillapp.com/settings/sending-options).
 
 ```ruby
 require 'multi_mail'
@@ -98,8 +100,10 @@ require 'multi_mail/mandrill/sender'
 message = Mail.new do
   delivery_method MultiMail::Sender::Mandrill,
     :api_key => 'your-api-key',
-    :track_opens => true,
-    :track_clicks => false
+    :track => {
+      :opens => true,
+      :clicks => false,
+    }
   ...
 end
 

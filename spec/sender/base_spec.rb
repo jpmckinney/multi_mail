@@ -5,13 +5,13 @@ describe MultiMail::Sender::Base do
     Class.new do
       include MultiMail::Sender::Base
 
-      requires :bar
+      requires :foo
     end
   end
 
   describe '#initialize' do
     it 'should symbolize keys' do
-      instance = klass.new(:foo => 1, 'bar' => 2, nil => 3, true => 4, false => 5, 6 => 6)
+      instance = klass.new('foo' => 1, :bar => 2, nil => 3, true => 4, false => 5, 6 => 6)
       instance.settings.should == {
         :foo  => 1,
         :bar  => 2,
@@ -20,6 +20,16 @@ describe MultiMail::Sender::Base do
         false => 5,
         6     => 6,
       }
+    end
+
+    it 'should have default settings' do
+      sender = klass.new(:foo => '')
+      sender.tracking.should == {}
+    end
+
+    it 'should assign custom settings' do
+      sender = klass.new(:foo => '', :track => {:opens => true})
+      sender.tracking.should == {:opens => true}
     end
   end
 end
