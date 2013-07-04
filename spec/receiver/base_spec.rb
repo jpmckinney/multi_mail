@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe MultiMail::Receiver::Base do
   let :klass do
-    Class.new(MultiMail::Service) do
+    Class.new do
       include MultiMail::Receiver::Base
 
       def valid?(params)

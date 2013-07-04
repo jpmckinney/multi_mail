@@ -1,6 +1,6 @@
 module MultiMail
   module Receiver
-    class Simple < MultiMail::Service
+    class Simple
       include MultiMail::Receiver::Base
 
       # Expects a raw email message parsable by the Mail gem.

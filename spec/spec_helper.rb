@@ -120,7 +120,7 @@ def response(provider, fixture, action_dispatch = false, encoding = 'UTF-8')
 
   if action_dispatch
     # ActionDispatch would parse the request into a parameters hash.
-    klass = Class.new(MultiMail::Service) do
+    klass = Class.new do
       include MultiMail::Receiver::Base
     end
     normalize_encode_params(klass.parse(body))

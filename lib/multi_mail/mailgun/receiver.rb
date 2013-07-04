@@ -1,7 +1,7 @@
 module MultiMail
   module Receiver
     # Mailgun's incoming email receiver.
-    class Mailgun < MultiMail::Service
+    class Mailgun
       include MultiMail::Receiver::Base
 
       recognizes :mailgun_api_key, :http_post_format

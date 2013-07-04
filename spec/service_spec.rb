@@ -2,9 +2,15 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe MultiMail::Service do
   let :klass do
-    Class.new(MultiMail::Service) do
+    Class.new do
+      extend MultiMail::Service
+
       requires :required_argument1, :required_argument2
       recognizes :optional_argument1, :optional_argument2
+
+      def initialize(options = {})
+        self.class.validate_options(options)
+      end
     end
   end
 
@@ -55,6 +61,17 @@ describe MultiMail::Service do
           :foo => 1,
         })
       }.to raise_error(ArgumentError, "Unrecognized arguments: bar, foo")
+    end
+
+    it 'should raise not an error if unrecognized arguments are allowed' do
+      expect{
+        klass.validate_options({
+          :required_argument1 => 1,
+          :required_argument2 => 1,
+          :bar => 1,
+          :foo => 1,
+        }, false)
+      }.to_not raise_error(ArgumentError, "Unrecognized arguments: bar, foo")
     end
   end
 end

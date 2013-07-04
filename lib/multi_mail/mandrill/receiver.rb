@@ -5,7 +5,7 @@ module MultiMail
     # Mandrill uses an HTTP header to ensure a request originates from Mandrill.
     #
     # @see http://help.mandrill.com/entries/23704122-Authenticating-webhook-requests
-    class Mandrill < MultiMail::Service
+    class Mandrill
       include MultiMail::Receiver::Base
 
       recognizes :spamassassin_threshold, :mandrill_webhook_key, :mandrill_webhook_url

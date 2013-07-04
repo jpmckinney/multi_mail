@@ -1,7 +1,7 @@
 module MultiMail
   module Receiver
     # SendGrid's incoming email receiver.
-    class SendGrid < MultiMail::Service
+    class SendGrid
       include MultiMail::Receiver::Base
       # Initializes a SendGrid incoming email receiver.
       #

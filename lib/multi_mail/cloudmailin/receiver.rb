@@ -6,7 +6,7 @@ module MultiMail
     # that a request originates from Cloudmailin.
     #
     # @see http://docs.cloudmailin.com/receiving_email/securing_your_email_url_target/
-    class Cloudmailin < MultiMail::Service
+    class Cloudmailin
       include MultiMail::Receiver::Base
 
       recognizes :http_post_format

@@ -1,7 +1,7 @@
 module MultiMail
   module Receiver
     # Postmark's incoming email receiver.
-    class Postmark < MultiMail::Service
+    class Postmark
       include MultiMail::Receiver::Base
 
       def transform(params)

@@ -7,8 +7,16 @@ module MultiMail
     module Base
       def self.included(subclass)
         subclass.class_eval do
+          extend MultiMail::Service
           extend MultiMail::Receiver::Base::ClassMethods
         end
+      end
+
+      # Initializers an incoming email receiver.
+      #
+      # @param [Hash] options optional arguments
+      def initialize(options = {})
+        self.class.validate_options(options)
       end
 
       # Ensures a request is authentic, parses it into a params hash, and
