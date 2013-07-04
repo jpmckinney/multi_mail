@@ -124,63 +124,60 @@ describe MultiMail::Message::SendGrid do
   describe '#sendgrid_files' do
     it 'should return the attachments' do
       files = message.sendgrid_files
-      files[0].content_type.should == 'image/gif; filename=empty.gif'
-      files[0].original_filename.should == 'empty.gif'
-      files[0].read.should == File.open(empty_gif_path, 'r:binary'){|f| f.read}
-      files[1].content_type.should == 'text/plain; filename=foo.txt'
-      files[1].original_filename.should == 'foo.txt'
-      files[1].read.should == 'hello world'
+      files['empty.gif'].content_type.should == 'image/gif; filename=empty.gif'
+      files['empty.gif'].original_filename.should == 'empty.gif'
+      files['empty.gif'].read.should == File.open(empty_gif_path, 'r:binary'){|f| f.read}
+      files['foo.txt'].content_type.should == 'text/plain; filename=foo.txt'
+      files['foo.txt'].original_filename.should == 'foo.txt'
+      files['foo.txt'].read.should == 'hello world'
       files.size.should == 2
     end
 
     it 'should return an attachment with an known extension' do
       files = message_with_known_extension.sendgrid_files
-      files[0].content_type.should == 'video/quicktime; filename=xxx.mov'
-      files[0].original_filename.should == 'xxx.mov'
-      files[0].read.should == ''
+      files['xxx.mov'].content_type.should == 'video/quicktime; filename=xxx.mov'
+      files['xxx.mov'].original_filename.should == 'xxx.mov'
+      files['xxx.mov'].read.should == ''
       files.size.should == 1
     end
 
     it 'should return an attachment with an unknown extension' do
       files = message_with_unknown_extension.sendgrid_files
-      files[0].content_type.should == 'text/plain'
-      files[0].original_filename.should == 'xxx.xxx'
-      files[0].read.should == ''
+      files['xxx.xxx'].content_type.should == 'text/plain'
+      files['xxx.xxx'].original_filename.should == 'xxx.xxx'
+      files['xxx.xxx'].read.should == ''
       files.size.should == 1
     end
 
     it 'should return an attachment without an extension' do
       files = message_without_extension.sendgrid_files
-      files[0].content_type.should == 'text/plain'
-      files[0].original_filename.should == 'xxx'
-      files[0].read.should == ''
+      files['xxx'].content_type.should == 'text/plain'
+      files['xxx'].original_filename.should == 'xxx'
+      files['xxx'].read.should == ''
       files.size.should == 1
     end
 
     it 'should return an empty array if the attachment is blank' do
-      message_with_empty_file.sendgrid_files.should == []
+      message_with_empty_file.sendgrid_files.should == {}
     end
 
     it 'should return an empty array' do
-      empty_message.sendgrid_files.should == []
+      empty_message.sendgrid_files.should == {}
     end
   end
 
   describe '#sendgrid_content' do
     it 'should return the content IDs' do
       content = message.sendgrid_content
-      content.each do |cid|
-        cid.should match(/\A\S+@\S+\z/)
-      end
-      content.size.should == 2
+      content.should == {'empty.gif' => 'empty.gif'}
     end
 
     it 'should return an empty array if the attachment is blank' do
-      message_with_empty_file.sendgrid_content.should == []
+      message_with_empty_file.sendgrid_content.should == {}
     end
 
     it 'should return an empty array' do
-      empty_message.sendgrid_content.should == []
+      empty_message.sendgrid_content.should == {}
     end
   end
 
@@ -200,8 +197,7 @@ describe MultiMail::Message::SendGrid do
 
     it 'should return empty X-* headers' do
       headers = message_with_empty_headers.sendgrid_headers
-      headers['X-Autoreply'].should == ''
-      headers.size.should == 1
+      headers.should == {'X-Autoreply' => ''}
     end
 
     it 'should return an empty hash' do
@@ -212,7 +208,7 @@ describe MultiMail::Message::SendGrid do
   describe '#to_sendgrid_hash' do
     it 'should return the message as SendGrid parameters' do
       hash = message.to_sendgrid_hash
-
+      p Faraday::Utils.build_nested_query hash
       hash['to'].should       == ['bar@example.com', 'baz@example.com']
       hash['toname'].should   == ['Jane Doe', nil]
       hash['subject'].should  == 'test'
@@ -222,22 +218,17 @@ describe MultiMail::Message::SendGrid do
       hash['bcc'].should      == ['bcc@example.com']
       hash['fromname'].should == 'John Doe'
       hash['replyto'].should  == 'noreply@example.com'
+      hash['content'].should  == {'empty.gif' => 'empty.gif'}
 
       hash['headers'].should match(%r{\A\{"Cc":"cc@example.com","Content-Type":"multipart/alternative; boundary=--==_mimepart_[0-9a-f_]+","X-Autoreply":"true","X-Precedence":"auto_reply","X-Numeric":"42","Delivered-To":"Autoresponder"\}\z})
-
-      hash['content'].each do |cid|
-        cid.should match(/\A\S+@\S+\z/)
-      end
-      hash['content'].size.should == 2
-
       Time.parse(hash['date']).should be_within(1).of(Time.new(2000, 1, 1))
 
-      hash['files'][0].content_type.should == 'image/gif; filename=empty.gif'
-      hash['files'][0].original_filename.should == 'empty.gif'
-      hash['files'][0].read.should == File.open(empty_gif_path, 'r:binary'){|f| f.read}
-      hash['files'][1].content_type.should == 'text/plain; filename=foo.txt'
-      hash['files'][1].original_filename.should == 'foo.txt'
-      hash['files'][1].read.should == 'hello world'
+      hash['files']['empty.gif'].content_type.should == 'image/gif; filename=empty.gif'
+      hash['files']['empty.gif'].original_filename.should == 'empty.gif'
+      hash['files']['empty.gif'].read.should == File.open(empty_gif_path, 'r:binary'){|f| f.read}
+      hash['files']['foo.txt'].content_type.should == 'text/plain; filename=foo.txt'
+      hash['files']['foo.txt'].original_filename.should == 'foo.txt'
+      hash['files']['foo.txt'].read.should == 'hello world'
       hash['files'].size.should == 2
 
       hash.size.should == 13
