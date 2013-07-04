@@ -28,12 +28,11 @@ module MultiMail
         parameters.delete(:return_response)
 
         [:opens, :clicks].each do |sym|
-          key = :"track_#{sym}"
-          if tracking.key?(key)
+          if tracking.key?(sym)
             parameter = :"o:tracking-#{sym}"
-            case tracking[key]
+            case tracking[sym]
             when 'yes', 'no', 'htmlonly'
-              parameters[parameter] = tracking[key]
+              parameters[parameter] = tracking[sym]
             when true
               parameters[parameter] = 'yes'
             when false

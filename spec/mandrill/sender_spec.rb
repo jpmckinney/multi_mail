@@ -48,16 +48,54 @@ describe MultiMail::Sender::Mandrill do
 
     it 'should assign custom settings' do
       sender = MultiMail::Sender::Mandrill.new({
-        :api_key         => 'xxx',
-        :async           => true,
-        :ip_pool         => 'Main Pool',
-        :send_at         => 'example send_at',
+        :api_key => 'xxx',
+        :async   => true,
+        :ip_pool => 'Main Pool',
+        :send_at => 'example send_at',
       })
 
       sender.api_key.should == 'xxx'
       sender.async.should   == true
       sender.ip_pool.should == 'Main Pool'
       sender.send_at.should == 'example send_at'
+    end
+  end
+
+  describe '#parameters' do
+    it 'should allow true, false and nil values' do
+      [true, false, nil].each do |value|
+        sender = MultiMail::Sender::Mandrill.new({
+          :api_key => 'xxx',
+          :track => {
+            :clicks => value,
+          }
+        })
+
+        sender.parameters.should == {:track_clicks => value}
+      end
+    end
+
+    it 'should transform "yes" and "no" values' do
+      sender = MultiMail::Sender::Mandrill.new({
+        :api_key => 'xxx',
+        :track => {
+          :opens => 'no',
+          :clicks => 'yes',
+        }
+      })
+
+      sender.parameters.should == {:track_opens => false, :track_clicks => true}
+    end
+
+    it 'should ignore "htmlonly" values' do
+      sender = MultiMail::Sender::Mandrill.new({
+        :api_key => 'xxx',
+        :track => {
+          :clicks => 'htmlonly',
+        }
+      })
+
+      sender.parameters.should == {}
     end
   end
 

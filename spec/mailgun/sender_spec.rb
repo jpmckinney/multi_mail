@@ -62,6 +62,47 @@ describe MultiMail::Sender::Mailgun do
     end
   end
 
+  describe '#parameters' do
+    it 'should allow "yes", "no" and "htmlonly" values' do
+      %w(yes no htmlonly).each do |value|
+        sender = MultiMail::Sender::Mailgun.new({
+          :api_key => 'xxx',
+          :domain => 'xxx',
+          :track => {
+            :clicks => value,
+          }
+        })
+
+        sender.parameters.should == {:'o:tracking-clicks' => value}
+      end
+    end
+
+    it 'should transform true and false values' do
+      sender = MultiMail::Sender::Mailgun.new({
+        :api_key => 'xxx',
+        :domain => 'xxx',
+        :track => {
+          :opens => false,
+          :clicks => true,
+        }
+      })
+
+      sender.parameters.should == {:'o:tracking-opens' => 'no', :'o:tracking-clicks' => 'yes'}
+    end
+
+    it 'should ignore nil values' do
+      sender = MultiMail::Sender::Mailgun.new({
+        :api_key => 'xxx',
+        :domain => 'xxx',
+        :track => {
+          :clicks => nil,
+        }
+      })
+
+      sender.parameters.should == {}
+    end
+  end
+
   describe '#deliver' do
     before :all do
       Mail.defaults do
