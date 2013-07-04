@@ -21,7 +21,7 @@ module MultiMail
           settings[(key.to_sym rescue key) || key] = options[key]
         end
 
-        self.class.validate_options(options, false)
+        self.class.validate_options(settings, false)
       end
     end
   end
