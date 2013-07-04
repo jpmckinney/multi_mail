@@ -67,7 +67,48 @@ Mail.defaults do
 end
 ```
 
-If you want to inspect the API response, pass `:return_response => true` to `delivery_method` and use the `deliver!` method to send the message:
+#### Track opens and clicks
+
+Mailgun and Mandrill allow you to set open tracking and click tracking on a per-message basis:
+
+```ruby
+require 'multi_mail'
+require 'multi_mail/mailgun/sender'
+
+message = Mail.new do
+  delivery_method MultiMail::Sender::Mailgun,
+    :api_key => 'your-api-key',
+    :domain => 'your-domain.mailgun.org',
+    :track_opens => true,
+    :track_clicks => false
+  ...
+end
+
+message.deliver
+```
+
+[Mailgun](http://documentation.mailgun.com/user_manual.html#tracking-clicks) and [Mandrill](http://help.mandrill.com/entries/21721852-Why-aren-t-clicks-being-tracked-) track whether a recipient has clicked a link in a message by rewriting its URL.
+
+If want to rewrite URLs in HTML parts only – leaving URLs as-is in text parts – use `:track_clicks => 'htmlonly'` if you are using Mailgun; if you are using Mandrill, do not set `:track_clicks` and instead configure click tracking globally in your [Mandrill sending options](https://mandrillapp.com/settings/sending-options).
+
+```ruby
+require 'multi_mail'
+require 'multi_mail/mandrill/sender'
+
+message = Mail.new do
+  delivery_method MultiMail::Sender::Mandrill,
+    :api_key => 'your-api-key',
+    :track_opens => true,
+    :track_clicks => false
+  ...
+end
+
+message.deliver
+```
+
+#### Inspect the API response
+
+Pass `:return_response => true` to `delivery_method` and use the `deliver!` method to send the message:
 
 ```ruby
 message = Mail.new do
@@ -147,7 +188,7 @@ See [Mailgun's documentation](http://documentation.mailgun.net/user_manual.html#
 require 'multi_mail/mailgun/sender'
 
 Mail.deliver do
-  delivery_method MultiMail::Sender::Mailgun, :api_key => 'your-api-key'
+  delivery_method MultiMail::Sender::Mailgun, :api_key => 'your-api-key', :domain => 'your-domain.mailgun.org'
   ...
 end
 ```
@@ -160,8 +201,6 @@ You may pass additional arguments to `delivery_method` to use Mailgun-specific f
 * `o:deliverytime`
 * `o:testmode`
 * `o:tracking`
-* `o:tracking-clicks`
-* `o:tracking-opens`
 * `v:`
 
 ## Mandrill
@@ -217,7 +256,6 @@ end
 You may pass additional arguments to `delivery_method` to use Mandrill-specific features ([see docs](https://mandrillapp.com/api/docs/messages.ruby.html#method-send)):
 
 * `important`
-* `track_opens` and `track_clicks`
 * `auto_text` and `auto_html`
 * `inline_css`
 * `url_strip_qs`
