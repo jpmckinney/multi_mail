@@ -4,17 +4,18 @@ module MultiMail
   module Sender
     # Mailgun's outgoing mail sender.
     class Mailgun
-      attr_reader :settings, :api_key, :domain
+      include MultiMail::Sender::Base
+
+      requires :api_key, :domain
+
+      attr_reader :api_key, :domain
 
       # Initializes a Mailgun outgoing email sender.
       #
       # @param [Hash] options required and optional arguments
       # @option options [String] :api_key a Mailgun API key
       def initialize(options = {})
-        raise ArgumentError, "Missing required arguments: :api_key" unless options[:api_key]
-        raise ArgumentError, "Missing required arguments: :domain" unless options[:domain]
-        @settings = options.dup
-
+        super
         @api_key = settings.delete(:api_key)
         @domain  = settings.delete(:domain)
       end

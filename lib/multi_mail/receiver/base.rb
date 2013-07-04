@@ -12,9 +12,9 @@ module MultiMail
         end
       end
 
-      # Initializers an incoming email receiver.
+      # Initializes an incoming email receiver.
       #
-      # @param [Hash] options optional arguments
+      # @param [Hash] options required and optional arguments
       def initialize(options = {})
         self.class.validate_options(options)
       end

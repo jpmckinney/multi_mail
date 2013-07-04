@@ -4,24 +4,20 @@ module MultiMail
   module Sender
     # SendGrid's outgoing mail sender.
     class SendGrid
-      attr_reader :settings
+      include MultiMail::Sender::Base
+
+      # @see http://sendgrid.com/docs/API_Reference/Web_API/
+      requires :api_user, :api_key
 
       # Initializes a SendGrid outgoing email sender.
       #
       # @param [Hash] options required and optional arguments
       # @option options [String] :api_user a SendGrid API user
       # @option options [String] :api_key a SendGrid API key
-      # @see http://sendgrid.com/docs/API_Reference/Web_API/
       def initialize(options = {})
-        raise ArgumentError, "Missing required arguments: :api_user" unless options[:api_user]
-        raise ArgumentError, "Missing required arguments: :api_key" unless options[:api_key]
-        @settings = options.dup
-
-        if settings[:'x-smtpapi']
-          settings['x-smtpapi'] ||= settings.delete(:'x-smtpapi')
-        end
-        if Hash === settings['x-smtpapi']
-          settings['x-smtpapi'] = JSON.dump(settings['x-smtpapi'])
+        super
+        if Hash === settings[:'x-smtpapi']
+          settings[:'x-smtpapi'] = JSON.dump(settings[:'x-smtpapi'])
         end
       end
 

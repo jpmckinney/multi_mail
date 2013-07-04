@@ -23,28 +23,28 @@ describe MultiMail::Sender::Mailgun do
       expect{
         message.delivery_method MultiMail::Sender::Mailgun, :domain => 'xxx'
         message.deliver # request not sent
-      }.to raise_error(ArgumentError, "Missing required arguments: :api_key")
+      }.to raise_error(ArgumentError, "Missing required arguments: api_key")
     end
 
     it 'should raise an error if :domain is missing' do
       expect{
         message.delivery_method MultiMail::Sender::Mailgun, :api_key => 'xxx'
         message.deliver # request not sent
-      }.to raise_error(ArgumentError, "Missing required arguments: :domain")
+      }.to raise_error(ArgumentError, "Missing required arguments: domain")
     end
 
     it 'should raise an error if :api_key is nil' do
       expect{
         message.delivery_method MultiMail::Sender::Mailgun, :api_key => nil, :domain => 'xxx'
         message.deliver # request not sent
-      }.to raise_error(ArgumentError, "Missing required arguments: :api_key")
+      }.to raise_error(ArgumentError, "Missing required arguments: api_key")
     end
 
     it 'should raise an error if :domain is nil' do
       expect{
         message.delivery_method MultiMail::Sender::Mailgun, :api_key => 'xxx', :domain => nil
         message.deliver # request not sent
-      }.to raise_error(ArgumentError, "Missing required arguments: :domain")
+      }.to raise_error(ArgumentError, "Missing required arguments: domain")
     end
 
     it 'should raise an error if :domain or :api_key are invalid' do

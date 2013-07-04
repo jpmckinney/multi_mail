@@ -23,28 +23,28 @@ describe MultiMail::Sender::SendGrid do
       expect{
         message.delivery_method MultiMail::Sender::SendGrid, :api_key => 'xxx'
         message.deliver # request not sent
-      }.to raise_error(ArgumentError, "Missing required arguments: :api_user")
+      }.to raise_error(ArgumentError, "Missing required arguments: api_user")
     end
 
     it 'should raise an error if :api_key is missing' do
       expect{
         message.delivery_method MultiMail::Sender::SendGrid, :api_user => 'xxx'
         message.deliver # request not sent
-      }.to raise_error(ArgumentError, "Missing required arguments: :api_key")
+      }.to raise_error(ArgumentError, "Missing required arguments: api_key")
     end
 
     it 'should raise an error if :api_user is nil' do
       expect{
         message.delivery_method MultiMail::Sender::SendGrid, :api_user => nil, :api_key => 'xxx'
         message.deliver # request not sent
-      }.to raise_error(ArgumentError, "Missing required arguments: :api_user")
+      }.to raise_error(ArgumentError, "Missing required arguments: api_user")
     end
 
     it 'should raise an error if :api_key is nil' do
       expect{
         message.delivery_method MultiMail::Sender::SendGrid, :api_user => 'xxx', :api_key => nil
         message.deliver # request not sent
-      }.to raise_error(ArgumentError, "Missing required arguments: :api_key")
+      }.to raise_error(ArgumentError, "Missing required arguments: api_key")
     end
 
     it 'should raise an error if :api_user or :api_key are invalid' do
@@ -54,19 +54,14 @@ describe MultiMail::Sender::SendGrid do
       }.to raise_error(MultiMail::InvalidAPIKey)
     end
 
-    it 'should accept a symbol x-smtpapi parameter' do
-      sender = MultiMail::Sender::SendGrid.new(:api_user => '', :api_key => '', :'x-smtpapi' => {:foo => 'bar'})
-      sender.settings['x-smtpapi'].should == '{"foo":"bar"}'
-    end
-
     it 'should transform x-smtpapi to JSON if it is not JSON' do
       sender = MultiMail::Sender::SendGrid.new(:api_user => '', :api_key => '', 'x-smtpapi' => {:foo => 'bar'})
-      sender.settings['x-smtpapi'].should == '{"foo":"bar"}'
+      sender.settings[:'x-smtpapi'].should == '{"foo":"bar"}'
     end
 
     it 'should not transform x-smtpapi to JSON if it is JSON' do
       sender = MultiMail::Sender::SendGrid.new(:api_user => '', :api_key => '', 'x-smtpapi' => '{"foo":"bar"}')
-      sender.settings['x-smtpapi'].should == '{"foo":"bar"}'
+      sender.settings[:'x-smtpapi'].should == '{"foo":"bar"}'
     end
   end
 

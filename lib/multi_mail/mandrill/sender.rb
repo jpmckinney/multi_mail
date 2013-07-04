@@ -4,7 +4,11 @@ module MultiMail
   module Sender
     # Mandrill's outgoing mail sender.
     class Mandrill
-      attr_reader :settings, :api_key, :async, :ip_pool, :send_at
+      include MultiMail::Sender::Base
+
+      requires :api_key
+
+      attr_reader :api_key, :async, :ip_pool, :send_at
 
       # Initializes a Mandrill outgoing email sender.
       #
@@ -12,9 +16,7 @@ module MultiMail
       # @option options [String] :api_key a Mandrill API key
       # @see https://mandrillapp.com/api/docs/index.ruby.html
       def initialize(options = {})
-        raise ArgumentError, "Missing required arguments: :api_key" unless options[:api_key]
-        @settings = options.dup
-
+        super
         @api_key = settings.delete(:api_key)
         @async   = settings.delete(:async) || false
         @ip_pool = settings.delete(:ip_pool)
