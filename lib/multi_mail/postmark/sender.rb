@@ -25,10 +25,10 @@ module MultiMail
         else
           mail.deliver
         end
-      rescue ::Postmark::InvalidApiKeyError
-        raise InvalidAPIKey
-      rescue ::Postmark::InvalidMessageError
-        raise InvalidMessage
+      rescue ::Postmark::InvalidApiKeyError => e
+        raise InvalidAPIKey, e.message
+      rescue ::Postmark::InvalidMessageError => e
+        raise InvalidMessage, e.message
       end
     end
   end

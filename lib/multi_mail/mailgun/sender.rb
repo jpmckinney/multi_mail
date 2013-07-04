@@ -61,9 +61,9 @@ module MultiMail
 
         case response.status
         when 401
-          raise InvalidAPIKey
+          raise InvalidAPIKey, response.body.inspect
         when 400
-          raise InvalidMessage
+          raise InvalidMessage, response.body.inspect
         when 200
           body = JSON.load(response.body)
         else

@@ -66,8 +66,13 @@ module MultiMail
         body = JSON.load(response.body)
 
         unless response.status == 200
-          if body['status'] == 'error' && body['name'] == 'Invalid_Key'
-            raise InvalidAPIKey
+          if body['status'] == 'error'
+            case body['name']
+            when 'Invalid_Key'
+              raise InvalidAPIKey, body['message']
+            else
+              raise body['message']
+            end
           else
             raise body['message']
           end
