@@ -45,8 +45,14 @@ module MultiMail
             case body['errors']
             when ['Bad username / password']
               raise InvalidAPIKey, body['errors'].first
+            when ['Empty from email address (required)']
+              raise MissingSender, body['errors'].first
             when ['Missing destination email']
-              raise InvalidMessage, body['errors'].first
+              raise MissingRecipients, body['errors'].first
+            when ['Missing subject']
+              raise MissingSubject, body['errors'].first
+            when ['Missing email body']
+              raise MissingBody, body['errors'].first
             else
               raise body['errors'].join
             end

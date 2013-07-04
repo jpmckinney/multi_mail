@@ -16,8 +16,17 @@ module MultiMail
   class ForgedRequest < MultiMail::Error; end
   # Raise if an API key is invalid.
   class InvalidAPIKey < MultiMail::Error; end
+
   # Raise if a message is invalid.
   class InvalidMessage < MultiMail::Error; end
+  # Raise if a message has no sender.
+  class MissingSender < InvalidMessage; end
+  # Raise if a message has no recipients.
+  class MissingRecipients < InvalidMessage; end
+  # Raise if a message has no subject.
+  class MissingSubject < InvalidMessage; end
+  # Raise if a message has no body.
+  class MissingBody < InvalidMessage; end
 
   class << self
     # @return [RegExp] a message whose subject matches this pattern will be

@@ -34,7 +34,7 @@ describe MultiMail::Sender::Mandrill do
       expect{
         message.delivery_method MultiMail::Sender::Mandrill, :api_key => 'xxx'
         message.deliver
-      }.to raise_error(MultiMail::InvalidAPIKey)
+      }.to raise_error(MultiMail::InvalidAPIKey, 'Invalid API key')
     end
 
     it 'should have default settings' do

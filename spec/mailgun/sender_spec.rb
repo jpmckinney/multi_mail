@@ -124,9 +124,10 @@ describe MultiMail::Sender::Mailgun do
 
     it 'should send a message' do
       result = message.deliver!
-      result.size.should == 1
+      result.size.should == 2
 
-      result['message'].should == 'success'
+      result['message'].should == 'Queued. Thank you.'
+      result['id'].should match(/<\S+@\S+>/)
     end
 
     it 'should not send an empty message' do
