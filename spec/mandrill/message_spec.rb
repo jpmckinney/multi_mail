@@ -11,9 +11,12 @@ describe MultiMail::Message::Mandrill do
     }
 
     MultiMail::Message::Mandrill.new do
+      date     Time.new(2000, 1, 1)
       headers  headers
       from     %("John Doe" <foo@example.com>)
       to       [%("Jane Doe" <bar@example.com>), '<baz@example.com>']
+      cc       'cc@example.com'
+      bcc      'bcc@example.com'
       reply_to 'noreply@example.com'
       subject  'test'
 

@@ -15,6 +15,7 @@ describe MultiMail::Message::SendGrid do
       headers  headers
       from     %("John Doe" <foo@example.com>)
       to       [%("Jane Doe" <bar@example.com>), '<baz@example.com>']
+      cc       'cc@example.com'
       bcc      'bcc@example.com'
       reply_to 'noreply@example.com'
       subject  'test'
@@ -206,7 +207,7 @@ describe MultiMail::Message::SendGrid do
   end
 
   describe '#to_sendgrid_hash' do
-    it 'should return the message as Mandrill parameters' do
+    it 'should return the message as SendGrid parameters' do
       hash = message.to_sendgrid_hash
 
       hash['to'].should       == ['bar@example.com', 'baz@example.com']
@@ -219,7 +220,7 @@ describe MultiMail::Message::SendGrid do
       hash['fromname'].should == 'John Doe'
       hash['replyto'].should  == 'noreply@example.com'
 
-      hash['headers'].should match(%r{{"Content-Type":"multipart/alternative; boundary=--==_mimepart_[0-9a-f_]+","X-Autoreply":"true","X-Precedence":"auto_reply","X-Numeric":"42","Delivered-To":"Autoresponder"}})
+      hash['headers'].should match(%r{\A{"Content-Type":"multipart/alternative; boundary=--==_mimepart_[0-9a-f_]+","X-Autoreply":"true","X-Precedence":"auto_reply","X-Numeric":"42","Delivered-To":"Autoresponder"}\z})
 
       hash['content'].each do |cid|
         cid.should match(/\A[0-9a-f_]+@[a-z.]+\z/)
