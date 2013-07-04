@@ -122,11 +122,74 @@ describe MultiMail::Message::Mailgun do
   end
 
   describe '#mailgun_attachments' do
-    # @todo
+    it 'should return the attachments' do
+      attachments = message.mailgun_attachments['attachment']
+      attachments[0].content_type.should == 'image/gif; filename=empty.gif'
+      attachments[0].original_filename.should == 'empty.gif'
+      attachments[0].read.should == File.open(empty_gif_path, 'r:binary'){|f| f.read}
+      attachments[1].content_type.should == 'text/plain; filename=foo.txt'
+      attachments[1].original_filename.should == 'foo.txt'
+      attachments[1].read.should == 'hello world'
+      attachments.size.should == 2
+    end
+
+    it 'should return an attachment with an known extension' do
+      attachments = message_with_known_extension.mailgun_attachments['attachment']
+      attachments[0].content_type.should == 'video/quicktime; filename=xxx.mov'
+      attachments[0].original_filename.should == 'xxx.mov'
+      attachments[0].read.should == ''
+      attachments.size.should == 1
+    end
+
+    it 'should return an attachment with an unknown extension' do
+      attachments = message_with_unknown_extension.mailgun_attachments['attachment']
+      attachments[0].content_type.should == 'text/plain'
+      attachments[0].original_filename.should == 'xxx.xxx'
+      attachments[0].read.should == ''
+      attachments.size.should == 1
+    end
+
+    it 'should return an attachment without an extension' do
+      attachments = message_without_extension.mailgun_attachments['attachment']
+      attachments[0].content_type.should == 'text/plain'
+      attachments[0].original_filename.should == 'xxx'
+      attachments[0].read.should == ''
+      attachments.size.should == 1
+    end
+
+    it 'should return an empty array if the attachment is blank' do
+      message_with_empty_file.mailgun_attachments.to_hash.should == {}
+    end
+
+    it 'should return an empty array' do
+      empty_message.mailgun_attachments.to_hash.should == {}
+    end
   end
 
   describe '#mailgun_headers' do
-    # @todo
+    it 'should return the headers' do
+      headers = message.mailgun_headers
+      headers['h:Reply-To'].should     == ['noreply@example.com']
+      headers['h:X-Autoreply'].should  == ['true']
+      headers['h:X-Precedence'].should == ['auto_reply']
+      headers['h:X-Numeric'].should    == ['42']
+      headers['h:Delivered-To'].should == ['Autoresponder']
+
+      Time.parse(headers['h:Date'][0]).should be_within(1).of(Time.new(2000, 1, 1))
+      headers['h:Content-Type'][0].should match(%r{\Amultipart/alternative; boundary=--==_mimepart_[0-9a-f_]+\z})
+
+      headers.size.should == 7
+    end
+
+    it 'should return empty X-* headers' do
+      headers = message_with_empty_headers.mailgun_headers
+      headers['h:X-Autoreply'].should == ['']
+      headers.size.should == 1
+    end
+
+    it 'should return an empty hash' do
+      empty_message.mailgun_headers.should == {}
+    end
   end
 
   describe '#to_mailgun_hash' do

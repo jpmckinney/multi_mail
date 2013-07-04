@@ -191,7 +191,9 @@ describe MultiMail::Message::SendGrid do
       headers['X-Precedence'].should == 'auto_reply'
       headers['X-Numeric'].should    == '42'
       headers['Delivered-To'].should == 'Autoresponder'
+
       headers['Content-Type'].should match(%r{\Amultipart/alternative; boundary=--==_mimepart_[0-9a-f_]+\z})
+
       headers.size.should == 5
     end
 
