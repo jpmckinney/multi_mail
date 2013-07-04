@@ -60,7 +60,7 @@ module MultiMail
           'bcc'      => bcc.to_a,
           'fromname' => from && self[:from].display_names.first,
           'replyto'  => reply_to && reply_to.first,
-          'date'     => date && date.rfc2822,
+          'date'     => date && Time.parse(date.to_s).rfc2822, # Ruby 1.8.7
           'files'    => sendgrid_files,
           'content'  => sendgrid_content,
           'headers'  => headers.empty? ? nil : JSON.dump(headers),
