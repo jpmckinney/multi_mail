@@ -33,11 +33,14 @@ module MultiMail
           conn.adapter Faraday.default_adapter
         end
 
-        response = connection.post("https://api:#{@api_key}@api.mailgun.net/v2/#{@domain}/messages", message)
+        response = connection.post("https://api:#{api_key}@api.mailgun.net/v2/#{domain}/messages", message)
 
-        if response.status == 401
+        case response.status
+        when 401
           raise InvalidAPIKey
-        elsif response.status == 200
+        when 400
+          raise InvalidMessage
+        when 200
           body = JSON.load(response.body)
         else
           raise response.body.inspect

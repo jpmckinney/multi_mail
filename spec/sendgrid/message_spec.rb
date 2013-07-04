@@ -170,7 +170,7 @@ describe MultiMail::Message::SendGrid do
     it 'should return the content IDs' do
       content = message.sendgrid_content
       content.each do |cid|
-        cid.should match(/\A[0-9a-f_]+@[a-z.]+\z/)
+        cid.should match(/\A\S+@\S+\z/)
       end
       content.size.should == 2
     end
@@ -187,6 +187,7 @@ describe MultiMail::Message::SendGrid do
   describe '#sendgrid_headers' do
     it 'should return the headers' do
       headers = message.sendgrid_headers
+      headers['Cc'].should           == 'cc@example.com'
       headers['X-Autoreply'].should  == 'true'
       headers['X-Precedence'].should == 'auto_reply'
       headers['X-Numeric'].should    == '42'
@@ -194,7 +195,7 @@ describe MultiMail::Message::SendGrid do
 
       headers['Content-Type'].should match(%r{\Amultipart/alternative; boundary=--==_mimepart_[0-9a-f_]+\z})
 
-      headers.size.should == 5
+      headers.size.should == 6
     end
 
     it 'should return empty X-* headers' do
@@ -222,10 +223,10 @@ describe MultiMail::Message::SendGrid do
       hash['fromname'].should == 'John Doe'
       hash['replyto'].should  == 'noreply@example.com'
 
-      hash['headers'].should match(%r{\A{"Content-Type":"multipart/alternative; boundary=--==_mimepart_[0-9a-f_]+","X-Autoreply":"true","X-Precedence":"auto_reply","X-Numeric":"42","Delivered-To":"Autoresponder"}\z})
+      hash['headers'].should match(%r{\A\{"Cc":"cc@example.com","Content-Type":"multipart/alternative; boundary=--==_mimepart_[0-9a-f_]+","X-Autoreply":"true","X-Precedence":"auto_reply","X-Numeric":"42","Delivered-To":"Autoresponder"\}\z})
 
       hash['content'].each do |cid|
-        cid.should match(/\A[0-9a-f_]+@[a-z.]+\z/)
+        cid.should match(/\A\S+@\S+\z/)
       end
       hash['content'].size.should == 2
 

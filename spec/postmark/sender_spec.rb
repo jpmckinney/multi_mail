@@ -64,7 +64,7 @@ describe MultiMail::Sender::Postmark do
       result = message.deliver!
       result.size.should == 10 # string keys are deprecated
 
-      Time.parse(result[:submitted_at]).should be_within(0.1).of(Time.now)
+      Time.parse(result[:submitted_at]).should be_within(1).of(Time.now)
       result[:to].should == "bar@example.com"
       result[:message_id].should match(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/)
       result[:error_code].should == 0

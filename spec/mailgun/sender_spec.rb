@@ -65,7 +65,7 @@ describe MultiMail::Sender::Mailgun do
   describe '#deliver' do
     before :all do
       Mail.defaults do
-        delivery_method MultiMail::Sender::Mailgun, :api_key => ENV['MAILGUN_API_KEY'], :domain => 'multimail.mailgun.org', 'o:testmode' => true
+        delivery_method MultiMail::Sender::Mailgun, :api_key => ENV['MAILGUN_API_KEY'], :domain => 'multimail.mailgun.org', 'o:testmode' => 'yes'
       end
     end
 
@@ -77,7 +77,7 @@ describe MultiMail::Sender::Mailgun do
   describe '#deliver!' do
     before :all do
       Mail.defaults do
-        delivery_method MultiMail::Sender::Mailgun, :api_key => ENV['MAILGUN_API_KEY'], :domain => 'multimail.mailgun.org', 'o:testmode' => true, :return_response => true
+        delivery_method MultiMail::Sender::Mailgun, :api_key => ENV['MAILGUN_API_KEY'], :domain => 'multimail.mailgun.org', 'o:testmode' => 'yes', :return_response => true
       end
     end
 
