@@ -93,23 +93,6 @@ message.deliver
 
 If want to rewrite URLs in HTML parts only – leaving URLs as-is in text parts – use `:clicks => 'htmlonly'` if you are using Mailgun; if you are using Mandrill, do not set `:clicks` and instead configure click tracking globally in your [Mandrill sending options](https://mandrillapp.com/settings/sending-options).
 
-```ruby
-require 'multi_mail'
-require 'multi_mail/mandrill/sender'
-
-message = Mail.new do
-  delivery_method MultiMail::Sender::Mandrill,
-    :api_key => 'your-api-key',
-    :track => {
-      :opens => true,
-      :clicks => false,
-    }
-  ...
-end
-
-message.deliver
-```
-
 #### Inspect the API response
 
 Pass `:return_response => true` to `delivery_method` and use the `deliver!` method to send the message:
