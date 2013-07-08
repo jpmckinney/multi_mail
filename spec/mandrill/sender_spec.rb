@@ -5,7 +5,7 @@ describe MultiMail::Sender::Mandrill do
   let :message do
     Mail.new do
       from    'foo@example.com'
-      to      'bar@example.com'
+      to      'bit-bucket@test.smtp.org'
       subject 'test'
       body    'hello'
     end
@@ -123,9 +123,9 @@ describe MultiMail::Sender::Mandrill do
       result = results.first
       result.size.should == 4
 
-      result['reject_reason'].should == 'soft-bounce' # sometimes nil
+      result['reject_reason'].should == nil
       result['status'].should == 'sent'
-      result['email'].should == 'bar@example.com'
+      result['email'].should == 'bit-bucket@test.smtp.org'
       result['_id'].should match(/\A[0-9a-f]{32}\z/)
     end
 
