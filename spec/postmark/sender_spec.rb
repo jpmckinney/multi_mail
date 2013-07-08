@@ -53,14 +53,12 @@ describe MultiMail::Sender::Postmark do
     it 'should raise an error if :api_key is missing' do
       expect{
         message.delivery_method MultiMail::Sender::Postmark
-        message.deliver
       }.to raise_error(ArgumentError, "Missing required arguments: api_key")
     end
 
     it 'should raise an error if :api_key is nil' do
       expect{
         message.delivery_method MultiMail::Sender::Postmark, :api_key => nil
-        message.deliver
       }.to raise_error(ArgumentError, "Missing required arguments: api_key")
     end
 
