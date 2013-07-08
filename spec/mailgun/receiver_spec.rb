@@ -50,10 +50,6 @@ describe MultiMail::Receiver::Mailgun do
 
       ['parsed', 'raw', '', nil].each do |http_post_format|
         context "with #{http_post_format.inspect} format and #{action_dispatch ? 'ActionDispatch' : 'Rack'}" do
-          let :http_post_format do
-            http_post_format
-          end
-
           let :actual_http_post_format do
             http_post_format.to_s.empty? ? 'parsed' : http_post_format
           end

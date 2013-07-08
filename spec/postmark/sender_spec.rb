@@ -111,6 +111,10 @@ describe MultiMail::Sender::Postmark do
       expect{message_without_to.deliver!}.to raise_error(MultiMail::MissingRecipients, 'Zero recipients specified')
     end
 
+    it 'should send a message without a subject' do
+      expect{message_without_subject.deliver!}.to_not raise_error(MultiMail::InvalidMessage)
+    end
+
     it 'should not send a message without a body' do
       expect{message_without_body.deliver!}.to raise_error(MultiMail::MissingBody, 'Provide either email TextBody or HtmlBody or both.')
     end

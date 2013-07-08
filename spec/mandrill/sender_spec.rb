@@ -19,14 +19,12 @@ describe MultiMail::Sender::Mandrill do
     it 'should raise an error if :api_key is missing' do
       expect{
         message.delivery_method MultiMail::Sender::Mandrill
-        message.deliver # request not sent
       }.to raise_error(ArgumentError, "Missing required arguments: api_key")
     end
 
     it 'should raise an error if :api_key is nil' do
       expect{
         message.delivery_method MultiMail::Sender::Mandrill, :api_key => nil
-        message.deliver # request not sent
       }.to raise_error(ArgumentError, "Missing required arguments: api_key")
     end
 
@@ -125,9 +123,9 @@ describe MultiMail::Sender::Mandrill do
       result = results.first
       result.size.should == 4
 
-      result['reject_reason'].should == nil
-      result['status'].should == "sent"
-      result['email'].should == "bar@example.com"
+      result['reject_reason'].should == 'soft-bounce' # sometimes nil
+      result['status'].should == 'sent'
+      result['email'].should == 'bar@example.com'
       result['_id'].should match(/\A[0-9a-f]{32}\z/)
     end
 

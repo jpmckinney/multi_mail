@@ -52,28 +52,24 @@ describe MultiMail::Sender::SendGrid do
     it 'should raise an error if :api_user is missing' do
       expect{
         message.delivery_method MultiMail::Sender::SendGrid, :api_key => 'xxx'
-        message.deliver # request not sent
       }.to raise_error(ArgumentError, "Missing required arguments: api_user")
     end
 
     it 'should raise an error if :api_key is missing' do
       expect{
         message.delivery_method MultiMail::Sender::SendGrid, :api_user => 'xxx'
-        message.deliver # request not sent
       }.to raise_error(ArgumentError, "Missing required arguments: api_key")
     end
 
     it 'should raise an error if :api_user is nil' do
       expect{
         message.delivery_method MultiMail::Sender::SendGrid, :api_user => nil, :api_key => 'xxx'
-        message.deliver # request not sent
       }.to raise_error(ArgumentError, "Missing required arguments: api_user")
     end
 
     it 'should raise an error if :api_key is nil' do
       expect{
         message.delivery_method MultiMail::Sender::SendGrid, :api_user => 'xxx', :api_key => nil
-        message.deliver # request not sent
       }.to raise_error(ArgumentError, "Missing required arguments: api_key")
     end
 

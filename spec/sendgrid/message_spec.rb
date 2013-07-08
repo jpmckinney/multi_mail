@@ -239,6 +239,12 @@ describe MultiMail::Message::SendGrid do
       hash.size.should == 13
     end
 
+    it 'should return the recipients without names' do
+      hash = message_without_names.to_sendgrid_hash
+      hash[:from].should == 'foo@example.com'
+      hash[:to].should == ['bar@example.com', 'baz@example.com']
+    end
+
     it 'should convert the message without a text body' do
       message_without_text_body.to_sendgrid_hash.should == {
         :to      => ['bar@example.com'],
