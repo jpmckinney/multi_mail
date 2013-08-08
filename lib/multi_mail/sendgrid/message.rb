@@ -6,15 +6,15 @@ module MultiMail
       #
       # @return [Hash] the message headers in SendGrid format
       def sendgrid_headers
-        headers = {}
+        hash = {}
         header_fields.each do |field|
           key = field.name.downcase
           unless %w(to subject from bcc reply-to date message-id).include?(key)
             # The JSON must not contain integers.
-            headers[field.name] = field.value.to_s
+            hash[field.name] = field.value.to_s
           end
         end
-        headers
+        hash
       end
 
       # Returns the message's attachments in SendGrid format.

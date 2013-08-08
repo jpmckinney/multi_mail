@@ -22,16 +22,16 @@ module MultiMail
       #
       # @return [Hash] the message headers in Mandrill format
       def mandrill_headers
-        headers = {}
+        hash = {}
         header_fields.each do |field|
           key = field.name.downcase
           # Mandrill only allows Reply-To and X-* headers currently.
           # https://mandrillapp.com/api/docs/messages.ruby.html
           if key == 'reply-to' || key.start_with?('x-')
-            headers[field.name] = field.value
+            hash[field.name] = field.value
           end
         end
-        headers
+        hash
       end
 
       # Returns the message's attachments in Mandrill format.
