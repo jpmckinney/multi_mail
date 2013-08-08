@@ -14,23 +14,28 @@ require 'mail_ext/message'
 module MultiMail
   # @see http://rdoc.info/gems/fog/Fog/Errors
   class Error < StandardError; end
+
   # Raise if an incoming POST request is forged.
   class ForgedRequest < MultiMail::Error; end
-  # Raise if an API key is invalid.
-  class InvalidAPIKey < MultiMail::Error; end
-  # Raise if a request is invalid.
-  class InvalidRequest < MultiMail::Error; end
 
+  # Raise if an outgoing request is invalid.
+  class InvalidRequest < MultiMail::Error; end
+  # Raise if an API key is invalid.
+  class InvalidAPIKey < InvalidRequest; end
   # Raise if a message is invalid.
   class InvalidMessage < InvalidRequest; end
-  # Raise if a message has no sender.
-  class MissingSender < InvalidMessage; end
-  # Raise if a message has no recipients.
-  class MissingRecipients < InvalidMessage; end
-  # Raise if a message has no subject.
-  class MissingSubject < InvalidMessage; end
+
+  # Raise if a message header is invalid
+  class InvalidHeader < InvalidMessage; end
   # Raise if a message has no body.
   class MissingBody < InvalidMessage; end
+
+  # Raise if a message has no sender.
+  class MissingSender < InvalidHeader; end
+  # Raise if a message has no recipients.
+  class MissingRecipients < InvalidHeader; end
+  # Raise if a message has no subject.
+  class MissingSubject < InvalidHeader; end
 
   class << self
     # @return [RegExp] a message whose subject matches this pattern will be

@@ -10,8 +10,8 @@ module MultiMail
         header_fields.each do |field|
           key = field.name.downcase
           # @see https://github.com/wildbit/postmark-gem/blob/master/lib/postmark/message_extensions/mail.rb#L74
-          unless %w(from to cc bcc reply-to subject attachment content-type date
-            received return-path sender tag x-pm-rcpt).include?(key)
+          # @see https://github.com/wildbit/postmark-gem/pull/36#issuecomment-22298955
+          unless %w(from to cc bcc reply-to subject content-type date).include?(key) || (Array === field.value && field.value.size > 1)
             array << {'Name' => field.name, 'Value' => field.value}
           end
         end

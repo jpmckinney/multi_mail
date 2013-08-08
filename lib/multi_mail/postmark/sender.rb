@@ -45,6 +45,10 @@ module MultiMail
             raise InvalidAPIKey, body['Message']
           when 300
             case body['Message']
+            when "Header 'Content-Type' not allowed."
+              raise InvalidHeader, body['Message']
+            when "Header 'Date' not allowed."
+              raise InvalidHeader, body['Message']
             when "Invalid 'From' value."
               raise MissingSender, body['Message']
             when 'Zero recipients specified'
