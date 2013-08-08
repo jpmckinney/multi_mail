@@ -18,7 +18,7 @@ if RUBY_VERSION >= '1.9'
     c.hook_into :faraday
 
     c.around_http_request do |request| # Ruby 1.9+
-      VCR.use_cassette(Digest::SHA1.hexdigest(request.uri + request.body), &request)
+      VCR.use_cassette(Digest::SHA1.hexdigest(request.uri + request.body + request.headers.to_s), &request)
     end
   end
 end

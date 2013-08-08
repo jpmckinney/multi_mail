@@ -284,8 +284,6 @@ Mail.deliver do
 end
 ```
 
-MultiMail depends on the `postmark` gem for its Postmark integration.
-
 You may also pass a `Tag` option to `delivery_method` ([see Postmark's documentation](http://developer.postmarkapp.com/developer-build.html#message-format)).
 
 ## SendGrid

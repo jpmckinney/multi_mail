@@ -79,7 +79,6 @@ describe MultiMail::Sender::Postmark do
 
     it 'should send a message' do
       message.deliver.should == message
-      message['Message-ID'].should_not be_nil # postmark gem
     end
   end
 
@@ -92,13 +91,13 @@ describe MultiMail::Sender::Postmark do
 
     it 'should send a message' do
       result = message.deliver!
-      result.size.should == 10 # string keys are deprecated
+      result.size.should == 5
 
-      Time.parse(result[:submitted_at]).should be_within(1).of(Time.now)
-      result[:to].should == "bar@example.com"
-      result[:message_id].should match(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/)
-      result[:error_code].should == 0
-      result[:message].should == 'Test job accepted'
+      Time.parse(result['SubmittedAt']).should be_within(1).of(Time.now)
+      result['To'].should == "bar@example.com"
+      result['MessageID'].should match(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/)
+      result['ErrorCode'].should == 0
+      result['Message'].should == 'Test job accepted'
     end
 
     it 'should not send a message without a From header' do
