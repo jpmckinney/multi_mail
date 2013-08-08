@@ -65,7 +65,7 @@ describe MultiMail::Message::Base do
     end
   end
 
-  describe '#text_part' do
+  describe '#body_text' do
     it 'should return the body if the message is text only' do
       text_message.body_text.should == 'hello'
     end
@@ -76,6 +76,38 @@ describe MultiMail::Message::Base do
 
     it 'should return the body if the message has both HTML and text parts' do
       html_and_text_message.body_text.should == 'hello'
+    end
+  end
+
+  let :many_tags do
+    MultiMail::Message::Base.new do
+      tag 'foo'
+      tag 'bar'
+    end
+  end
+
+  let :one_tag do
+    MultiMail::Message::Base.new do
+      tag 'foo'
+    end
+  end
+
+  let :no_tag do
+    MultiMail::Message::Base.new do
+    end
+  end
+
+  describe '#tags' do
+    it 'should return a multi-value array if many tags are set' do
+      many_tags.tags.should == ['foo', 'bar']
+    end
+
+    it 'should return a single value array if one tag is set' do
+      one_tag.tags.should == ['foo']
+    end
+
+    it 'should return an empty array if no tags are set' do
+      no_tag.tags.should == []
     end
   end
 end

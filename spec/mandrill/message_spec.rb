@@ -120,6 +120,19 @@ describe MultiMail::Message::Mandrill do
     MultiMail::Message::Mandrill.new
   end
 
+  let :message_with_one_tag do
+    MultiMail::Message::Mandrill.new do
+      tag 'foo'
+    end
+  end
+
+  let :message_with_many_tags do
+    MultiMail::Message::Mandrill.new do
+      tag 'foo'
+      tag 'bar'
+    end
+  end
+
   describe '#mandrill_to' do
     it 'should return the recipients with names' do
       message.mandrill_to.should == [
@@ -299,6 +312,18 @@ describe MultiMail::Message::Mandrill do
 
     it 'should convert an empty message' do
       empty_message.to_mandrill_hash.should == {}
+    end
+
+    it 'should convert the message with one tag' do
+      message_with_one_tag.to_mandrill_hash.should == {
+        :tags => ['foo'],
+      }
+    end
+
+    it 'should convert the message with many tags' do
+      message_with_many_tags.to_mandrill_hash.should == {
+        :tags => ['foo', 'bar'],
+      }
     end
   end
 end

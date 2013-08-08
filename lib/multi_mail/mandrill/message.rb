@@ -65,6 +65,7 @@ module MultiMail
           'headers'     => mandrill_headers,
           'attachments' => attachments,
           'images'      => images,
+          'tags'        => tags,
         }
 
         normalize(hash)

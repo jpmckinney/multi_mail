@@ -9,7 +9,7 @@ module MultiMail
         hash = Multimap.new
         header_fields.each do |field|
           key = field.name.downcase
-          unless %w(from to cc bcc subject).include?(key)
+          unless %w(from to cc bcc subject tag).include?(key)
             hash["h:#{field.name}"] = field.value
           end
         end
@@ -32,6 +32,7 @@ module MultiMail
       # Returns the message as parameters to POST to Mailgun.
       #
       # @return [Hash] the message as parameters to POST to Mailgun
+      # @see http://documentation.mailgun.com/user_manual.html#tagging
       def to_mailgun_hash
         hash = Multimap.new
 
@@ -58,6 +59,10 @@ module MultiMail
         end
         if body_html && !body_html.empty?
           hash['html'] = body_html
+        end
+
+        tags.each do |tag|
+          hash['o:tag'] = tag
         end
 
         normalize(hash.merge(mailgun_attachments).merge(mailgun_headers).to_hash)

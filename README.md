@@ -66,6 +66,27 @@ Mail.defaults do
 end
 ```
 
+#### Tagging
+
+Mailgun, Mandrill and Postmark allow you to tag messages in order to accumulate statistics by tag, which will be accessible through their user interface:
+
+```ruby
+require 'multi_mail'
+
+message = Mail.new do
+  delivery_method MultiMail::Sender::Mandrill, :api_key => 'your-api-key'
+
+  tag 'signup'
+  tag 'promotion'
+
+  ...
+end
+
+message.deliver
+```
+
+Mailgun accepts at most [3 tags](http://documentation.mailgun.com/user_manual.html#tagging) and Postmark at most one tag.
+
 #### Track opens and clicks
 
 Mailgun and Mandrill allow you to set open tracking and click tracking on a per-message basis:
@@ -176,7 +197,6 @@ end
 
 You may pass additional arguments to `delivery_method` to use Mailgun-specific features ([see docs](http://documentation.mailgun.com/api-sending.html)):
 
-* `o:tag`
 * `o:campaign`
 * `o:dkim`
 * `o:deliverytime`

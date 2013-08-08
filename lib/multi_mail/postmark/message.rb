@@ -11,7 +11,7 @@ module MultiMail
           key = field.name.downcase
           # @see https://github.com/wildbit/postmark-gem/blob/master/lib/postmark/message_extensions/mail.rb#L74
           # @see https://github.com/wildbit/postmark-gem/pull/36#issuecomment-22298955
-          unless %w(from to cc bcc reply-to subject content-type date).include?(key) || (Array === field.value && field.value.size > 1)
+          unless %w(from to cc bcc reply-to subject tag content-type date).include?(key) || (Array === field.value && field.value.size > 1)
             array << {'Name' => field.name, 'Value' => field.value}
           end
         end
@@ -55,10 +55,11 @@ module MultiMail
           end
         end
 
-        hash['TextBody'] = body_text
-        hash['HtmlBody'] = body_html
-        hash['Headers'] = postmark_headers
+        hash['TextBody']    = body_text
+        hash['HtmlBody']    = body_html
+        hash['Headers']     = postmark_headers
         hash['Attachments'] = postmark_attachments
+        hash['Tag']         = tags.first
 
         normalize(hash)
       end

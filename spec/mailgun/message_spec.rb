@@ -120,6 +120,19 @@ describe MultiMail::Message::Mailgun do
     MultiMail::Message::Mailgun.new
   end
 
+  let :message_with_one_tag do
+    MultiMail::Message::Mailgun.new do
+      tag 'foo'
+    end
+  end
+
+  let :message_with_many_tags do
+    MultiMail::Message::Mailgun.new do
+      tag 'foo'
+      tag 'bar'
+    end
+  end
+
   describe '#mailgun_attachments' do
     it 'should return the attachments' do
       attachments = message.mailgun_attachments
@@ -251,6 +264,18 @@ describe MultiMail::Message::Mailgun do
 
     it 'should convert an empty message' do
       empty_message.to_mailgun_hash.should == {}
+    end
+
+    it 'should convert the message with one tag' do
+      message_with_one_tag.to_mailgun_hash.should == {
+        :'o:tag' => ['foo'],
+      }
+    end
+
+    it 'should convert the message with many tags' do
+      message_with_many_tags.to_mailgun_hash.should == {
+        :'o:tag' => ['foo', 'bar'],
+      }
     end
   end
 end

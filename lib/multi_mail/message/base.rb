@@ -22,6 +22,20 @@ module MultiMail
         end
       end
 
+      def tags
+        if self['tag']
+          if self['tag'].respond_to?(:map)
+            self['tag'].map do |field|
+              field.value
+            end
+          else
+            [self['tag'].value]
+          end
+        else
+          []
+        end
+      end
+
     private
 
       def normalize(hash)
