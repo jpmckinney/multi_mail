@@ -73,9 +73,16 @@ describe MultiMail::Sender::Mailgun do
       }.to raise_error(ArgumentError, "Missing required arguments: domain")
     end
 
-    it 'should raise an error if :domain or :api_key are invalid' do
+    it 'should raise an error if :api_key is invalid' do
       expect{
-        message.delivery_method MultiMail::Sender::Mailgun, :api_key => 'xxx', :domain => 'xxx'
+        message.delivery_method MultiMail::Sender::Mailgun, :api_key => 'xxx', :domain => 'multimail.mailgun.org'
+        message.deliver
+      }.to raise_error(MultiMail::InvalidAPIKey)
+    end
+
+    it 'should raise an error if :domain is invalid' do
+      expect{
+        message.delivery_method MultiMail::Sender::Mailgun, :api_key => ENV['MAILGUN_API_KEY'], :domain => 'xxx'
         message.deliver
       }.to raise_error(MultiMail::InvalidAPIKey)
     end
