@@ -11,7 +11,7 @@ module MultiMail
           key = field.name.downcase
           # @see https://github.com/wildbit/postmark-gem/blob/master/lib/postmark/message_extensions/mail.rb#L74
           unless %w(from to cc bcc reply-to subject attachment content-type date
-            message-id received return-path sender tag x-pm-rcpt).include?(key)
+            received return-path sender tag x-pm-rcpt).include?(key)
             array << {'Name' => field.name, 'Value' => field.value}
           end
         end

@@ -270,7 +270,6 @@ service = MultiMail::Receiver.new({
 See [Postmark's documentation](http://developer.postmarkapp.com/developer-inbound-parse.html#mailboxhash) for these additional parameters provided by the API:
 
 * `MailboxHash`
-* `MessageID`
 * `Tag`
 
 ### Outgoing

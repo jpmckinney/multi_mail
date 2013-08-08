@@ -16,7 +16,8 @@ module MultiMail
         cc   = params['CcFull'].map{|hash| transform_address(hash)}
 
         message = Mail.new do
-          headers headers
+          headers    headers
+          message_id params['MessageID']
 
           from      from
           to        to
