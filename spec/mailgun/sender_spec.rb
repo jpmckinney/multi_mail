@@ -84,7 +84,7 @@ describe MultiMail::Sender::Mailgun do
       expect{
         message.delivery_method MultiMail::Sender::Mailgun, :api_key => ENV['MAILGUN_API_KEY'], :domain => 'xxx'
         message.deliver
-      }.to raise_error(MultiMail::InvalidAPIKey)
+      }.to raise_error(MultiMail::InvalidMessage, "Domain not found: xxx")
     end
 
     it 'should assign custom settings' do
@@ -172,7 +172,7 @@ describe MultiMail::Sender::Mailgun do
     end
 
     it 'should send a message without a subject' do
-      expect{message_without_subject.deliver!}.to_not raise_error(MultiMail::InvalidMessage)
+      expect{message_without_subject.deliver!}.to_not raise_error
     end
 
     it 'should not send a message without a body' do

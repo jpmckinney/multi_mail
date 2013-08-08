@@ -109,7 +109,7 @@ describe MultiMail::Sender::Postmark do
     end
 
     it 'should send a message without a subject' do
-      expect{message_without_subject.deliver!}.to_not raise_error(MultiMail::InvalidMessage)
+      expect{message_without_subject.deliver!}.to_not raise_error
     end
 
     it 'should not send a message without a body' do

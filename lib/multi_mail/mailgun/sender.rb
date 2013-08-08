@@ -64,7 +64,7 @@ module MultiMail
         case response.status
         when 401
           raise InvalidAPIKey, response.body
-        when 400
+        when 400, 404
           body = JSON.load(response.body)
           case body['message']
           when "'from' parameter is missing"

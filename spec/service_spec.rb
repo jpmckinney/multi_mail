@@ -71,7 +71,7 @@ describe MultiMail::Service do
           :bar => 1,
           :foo => 1,
         }, false)
-      }.to_not raise_error(ArgumentError, "Unrecognized arguments: bar, foo")
+      }.to_not raise_error
     end
   end
 end
