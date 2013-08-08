@@ -36,7 +36,7 @@ describe MultiMail::Sender::Mandrill do
     end
 
     it 'should transform send_at to a string if it is not a string' do
-      sender = MultiMail::Sender::Mandrill.new(:api_user => '', :api_key => '', 'send_at' => Time.at(981221696))
+      sender = MultiMail::Sender::Mandrill.new(:api_user => '', :api_key => '', 'send_at' => Time.at(981203696))
       sender.send_at.should == '2001-02-03 12:34:56'
     end
 

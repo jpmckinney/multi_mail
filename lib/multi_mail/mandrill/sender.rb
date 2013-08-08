@@ -28,7 +28,7 @@ module MultiMail
         @ip_pool = settings.delete(:ip_pool)
         @send_at = settings.delete(:send_at)
         unless @send_at.nil? or String === @send_at
-          @send_at = @send_at.strftime('%Y-%m-%d %T')
+          @send_at = @send_at.utc.strftime('%Y-%m-%d %T')
         end
       end
 
