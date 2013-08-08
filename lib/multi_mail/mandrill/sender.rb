@@ -14,13 +14,22 @@ module MultiMail
       #
       # @param [Hash] options required and optional arguments
       # @option options [String] :api_key a Mandrill API key
+      # @option options [Boolean] :async whether to enable a background sending
+      #   mode optimized for bulk sending
+      # @option options [String] :ip_pool the name of the dedicated IP pool that
+      #   should be used to send the message
+      # @option options [Time,String] :send_at when this message should be sent
       # @see https://mandrillapp.com/api/docs/index.ruby.html
+      # @see https://mandrillapp.com/api/docs/messages.JSON.html#method-send
       def initialize(options = {})
         super
         @api_key = settings.delete(:api_key)
         @async   = settings.delete(:async) || false
         @ip_pool = settings.delete(:ip_pool)
         @send_at = settings.delete(:send_at)
+        unless @send_at.nil? or String === @send_at
+          @send_at = @send_at.strftime('%Y-%m-%d %T')
+        end
       end
 
       # Returns the additional parameters for the API call.

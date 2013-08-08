@@ -14,6 +14,8 @@ module MultiMail
       # @param [Hash] options required and optional arguments
       # @option options [String] :api_user a SendGrid API user
       # @option options [String] :api_key a SendGrid API key
+      # @option options [Hash,String] the X-SMTPAPI SendGrid header
+      # @see http://sendgrid.com/docs/API_Reference/SMTP_API/index.html
       def initialize(options = {})
         super
         if Hash === settings[:'x-smtpapi']

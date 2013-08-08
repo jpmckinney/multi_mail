@@ -35,6 +35,16 @@ describe MultiMail::Sender::Mandrill do
       }.to raise_error(MultiMail::InvalidAPIKey, 'Invalid API key')
     end
 
+    it 'should transform send_at to a string if it is not a string' do
+      sender = MultiMail::Sender::Mandrill.new(:api_user => '', :api_key => '', 'send_at' => Time.new(2001, 2, 3, 12, 34, 56))
+      sender.send_at.should == '2001-02-03 12:34:56'
+    end
+
+    it 'should not transform send_at to a string if it is a string' do
+      sender = MultiMail::Sender::Mandrill.new(:api_user => '', :api_key => '', 'send_at' => '2001-02-03 12:34:56')
+      sender.send_at.should == '2001-02-03 12:34:56'
+    end
+
     it 'should have default settings' do
       sender = MultiMail::Sender::Mandrill.new(:api_key => '')
 

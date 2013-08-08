@@ -14,6 +14,8 @@ module MultiMail
       #
       # @param [Hash] options required and optional arguments
       # @option options [String] :api_key a Mailgun API key
+      # @option options [String] :domain the Mailgun email domain
+      # @see http://documentation.mailgun.com/api-intro.html#base-url
       def initialize(options = {})
         super
         @api_key = settings.delete(:api_key)
