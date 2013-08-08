@@ -196,13 +196,13 @@ describe MultiMail::Message::Mailgun do
     it 'should return the message as Mailgun parameters' do
       hash = message.to_mailgun_hash
 
-      hash[:from].should       == [%("John Doe" <foo@example.com>)]
-      hash[:to].should         == [%("Jane Doe" <bar@example.com>), '<baz@example.com>']
-      hash[:cc].should         == ['cc@example.com']
-      hash[:bcc].should        == ['bcc@example.com']
-      hash[:subject].should    == ['test']
-      hash[:text].should       == ['hello']
-      hash[:html].should       == ['<p>hello</p>']
+      hash[:from].should         == [%("John Doe" <foo@example.com>)]
+      hash[:to].should           == [%("Jane Doe" <bar@example.com>), '<baz@example.com>']
+      hash[:cc].should           == ['cc@example.com']
+      hash[:bcc].should          == ['bcc@example.com']
+      hash[:subject].should      == ['test']
+      hash[:text].should         == ['hello']
+      hash[:html].should         == ['<p>hello</p>']
       hash[:'h:Reply-To'].should == ['noreply@example.com']
 
       Time.parse(hash[:'h:Date'][0]).should be_within(1).of(Time.at(946702800))
