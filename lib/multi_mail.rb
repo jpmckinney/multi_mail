@@ -9,6 +9,8 @@ require 'mail'
 require 'multimap'
 require 'rack'
 
+require 'mail_ext/message'
+
 module MultiMail
   # @see http://rdoc.info/gems/fog/Fog/Errors
   class Error < StandardError; end
