@@ -57,7 +57,7 @@ module MultiMail
               raise InvalidMessage, body['Message']
             end
           else
-            raise InvalidMessage, body['Message']
+            raise InvalidRequest, body['Message']
           end
         end
 

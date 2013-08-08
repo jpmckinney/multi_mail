@@ -123,12 +123,14 @@ describe MultiMail::Message::Postmark do
 
   describe '#postmark_headers' do
     it 'should return the headers' do
-      message.postmark_headers.should == [
-        {'Name' => 'X-Autoreply', 'Value' => 'true'},
+      headers = message.postmark_headers
+      [ {'Name' => 'X-Autoreply', 'Value' => 'true'},
         {'Name' => 'X-Precedence', 'Value' => 'auto_reply'},
         {'Name' => 'X-Numeric', 'Value' => '42'},
         {'Name' => 'Delivered-To', 'Value' => 'Autoresponder'},
-      ]
+      ].each do |header|
+        headers.should include(header)
+      end
     end
 
     it 'should return empty X-* headers' do
@@ -200,35 +202,36 @@ describe MultiMail::Message::Postmark do
 
   describe '#to_postmark_hash' do
     it 'should return the message as Mandrill parameters' do
-      message.to_postmark_hash.should == {
-        :HtmlBody => '<p>hello</p>',
-        :TextBody => 'hello',
-        :Subject  => 'test',
-        :From     => '"John Doe" <foo@example.com>',
-        :To       => '"Jane Doe" <bar@example.com>, <baz@example.com>',
-        :Cc       => "cc@example.com",
-        :Bcc      => "bcc@example.com",
-        :ReplyTo  => "noreply@example.com",
-        :Headers  => [
-          {'Name' => 'X-Autoreply',  'Value' => 'true'},
-          {'Name' => 'X-Precedence', 'Value' => 'auto_reply'},
-          {'Name' => 'X-Numeric',    'Value' => '42'},
-          {'Name' => 'Delivered-To', 'Value' => 'Autoresponder'},
-        ],
-        :Attachments => [
-          {
-            'ContentType' => 'image/gif; filename=empty.gif',
-            'Name' => 'empty.gif',
-            'Content' => "R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==\n",
-            'ContentID' => 'empty.gif',
-          },
-          {
-            'ContentType' => 'text/plain; filename=foo.txt',
-            'Name' => 'foo.txt',
-            'Content' => Base64.encode64('hello world'),
-          },
-        ],
-      }
+      hash = message.to_postmark_hash
+      hash[:HtmlBody].should    == '<p>hello</p>'
+      hash[:TextBody].should    == 'hello'
+      hash[:Subject].should     == 'test'
+      hash[:From].should        == '"John Doe" <foo@example.com>'
+      hash[:To].should          == '"Jane Doe" <bar@example.com>, <baz@example.com>'
+      hash[:Cc].should          == "cc@example.com"
+      hash[:Bcc].should         == "bcc@example.com"
+      hash[:ReplyTo].should     == "noreply@example.com"
+      hash[:Attachments].should == [
+        {
+          'ContentType' => 'image/gif; filename=empty.gif',
+          'Name' => 'empty.gif',
+          'Content' => "R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==\n",
+          'ContentID' => 'empty.gif',
+        },
+        {
+          'ContentType' => 'text/plain; filename=foo.txt',
+          'Name' => 'foo.txt',
+          'Content' => Base64.encode64('hello world'),
+        },
+      ]
+
+      [ {'Name' => 'X-Autoreply', 'Value' => 'true'},
+        {'Name' => 'X-Precedence', 'Value' => 'auto_reply'},
+        {'Name' => 'X-Numeric', 'Value' => '42'},
+        {'Name' => 'Delivered-To', 'Value' => 'Autoresponder'},
+      ].each do |header|
+        hash[:Headers].should include(header)
+      end
     end
 
     it 'should return the recipients without names' do

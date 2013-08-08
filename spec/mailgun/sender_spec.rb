@@ -84,7 +84,7 @@ describe MultiMail::Sender::Mailgun do
       expect{
         message.delivery_method MultiMail::Sender::Mailgun, :api_key => ENV['MAILGUN_API_KEY'], :domain => 'xxx'
         message.deliver
-      }.to raise_error(MultiMail::InvalidMessage, "Domain not found: xxx")
+      }.to raise_error(MultiMail::InvalidRequest, "Domain not found: xxx")
     end
 
     it 'should assign custom settings' do

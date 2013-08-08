@@ -74,7 +74,7 @@ module MultiMail
           when "Need at least one of 'text' or 'html' parameters specified"
             raise MissingBody, body['message']
           else
-            raise InvalidMessage, body['message']
+            raise InvalidRequest, body['message']
           end
         when 200
           body = JSON.load(response.body)
