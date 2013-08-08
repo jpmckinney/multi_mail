@@ -9,7 +9,7 @@ module MultiMail
         hash = Multimap.new
         header_fields.each do |field|
           key = field.name.downcase
-          unless %w(from to cc bcc subject message-id).include?(key)
+          unless %w(from to cc bcc subject).include?(key)
             hash["h:#{field.name}"] = field.value
           end
         end

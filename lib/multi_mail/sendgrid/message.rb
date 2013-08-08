@@ -9,7 +9,7 @@ module MultiMail
         hash = {}
         header_fields.each do |field|
           key = field.name.downcase
-          unless %w(to subject from bcc reply-to date message-id).include?(key)
+          unless %w(to subject from bcc reply-to date).include?(key)
             # The JSON must not contain integers.
             hash[field.name] = field.value.to_s
           end
