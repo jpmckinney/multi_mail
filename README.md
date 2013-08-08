@@ -261,7 +261,6 @@ You may pass additional arguments to `delivery_method` to use Mandrill-specific 
 * `bcc_address`
 * `tracking_domain` and `signing_domain`
 * `merge`, `global_merge_vars` and `merge_vars`
-* `tags`
 * `google_analytics_domains` and `google_analytics_campaign`
 * `metadata` and `recipient_metadata`
 * `async`
@@ -291,8 +290,6 @@ Mail.deliver do
   ...
 end
 ```
-
-You may also pass a `Tag` option to `delivery_method` ([see Postmark's documentation](http://developer.postmarkapp.com/developer-build.html#message-format)).
 
 ## SendGrid
 
