@@ -1,5 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require 'multi_mail/mandrill/sender'
 
 describe MultiMail::Sender::Mandrill do 
   let :message do

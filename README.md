@@ -37,7 +37,6 @@ With MultiMail, you send a message the same way you do with the [Mail](https://g
 
 ```ruby
 require 'multi_mail'
-require 'multi_mail/postmark/sender'
 
 message = Mail.new do
   delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
@@ -73,7 +72,6 @@ Mailgun and Mandrill allow you to set open tracking and click tracking on a per-
 
 ```ruby
 require 'multi_mail'
-require 'multi_mail/mailgun/sender'
 
 message = Mail.new do
   delivery_method MultiMail::Sender::Mailgun,
@@ -89,9 +87,7 @@ end
 message.deliver
 ```
 
-[Mailgun](http://documentation.mailgun.com/user_manual.html#tracking-clicks) and [Mandrill](http://help.mandrill.com/entries/21721852-Why-aren-t-clicks-being-tracked-) track whether a recipient has clicked a link in a message by rewriting its URL.
-
-If want to rewrite URLs in HTML parts only – leaving URLs as-is in text parts – use `:clicks => 'htmlonly'` if you are using Mailgun; if you are using Mandrill, do not set `:clicks` and instead configure click tracking globally in your [Mandrill sending options](https://mandrillapp.com/settings/sending-options).
+[Mailgun](http://documentation.mailgun.com/user_manual.html#tracking-clicks) and [Mandrill](http://help.mandrill.com/entries/21721852-Why-aren-t-clicks-being-tracked-) track whether a recipient has clicked a link in a message by rewriting its URL. If want to rewrite URLs in HTML parts only (leaving URLs as-is in text parts) use `:clicks => 'htmlonly'` if you are using Mailgun; if you are using Mandrill, do not set `:clicks` and instead configure click tracking globally in your [Mandrill sending options](https://mandrillapp.com/settings/sending-options).
 
 #### Inspect the API response
 
@@ -172,8 +168,6 @@ See [Mailgun's documentation](http://documentation.mailgun.net/user_manual.html#
 ### Outgoing
 
 ```ruby
-require 'multi_mail/mailgun/sender'
-
 Mail.deliver do
   delivery_method MultiMail::Sender::Mailgun, :api_key => 'your-api-key', :domain => 'your-domain.mailgun.org'
   ...
@@ -200,7 +194,7 @@ service = MultiMail::Receiver.new({
 })
 ```
 
-To check that a request originates from Mandrill, add `:mandrill_webhook_key` and `:mandrill_webhook_url` options:
+To check that a request originates from Mandrill, add `:mandrill_webhook_key` and `:mandrill_webhook_url` options (you can get your webhook key from [Mandrill's Webhooks Settings](https://mandrillapp.com/settings/webhooks)):
 
 ```ruby
 service = MultiMail::Receiver.new({
@@ -209,7 +203,6 @@ service = MultiMail::Receiver.new({
   :mandrill_webhook_url => 'http://example.com/post',
 })
 ```
-You can get your webhook key from [Mandrill's Webhooks Settings](https://mandrillapp.com/settings/webhooks).
 
 The default SpamAssassin score needed to flag an email as spam is `5`. Add a `:spamassassin_threshold` option to increase or decrease it:
 
@@ -232,8 +225,6 @@ See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is
 ### Outgoing
 
 ```ruby
-require 'multi_mail/mandrill/sender'
-
 Mail.deliver do
   delivery_method MultiMail::Sender::Mandrill, :api_key => 'your-api-key'
   ...
@@ -275,8 +266,6 @@ See [Postmark's documentation](http://developer.postmarkapp.com/developer-inboun
 ### Outgoing
 
 ```ruby
-require 'multi_mail/postmark/sender'
-
 Mail.deliver do
   delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
   ...
@@ -314,8 +303,6 @@ See [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Webhooks/p
 ### Outgoing
 
 ```ruby
-require 'multi_mail/sendgrid/sender'
-
 Mail.deliver do
   delivery_method MultiMail::Sender::SendGrid, :api_user => 'username', :api_key => 'password'
   ...

@@ -1,5 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require 'multi_mail/postmark/message'
 
 describe MultiMail::Message::Postmark do
   let :message do

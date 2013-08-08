@@ -1,5 +1,3 @@
-require 'multi_mail/mandrill/message'
-
 module MultiMail
   module Sender
     # Mandrill's outgoing mail sender.

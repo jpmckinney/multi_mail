@@ -1,5 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require 'multi_mail/mailgun/sender'
 
 describe MultiMail::Sender::Mailgun do
   let :message do

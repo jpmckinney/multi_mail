@@ -1,5 +1,3 @@
-require 'multi_mail/mailgun/message'
-
 module MultiMail
   module Sender
     # Mailgun's outgoing mail sender.

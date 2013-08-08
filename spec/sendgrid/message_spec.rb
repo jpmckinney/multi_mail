@@ -1,5 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require 'multi_mail/sendgrid/message'
 
 describe MultiMail::Message::SendGrid do
   let :message do

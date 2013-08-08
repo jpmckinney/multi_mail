@@ -1,5 +1,3 @@
-require 'multi_mail/postmark/message'
-
 module MultiMail
   module Sender
     # Postmark's outgoing mail sender.

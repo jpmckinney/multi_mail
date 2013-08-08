@@ -1,5 +1,3 @@
-require 'multi_mail/sendgrid/message'
-
 module MultiMail
   module Sender
     # SendGrid's outgoing mail sender.
