@@ -1,0 +1,65 @@
+HTTP/1.1 200 OK
+Content-Length: 3798
+Content-Type: application/json
+X-Request-Start: 1378523197697
+X-Forwarded-Proto: http
+X-Forwarded-Port: 80
+X-Forwarded-For: 174.129.35.193
+User-Agent: CloudMailin Server
+Host: rackbin.herokuapp.com
+Connection: close
+Version: HTTP/1.1
+
+{
+  "headers": {
+    "Return-Path": "james@opennorth.ca",
+    "Received": [
+      "by mail-qc0-f177.google.com with SMTP id x12so1548824qcv.36 for <5dae6f85cd65d30d384a@cloudmailin.net>; Fri, 06 Sep 2013 20:06:37 -0700",
+      "from [192.168.2.20] ([70.49.74.123]) by mx.google.com with ESMTPSA id fy7sm2646347qeb.1.1969.12.31.16.00.00 (version=TLSv1 cipher=RC4-SHA bits=128/128); Fri, 06 Sep 2013 20:06:36 -0700"
+    ],
+    "Date": "Mon, 15 Apr 2013 20:20:12 -0400",
+    "From": "James McKinney <james@opennorth.ca>",
+    "To": "5dae6f85cd65d30d384a@cloudmailin.net",
+    "Message-ID": "<D3F16515-ED8C-4DEC-80EA-553B7266FD4C@opennorth.ca>",
+    "Subject": "Test",
+    "Mime-Version": "1.0",
+    "Content-Type": "multipart/alternative; boundary=\"Apple-Mail=_58AF8BB6-04D5-4B22-95D5-BFFB183CB821\"; charset=UTF-8",
+    "Content-Transfer-Encoding": "7bit",
+    "X-Google-DKIM-Signature": "v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net; s=20130820; h=x-gm-message-state:from:content-type:subject:date:message-id:to :mime-version; bh=XFFIu2nTnDfhViW8rylqgBXliiVE9n99uIZDjHX7vN8=; b=BtYVZz6pmZ6P7A4lqf64efvrOa4WSGa5UHybTnd7IG3dwneGEnz4QaH/nCdzBrzdKT 8ukGjPp+b3mx3S8TrXrX98/9c6Q1mVgFMBwYtL7NNnfoLmAEvgB9tgitPHgb6/q/N2bm oJNV7XQ9P07Snfq1NJcNNOk8FiJVYdYerUceMN6A8nIXnyhfWGOse+TGLQVMpxJ4yT74 gOadKvaQpumsjZmPpyTViv7rTGXSkTsmxleb0gAJxabFrUFDcp0kptY8pHEwek7Qi+/j 1h3HmTh3F9WmC0/EJbKyEXQTbujtDzsAzWBmov4uwh2885bgWwUzXDJc+JrsI0qX0TQw IrNQ==",
+    "X-Gm-Message-State": "ALoCoQkL/+YuGYWfMRnoFzhV8wFry1fgjjK7/X7lmXUXSXYJcQL91b9WlM0+gLt+zU2m2yKg/Io2",
+    "X-Received": "by 10.224.172.131 with SMTP id l3mr7166098qaz.35.1378523197028; Fri, 06 Sep 2013 20:06:37 -0700 (PDT)",
+    "X-Mailer": "Apple Mail (2.1283)"
+  },
+  "envelope": {
+    "to": "5dae6f85cd65d30d384a@cloudmailin.net",
+    "recipients": [
+      "5dae6f85cd65d30d384a@cloudmailin.net"
+    ],
+    "from": "james@opennorth.ca",
+    "helo_domain": "mail-qc0-f177.google.com",
+    "remote_ip": "209.85.216.177",
+    "spf": {
+      "result": "pass",
+      "domain": "opennorth.ca"
+    }
+  },
+  "plain": "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block",
+  "html": "<html><head></head><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><b>bold text</b><div><br></div><div></div></body></html><html><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><head></head><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html><html><head></head><body style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; \"><br><div><b></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><br></span></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><i>some italic text</i></span></b></div><div><b><span class=\"Apple-style-span\" style=\"font-weight: normal; \"><br></span></b></div><div><blockquote type=\"cite\">multiline</blockquote><blockquote type=\"cite\">quoted</blockquote><blockquote type=\"cite\">text</blockquote></div><div><br></div><div>--</div><div>Signature block</div></body></html>",
+  "reply_plain": "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n",
+  "attachments": [
+    {
+      "file_name": "foo.txt",
+      "content_type": "text/plain",
+      "size": "57",
+      "disposition": "attachment",
+      "url": "http://multi-mail.s3.amazonaws.com/5e2dd992326d08ac5c72.txt"
+    },
+    {
+      "file_name": "bar.txt",
+      "content_type": "text/plain",
+      "size": "38",
+      "disposition": "attachment",
+      "url": "http://multi-mail.s3.amazonaws.com/b296959bbe7889c172c8.txt"
+    }
+  ]
+}

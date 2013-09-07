@@ -27,9 +27,10 @@ end
 # in spec/support/ and its subdirectories.
 Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 
-# Use requestb.in. Copy the content from the "Raw" tab and replace the first
-# line with "HTTP/1.1 200 OK". Note that messages cannot exceed 10kb. All
-# fixtures are modified to have the same Date header.
+# Use Rackbin. Prepend "HTTP/1.1 200 OK" to the request. All fixtures are
+# modified to have the same Date header.
+#
+# If you see `bad content body` exceptions, run `unix2dos` on the fixtures.
 #
 # Sign up for all services, and, in all cases except Cloudmailin, add an API key
 # to `api_keys.yml`, which will look like:
@@ -43,12 +44,9 @@ Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f}
 #
 # For Postmark, you must create a server to get an API key.
 #
-# If you see `bad content body` exceptions, run `unix2dos` on the fixtures.
-#
 # # Cloudmailin
 #
-# Change the HTTP POST format on Cloudmailin and wait a few minutes. Run
-# `unix2dos` on the fixtures to fix line endings.
+# Change the HTTP POST format on Cloudmailin and wait up to a few minutes.
 #
 # spam.txt     Change the SPF result to "fail"
 # valid.txt    Send a complex multipart message

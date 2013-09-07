@@ -9,15 +9,18 @@ module MultiMail
     class Cloudmailin
       include MultiMail::Receiver::Base
 
-      recognizes :http_post_format
+      recognizes :http_post_format, :attachment_store
 
       # Initializes a Cloudmailin incoming email receiver.
       #
       # @param [Hash] options required and optional arguments
       # @option options [String] :http_post_format "multipart", "json" or "raw"
+      # @option options [Boolean] :attachment_store whether attachments have
+      #   been sent to an attachment store
       def initialize(options = {})
         super
         @http_post_format = options[:http_post_format]
+        @attachment_store = options[:attachment_store]
       end
 
       # @param [Hash] params the content of Cloudmailin's webhook
@@ -40,6 +43,7 @@ module MultiMail
           # Mail changes `self`.
           headers = self.class.multimap(params['headers'])
           http_post_format = @http_post_format
+          attachment_store = @attachment_store
           this = self
 
           message = Mail.new do
@@ -57,13 +61,24 @@ module MultiMail
             end
 
             if params.key?('attachments')
+              # Using something like lazy.rb will not prevent the HTTP request,
+              # because the Mail gem must be able to call #valid_encoding? on
+              # the attachment body (in Ruby 1.9).
               if http_post_format == 'json'
                 params['attachments'].each do |attachment|
-                  add_file(:filename => attachment['file_name'], :content => Base64.decode64(attachment['content']))
+                  if attachment_store
+                    add_file(:filename => attachment['file_name'], :content => Faraday.get(attachment['url']).body)
+                  else
+                    add_file(:filename => attachment['file_name'], :content => Base64.decode64(attachment['content']))
+                  end
                 end
               else
                 params['attachments'].each do |_,attachment|
-                  add_file(this.class.add_file_arguments(attachment))
+                  if attachment_store
+                    add_file(:filename => attachment['file_name'], :content => Faraday.get(attachment['url']).body)
+                  else
+                    add_file(this.class.add_file_arguments(attachment))
+                  end
                 end
               end
             end
