@@ -144,7 +144,7 @@ service = MultiMail::Receiver.new({
 })
 ```
 
-If you are using an [Amazon S3 attachment store](http://docs.cloudmailin.com/receiving_email/attachments/), add a `:attachment_store => true` option. You must set the attachment store's permission setting to "Public Read". Note that attachment stores work with the `multipart` and `json` HTTP POST formats only.
+If you are using an [Amazon S3 attachment store](http://docs.cloudmailin.com/receiving_email/attachments/), add a `:attachment_store => true` option. You must set the attachment store's permission setting to "Public Read".
 
 ```ruby
 service = MultiMail::Receiver.new({

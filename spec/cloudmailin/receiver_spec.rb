@@ -46,13 +46,11 @@ describe MultiMail::Receiver::Cloudmailin do
             end
 
             it 'should return a mail message with URL attachments' do
-              if %w(json multipart).include?(http_post_format)
-                helper(MultiMail::Receiver.new({
-                  :provider => :cloudmailin,
-                  :http_post_format => http_post_format,
-                  :attachment_store => true,
-                }).transform(params('attachment_store')), true)
-              end
+              helper(MultiMail::Receiver.new({
+                :provider => :cloudmailin,
+                :http_post_format => http_post_format,
+                :attachment_store => true,
+              }).transform(params('attachment_store')), true)
             end
 
             def helper(messages, attachment_store = false)

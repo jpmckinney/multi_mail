@@ -36,6 +36,12 @@ module MultiMail
           # Extra Cloudmailin parameters.
           message['spf-result'] = params['envelope']['spf']['result']
 
+          if @attachment_store
+            params['attachments'].each do |_,attachment|
+              message.add_file(:filename => attachment['file_name'], :content => Faraday.get(attachment['url']).body)
+            end
+          end
+
           # Discard rest of `envelope`: `from`, `to`, `recipients`,
           # `helo_domain` and `remote_ip`.
           [message]
