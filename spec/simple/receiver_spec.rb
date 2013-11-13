@@ -5,7 +5,7 @@ describe MultiMail::Receiver::Simple do
   let :service do
     MultiMail::Receiver.new({
       :provider => :simple,
-      :secret => 'foo'
+      :secret => 'foo',
     })
   end
 

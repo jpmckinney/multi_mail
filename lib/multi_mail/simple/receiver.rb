@@ -36,8 +36,6 @@ module MultiMail
         [Mail.new(params)]
       end
 
-    private
-
       def signature(params)
         data = "#{params.fetch('timestamp')}#{params.fetch('token')}"
         OpenSSL::HMAC.hexdigest('sha256', @secret, data)

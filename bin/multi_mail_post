@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'securerandom'
+
+require 'multi_mail'
+require 'multi_mail/version'
+
+secret = nil
+
+opts = OptionParser.new do |opts|
+  opts.banner = "Usage: #{opts.program_name} [options] URL < INPUT"
+  opts.on('-s', '--secret SECRET', 'A secret key to ensure that requests are authentic') do |v|
+    secret = v
+  end
+  opts.on_tail('-h', '--help', 'Show this message') do
+    puts opts
+    exit
+  end
+  opts.on_tail('-v', '--version', 'Show version') do
+    puts MultiMail::VERSION
+    exit
+  end
+end
+
+rest = opts.parse!(ARGV)
+
+if rest.empty?
+  puts opts.banner
+  exit
+end
+
+url = rest.shift
+
+begin
+  url = URI.parse(url)
+rescue URI::InvalidURIError
+  abort "#{url} is not a valid URI"
+end
+
+unless url.scheme && url.host
+  abort "#{url} is not a valid URI"
+end
+
+service = MultiMail::Receiver.new({
+  :provider => :simple,
+  :secret => secret,
+})
+
+params = {
+  'message' => STDIN.read,
+  'timestamp' => Time.now.to_i,
+  'token' => SecureRandom.hash,
+}
+
+params['signature'] = service.signature(params) if secret
+
+connection = Faraday.new(:url => "#{url.scheme}://#{url.host}:#{url.port}") do |conn|
+  conn.basic_auth url.user, url.password if url.user || url.password
+  conn.request :url_encoded
+  conn.adapter Faraday.default_adapter
+end
+
+response = connection.post(url.path, params)
+
+if response.status != 200
+  headers = response.headers.map do |key,value|
+    "#{key.gsub(/\b([a-z])/) {$1.capitalize}}: #{value}"
+  end
+  abort (headers + ['', response.body]).join("\r\n")
+end
