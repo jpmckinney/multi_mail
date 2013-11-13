@@ -3,11 +3,28 @@ require 'multi_mail/simple/receiver'
 
 describe MultiMail::Receiver::Simple do
   let :service do
-    MultiMail::Receiver.new(:provider => :simple)
+    MultiMail::Receiver.new({
+      :provider => :simple,
+      :secret => 'foo'
+    })
   end
 
   def params(fixture)
     MultiMail::Receiver::Simple.parse(response('simple', fixture))
+  end
+
+  describe '#valid?' do
+    it 'should return true if the response is valid' do
+      service.valid?(params('valid')).should == true
+    end
+
+    it 'should return false if the response is invalid' do
+      service.valid?(params('invalid')).should == false
+    end
+
+    it 'should raise an error if parameters are missing' do
+      expect{ service.valid?(params('missing')) }.to raise_error(IndexError)
+    end
   end
 
   describe '#transform' do
