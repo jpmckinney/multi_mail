@@ -12,6 +12,7 @@ Many providers offer APIs to send, receive, and parse email. MultiMail lets you 
 * [Mandrill](http://mandrill.com/): [Example](#mandrill)
 * [Postmark](http://postmarkapp.com/): [Example](#postmark)
 * [SendGrid](http://sendgrid.com/): [Example](#sendgrid)
+* MTA like [Postfix](http://en.wikipedia.org/wiki/Postfix_\(software\)) or [qmail](http://en.wikipedia.org/wiki/Qmail): [Example](#mta)
 
 ## Usage
 
@@ -335,6 +336,36 @@ end
 ```
 
 You may also pass a `x-smtpapi` option to `delivery_method` ([see SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Web_API/mail.html)).
+
+## MTA
+
+### Incoming
+
+If you are switching from an email API to Postfix or qmail, the simplest option is to continue sending messages to your application's webhook URL.
+
+Your Postfix configuration may look like:
+
+    # /etc/postfix/virtual
+    incoming@myapp.com myappalias
+
+    # /etc/mail/aliases
+    myappalias: "| multi_mail_post --secret my-secret-string http://www.myapp.com/post"
+
+Your qmail configuration may look like:
+
+    # /var/qmail/mailnames/myapp.com/.qmail-incoming
+    | multi_mail_post --secret my-secret-string http://www.myapp.com/post
+
+In your application, you would use the `simple` provider:
+
+```ruby
+service = MultiMail::Receiver.new({
+  :provider => 'simple',
+  :secret => 'my-secret-string',
+})
+```
+
+It's recommended to use a secret key, to ensure that the requests are sent by Postfix and qmail and not by other sources on the internet.
 
 ## Bugs? Questions?
 
