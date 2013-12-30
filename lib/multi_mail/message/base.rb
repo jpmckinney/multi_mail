@@ -1,7 +1,16 @@
 module MultiMail
   module Message
-    class Base < Mail::Message
+    class Base < SimpleDelegator
       # @see https://github.com/wildbit/postmark-gem/blob/master/lib/postmark/message_extensions/mail.rb
+
+      def initialize(*args, &block)
+        if args.empty?
+          __setobj__ Mail.new(&block)
+        else
+          super
+        end
+      end
+
       def html?
         !!content_type && content_type.include?('text/html')
       end
