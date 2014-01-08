@@ -92,7 +92,7 @@ describe MultiMail::Sender::Postmark do
       result = message.deliver!
       result.size.should == 5
 
-      Time.parse(result['SubmittedAt']).should be_within(2).of(Time.now)
+      Time.parse(result['SubmittedAt']).should be_within(5).of(Time.now)
       result['To'].should == "bar@example.com"
       result['MessageID'].should match(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/)
       result['ErrorCode'].should == 0

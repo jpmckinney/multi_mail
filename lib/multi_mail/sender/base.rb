@@ -8,7 +8,8 @@ module MultiMail
         end
       end
 
-      attr_reader :settings, :tracking
+      attr_accessor :settings
+      attr_reader :tracking
 
       # Initializes an outgoing email sender.
       #
