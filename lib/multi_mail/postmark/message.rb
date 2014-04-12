@@ -4,7 +4,7 @@ module MultiMail
     class Postmark < MultiMail::Message::Base
       # Returns the message headers in Postmark format.
       #
-      # @return [Multimap] the message headers in Postmark format
+      # @return [Array<Hash>] the message headers in Postmark format
       def postmark_headers
         array = []
         header_fields.each do |field|
@@ -20,7 +20,7 @@ module MultiMail
 
       # Returns the message's attachments in Postmark format.
       #
-      # @return [Multimap] the attachments in Postmark format
+      # @return [Array<Hash>] the attachments in Postmark format
       # @see http://developer.postmarkapp.com/developer-build.html#attachments
       def postmark_attachments
         attachments.map do |attachment|

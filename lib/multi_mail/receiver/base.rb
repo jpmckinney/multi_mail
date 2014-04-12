@@ -123,7 +123,7 @@ module MultiMail
             end
 
             # Flatten the parameters.
-            map.each do |key,value|
+            map.each_pair do |key,value|
               if Array === value && value.size == 1
                 params[key] = value.first
               else

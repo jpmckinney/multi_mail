@@ -41,7 +41,7 @@ module MultiMail
 
         unless response.status == 200
           case body['ErrorCode']
-          when 0
+          when 10
             raise InvalidAPIKey, body['Message']
           when 300
             case body['Message']

@@ -65,7 +65,7 @@ describe MultiMail::Sender::Postmark do
       expect{
         message.delivery_method MultiMail::Sender::Postmark, :api_key => 'xxx'
         message.deliver
-      }.to raise_error(MultiMail::InvalidAPIKey, 'Bad or missing Server or Account API token.')
+      }.to raise_error(MultiMail::InvalidAPIKey, 'Bad or missing Server API token.')
     end
   end
 

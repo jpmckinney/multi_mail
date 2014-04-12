@@ -6,7 +6,6 @@ require 'iconv' unless RUBY_VERSION >= '1.9'
 
 require 'faraday'
 require 'mail'
-require 'multimap'
 require 'rack'
 
 require 'mail_ext/message'
@@ -101,6 +100,7 @@ module MultiMail
   end
 end
 
+require 'multi_mail/multimap'
 require 'multi_mail/service'
 require 'multi_mail/receiver'
 require 'multi_mail/message/base'
