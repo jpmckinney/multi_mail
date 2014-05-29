@@ -41,7 +41,19 @@ require 'multi_mail'
 
 message = Mail.new do
   delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
-  ...
+
+  to 'user@wookiecookies.com'
+  from 'Chewbacca <chewy@wookiecookies.com>'
+  subject 'How About Some Cookies?'
+
+  text_part do
+    body 'I am just some plain text!'
+  end
+
+  html_part do
+    content_type 'text/html; charset=UTF-8'
+    body '<html><body><h1>I am a header</h1><p>And I am a paragraph</p></body></html>'
+  end
 end
 
 message.deliver
@@ -51,7 +63,18 @@ Alternatively, instead of setting `delivery_method` during initialization, you c
 
 ```ruby
 message = Mail.new do
-  ...
+  to 'user@wookiecookies.com'
+  from 'Chewbacca <chewy@wookiecookies.com>'
+  subject 'How About Some Cookies?'
+
+  text_part do
+    body 'I am just some plain text!'
+  end
+
+  html_part do
+    content_type 'text/html; charset=UTF-8'
+    body '<html><body><h1>I am a header</h1><p>And I am a paragraph</p></body></html>'
+  end
 end
 
 message.delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
@@ -97,12 +120,12 @@ require 'multi_mail'
 
 message = Mail.new do
   delivery_method MultiMail::Sender::Mailgun,
-    :api_key => 'your-api-key',
-    :domain => 'your-domain.mailgun.org',
-    :track => {
-      :opens => true,
-      :clicks => false,
-    }
+                  :api_key => 'your-api-key',
+                  :domain => 'your-domain.mailgun.org',
+                  :track => {
+                    :opens => true,
+                    :clicks => false,
+                  }
   ...
 end
 
@@ -200,7 +223,19 @@ See [Mailgun's documentation](http://documentation.mailgun.net/user_manual.html#
 ```ruby
 Mail.deliver do
   delivery_method MultiMail::Sender::Mailgun, :api_key => 'your-api-key', :domain => 'your-domain.mailgun.org'
-  ...
+  
+  to _to_
+  from _from_
+  subject _subject_
+
+  text_part do
+    body _text_
+  end
+
+  html_part do
+    content_type 'text/html; charset=UTF-8'
+    body _html_
+  end
 end
 ```
 
@@ -212,6 +247,14 @@ You may pass additional arguments to `delivery_method` to use Mailgun-specific f
 * `o:testmode`
 * `o:tracking`
 * `v:`
+
+```ruby
+Mail.deliver do
+  delivery_method MultiMail::Sender::Mailgun, :api_key => 'your-api-key', :domain => 'your-domain.mailgun.org',
+                  :o:campaign => 'campaign', :o:dkim => 'yes (or no)',...
+  ...
+end
+```
 
 ## Mandrill
 
@@ -256,7 +299,19 @@ See [Mandrill's documentation](http://help.mandrill.com/entries/22092308-What-is
 ```ruby
 Mail.deliver do
   delivery_method MultiMail::Sender::Mandrill, :api_key => 'your-api-key'
-  ...
+  
+  to _to_
+  from _from_email_ + _from_name_
+  subject _subject_
+
+  text_part do
+    body _text_
+  end
+
+  html_part do
+    content_type 'text/html; charset=UTF-8'
+    body _html_
+  end
 end
 ```
 
@@ -275,6 +330,14 @@ You may pass additional arguments to `delivery_method` to use Mandrill-specific 
 * `async`
 * `ip_pool`
 * `send_at`
+
+```ruby
+Mail.deliver do
+  delivery_method MultiMail::Sender::Mandrill, :api_key => 'your-api-key',
+                  :async => true, :ip_pool => 'main_pool', ...
+  ...
+end
+```
 
 ## Postmark
 
@@ -296,7 +359,19 @@ See [Postmark's documentation](http://developer.postmarkapp.com/developer-inboun
 ```ruby
 Mail.deliver do
   delivery_method MultiMail::Sender::Postmark, :api_key => 'your-api-key'
-  ...
+  
+  to _To_
+  from _From_
+  subject _Subject_
+
+  text_part do
+    body _TextBody_
+  end
+
+  html_part do
+    content_type 'text/html; charset=UTF-8'
+    body _HtmlBody_
+  end
 end
 ```
 
@@ -331,11 +406,32 @@ See [SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Webhooks/p
 ```ruby
 Mail.deliver do
   delivery_method MultiMail::Sender::SendGrid, :api_user => 'username', :api_key => 'password'
-  ...
+  
+  to _to_
+  from _from_ + _fromname_
+  subject _subject_
+
+  text_part do
+    body _text_
+  end
+
+  html_part do
+    content_type 'text/html; charset=UTF-8'
+    body _html_
+  end
 end
 ```
 
 You may also pass a `x-smtpapi` option to `delivery_method` ([see SendGrid's documentation](http://sendgrid.com/docs/API_Reference/Web_API/mail.html)).
+
+```ruby
+Mail.deliver do
+  delivery_method MultiMail::Sender::SendGrid, :api_user => 'username', :api_key => 'password',
+                  :x-smtpapi => '{ "some_json" : "with_some_data" }'
+  ...
+end
+```
+
 
 ## MTA
 
