@@ -113,7 +113,7 @@ Mailgun accepts at most [3 tags](http://documentation.mailgun.com/user_manual.ht
 
 #### Track opens and clicks
 
-Mailgun and Mandrill allow you to set open tracking and click tracking on a per-message basis:
+Mailgun, Mandrill and Postmark allow you to set open tracking, and Mailgun and Mandrill allow you to set click tracking on a per-message basis:
 
 ```ruby
 require 'multi_mail'

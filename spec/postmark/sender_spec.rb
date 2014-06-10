@@ -69,6 +69,54 @@ describe MultiMail::Sender::Postmark do
     end
   end
 
+  describe '#parameters' do
+    it 'should allow true, false and nil values' do
+      [true, false, nil].each do |value|
+        sender = MultiMail::Sender::Postmark.new({
+          :api_key => 'xxx',
+          :track => {
+            :opens => value,
+          }
+        })
+
+        sender.parameters.should == {:TrackOpens => value}
+      end
+    end
+
+    it 'should transform "yes" values' do
+      sender = MultiMail::Sender::Postmark.new({
+        :api_key => 'xxx',
+        :track => {
+          :opens => 'yes',
+        }
+      })
+
+      sender.parameters.should == {:TrackOpens => true}
+    end
+
+    it 'should transform "no" values' do
+      sender = MultiMail::Sender::Postmark.new({
+        :api_key => 'xxx',
+        :track => {
+          :opens => 'no',
+        }
+      })
+
+      sender.parameters.should == {:TrackOpens => false}
+    end
+
+    it 'should ignore "htmlonly" values' do
+      sender = MultiMail::Sender::Postmark.new({
+        :api_key => 'xxx',
+        :track => {
+          :opens => 'htmlonly',
+        }
+      })
+
+      sender.parameters.should == {}
+    end
+  end
+
   describe '#deliver' do
     before :all do
       Mail.defaults do

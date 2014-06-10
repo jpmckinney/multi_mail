@@ -18,6 +18,28 @@ module MultiMail
         @api_key = settings.delete(:api_key)
       end
 
+      # Returns the additional parameters for the API call.
+      #
+      # @return [Hash] the additional parameters for the API call
+      def parameters
+        parameters = settings.dup
+        parameters.delete(:return_response)
+
+        if tracking.key?(:opens)
+          parameter = :TrackOpens
+          case tracking[:opens]
+          when true, false, nil
+            parameters[parameter] = tracking[:opens]
+          when 'yes'
+            parameters[parameter] = true
+          when 'no'
+            parameters[parameter] = false
+          end # ignore "htmlonly"
+        end
+
+        parameters
+      end
+
       # Delivers a message via the Postmark API.
       #
       # @param [Mail::Message] mail a message
@@ -25,8 +47,6 @@ module MultiMail
       # @see http://developer.postmarkapp.com/developer-build.html#http-response-codes
       # @see http://developer.postmarkapp.com/developer-build.html#api-error-codes
       def deliver!(mail)
-        parameters = settings.dup
-        parameters.delete(:return_response)
         message = MultiMail::Message::Postmark.new(mail).to_postmark_hash.merge(parameters)
 
         response = Faraday.post do |request|
