@@ -1,5 +1,6 @@
 # MultiMail: easily switch email APIs
 
+[![Gem Version](https://badge.fury.io/rb/multi_mail.svg)](http://badge.fury.io/rb/multi_mail)
 [![Build Status](https://secure.travis-ci.org/opennorth/multi_mail.png)](http://travis-ci.org/opennorth/multi_mail)
 [![Dependency Status](https://gemnasium.com/opennorth/multi_mail.png)](https://gemnasium.com/opennorth/multi_mail)
 [![Coverage Status](https://coveralls.io/repos/opennorth/multi_mail/badge.png?branch=master)](https://coveralls.io/r/opennorth/multi_mail)
