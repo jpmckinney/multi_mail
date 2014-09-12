@@ -57,7 +57,7 @@ module MultiMail
           end
         end
 
-        # Extra SendGrid parameters. Discard
+        # Extra SendGrid parameters.
         %w(dkim SPF spam_report spam_score).each do |key|
           message[key] = params[key]
         end
