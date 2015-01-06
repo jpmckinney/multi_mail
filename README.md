@@ -1,10 +1,10 @@
-# MultiMail: easily switch email APIs
+# MultiMail: Easily switch email APIs
 
 [![Gem Version](https://badge.fury.io/rb/multi_mail.svg)](http://badge.fury.io/rb/multi_mail)
-[![Build Status](https://secure.travis-ci.org/opennorth/multi_mail.png)](http://travis-ci.org/opennorth/multi_mail)
-[![Dependency Status](https://gemnasium.com/opennorth/multi_mail.png)](https://gemnasium.com/opennorth/multi_mail)
-[![Coverage Status](https://coveralls.io/repos/opennorth/multi_mail/badge.png?branch=master)](https://coveralls.io/r/opennorth/multi_mail)
-[![Code Climate](https://codeclimate.com/github/opennorth/multi_mail.png)](https://codeclimate.com/github/opennorth/multi_mail)
+[![Build Status](https://secure.travis-ci.org/jpmckinney/multi_mail.png)](http://travis-ci.org/jpmckinney/multi_mail)
+[![Dependency Status](https://gemnasium.com/jpmckinney/multi_mail.png)](https://gemnasium.com/jpmckinney/multi_mail)
+[![Coverage Status](https://coveralls.io/repos/jpmckinney/multi_mail/badge.png?branch=master)](https://coveralls.io/r/jpmckinney/multi_mail)
+[![Code Climate](https://codeclimate.com/github/jpmckinney/multi_mail.png)](https://codeclimate.com/github/jpmckinney/multi_mail)
 
 Many providers offer APIs to send, receive, and parse email. MultiMail lets you easily switch between these APIs, and integrates tightly with the [Mail](https://github.com/mikel/mail) gem.
 
@@ -464,16 +464,6 @@ service = MultiMail::Receiver.new({
 
 It's recommended to use a secret key, to ensure that the requests are sent by Postfix and qmail and not by other sources on the internet.
 
-## Bugs? Questions?
-
-This gem's main repository is on GitHub: [http://github.com/opennorth/multi_mail](http://github.com/opennorth/multi_mail), where your contributions, forks, bug reports, feature requests, and feedback are greatly welcomed.
-
-## Acknowledgements
-
-This gem is developed by [Open North](http://www.opennorth.ca/) through a partnership with the [Participatory Politics Foundation](http://www.participatorypolitics.org/).
-
-## Copyright
-
 This gem re-uses code from [fog](https://github.com/fog/fog), released under the MIT license.
 
-Copyright (c) 2012 Open North Inc., released under the MIT license
+Copyright (c) 2012 James McKinney, released under the MIT license

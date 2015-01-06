@@ -60,7 +60,7 @@ module MultiMail
     #
     # @param [Mail::Message] message a message
     # @return [Boolean] whether a message is an autoresponse
-    # @see https://github.com/opennorth/multi_mail/wiki/Detecting-autoresponders
+    # @see https://github.com/jpmckinney/multi_mail/wiki/Detecting-autoresponders
     def autoresponse?(message)
       !!(
         # If any of the following headers are present and have the given value.
