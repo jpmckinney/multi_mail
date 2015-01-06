@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/multi_mail.svg)](http://badge.fury.io/rb/multi_mail)
 [![Build Status](https://secure.travis-ci.org/jpmckinney/multi_mail.png)](http://travis-ci.org/jpmckinney/multi_mail)
 [![Dependency Status](https://gemnasium.com/jpmckinney/multi_mail.png)](https://gemnasium.com/jpmckinney/multi_mail)
-[![Coverage Status](https://coveralls.io/repos/jpmckinney/multi_mail/badge.png?branch=master)](https://coveralls.io/r/jpmckinney/multi_mail)
+[![Coverage Status](https://coveralls.io/repos/jpmckinney/multi_mail/badge.png)](https://coveralls.io/r/jpmckinney/multi_mail)
 [![Code Climate](https://codeclimate.com/github/jpmckinney/multi_mail.png)](https://codeclimate.com/github/jpmckinney/multi_mail)
 
 Many providers offer APIs to send, receive, and parse email. MultiMail lets you easily switch between these APIs, and integrates tightly with the [Mail](https://github.com/mikel/mail) gem.
