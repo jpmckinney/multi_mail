@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.version     = MultiMail::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["James McKinney"]
-  s.homepage    = "http://github.com/jpmckinney/multi_mail"
+  s.homepage    = "https://github.com/jpmckinney/multi_mail"
   s.summary     = %q{Easily switch between email APIs}
   s.license     = 'MIT'
 
