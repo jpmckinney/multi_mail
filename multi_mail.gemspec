@@ -29,6 +29,6 @@ Gem::Specification.new do |s|
   # For Rake tasks
   s.add_development_dependency 'mandrill-api', '~> 1.0.35'
   s.add_development_dependency 'postmark'
-  s.add_development_dependency 'rest-client', '~> 1.6.7'
+  s.add_development_dependency 'rest-client', '~> 1.7.3'
   s.add_development_dependency 'sendgrid_webapi'
 end
