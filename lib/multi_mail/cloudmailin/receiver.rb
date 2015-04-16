@@ -34,7 +34,7 @@ module MultiMail
           message = self.class.condense(MultiMail::Message::Cloudmailin.new(Mail.new(params['message'])))
 
           # Extra Cloudmailin parameters.
-          message['spf-result'] = params['envelope']['spf']['result']
+          message.spf_result = params['envelope']['spf']['result']
 
           if @attachment_store
             params['attachments'].each do |_,attachment|
@@ -93,7 +93,7 @@ module MultiMail
           # Extra Cloudmailin parameters. The multipart format uses CRLF whereas
           # the JSON format uses LF. Normalize to LF.
           message.reply_plain = params['reply_plain'].gsub("\r\n", "\n")
-          message['spf-result']  = params['envelope']['spf']['result']
+          message.spf_result  = params['envelope']['spf']['result']
 
           [message]
         else
@@ -104,7 +104,7 @@ module MultiMail
       # @param [Mail::Message] message a message
       # @return [Boolean] whether the message is spam
       def spam?(message)
-        message['spf-result'] && message['spf-result'].value == 'fail'
+        message.spf_result == 'fail'
       end
     end
   end

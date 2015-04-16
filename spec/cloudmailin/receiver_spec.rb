@@ -96,7 +96,7 @@ describe MultiMail::Receiver::Cloudmailin do
             else
               message.reply_plain.should == "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n"
             end
-            message['spf-result'].value.should == 'pass'
+            message.spf_result.should == 'pass'
           end
         end
 
