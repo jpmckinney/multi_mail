@@ -56,7 +56,7 @@ describe MultiMail::Sender::SendGrid do
 
     it 'should raise an error if :api_key is missing' do
       expect{
-        message.delivery_method MultiMail::Sender::SendGrid, :api_user => 'xxx'
+        message.delivery_method MultiMail::Sender::SendGrid, :api_user => 'non-existent'
       }.to raise_error(ArgumentError, "Missing required arguments: api_key")
     end
 
@@ -68,13 +68,13 @@ describe MultiMail::Sender::SendGrid do
 
     it 'should raise an error if :api_key is nil' do
       expect{
-        message.delivery_method MultiMail::Sender::SendGrid, :api_user => 'xxx', :api_key => nil
+        message.delivery_method MultiMail::Sender::SendGrid, :api_user => 'non-existent', :api_key => nil
       }.to raise_error(ArgumentError, "Missing required arguments: api_key")
     end
 
     it 'should raise an error if :api_user is invalid' do
       expect{
-        message.delivery_method MultiMail::Sender::SendGrid, :api_user => 'xxx', :api_key => ENV['SENDGRID_API_KEY']
+        message.delivery_method MultiMail::Sender::SendGrid, :api_user => 'non-existent', :api_key => ENV['SENDGRID_API_KEY']
         message.deliver
       }.to raise_error(MultiMail::InvalidAPIKey, 'Bad username / password')
     end
