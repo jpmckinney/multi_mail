@@ -77,12 +77,12 @@ describe MultiMail::Receiver::Mandrill do
         attachment1.read.should == "Nam accumsan euismod eros et rhoncus.\n\n"
 
         # Extra Mandrill parameters
-        message['ts'].value.should == '1369860716'
-        message['email'].value.should == 'foo+bar@govkit.org'
-        message['dkim-signed'].value.should == 'false'
-        message['dkim-valid'].value.should == 'false'
-        message['spam_report-score'].value.should == '-0.7'
-        message['spf-result'].value.should == 'pass'
+        message.ts.should == 1369860716
+        message.email.should == 'foo+bar@govkit.org'
+        message.dkim_signed.should == false
+        message.dkim_valid.should == false
+        message.spam_report_score.should == -0.7
+        message.spf_result.should == 'pass'
       end
 
       it 'should return multiple messages if there are multiple events' do

@@ -2,6 +2,8 @@ module MultiMail
   module Message
     # @see https://mandrillapp.com/api/docs/messages.ruby.html#method-send
     class Mandrill < MultiMail::Message::Base
+      attr_accessor :ts, :email, :dkim_signed, :dkim_valid, :spam_report_score, :spf_result
+
       # Returns the To header in Mandrill format.
       #
       # @return [Array<Hash>] the To header in Mandrill format
