@@ -31,7 +31,7 @@ messages = service.process(data)
 
 `messages` will be an array of [Mail::Message](https://github.com/mikel/mail) instances.
 
-Any non-standard parameters provided by an API are added to each message as a header. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it as `message['stripped-text'].value`.
+Any non-standard parameters provided by an API are added to each message as an instance variable. For example, Mailgun provides `stripped-text`, which is the message body without quoted parts or signature block. You can access it as `message.stripped_text`. The instance variable is the non-standard parameter in lowercase with underscores instead of hyphens.
 
 ### Outgoing
 
