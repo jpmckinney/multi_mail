@@ -110,13 +110,13 @@ describe MultiMail::Receiver::Mailgun do
             #    text" but `stripped-html` doesn't. `stripped-signature` and
             #    `stripped-text` use CRLF line endings.
             if actual_http_post_format == 'raw'
-              message['stripped-text'].should be_nil
-              message['stripped-signature'].should be_nil
-              message['stripped-html'].should be_nil
+              message.stripped_text.should be_nil
+              message.stripped_signature.should be_nil
+              message.stripped_html.should be_nil
             else
-              message['stripped-text'].value.should      == "bold text\r\n\r\n\r\n\r\nsome more bold text\r\n\r\n\r\n\r\nsome italic text"
-              message['stripped-signature'].value.should == "--\r\nSignature block"
-              message['stripped-html'].value.should      == '<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div></div></body><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html><html><head></head></html></html>'
+              message.stripped_text.should      == "bold text\r\n\r\n\r\n\r\nsome more bold text\r\n\r\n\r\n\r\nsome italic text"
+              message.stripped_signature.should == "--\r\nSignature block"
+              message.stripped_html.should      == '<html><head></head><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><b>bold text</b><div><br></div><div></div></body><html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; "><br><div></div><div><br></div><div><b>some more bold text</b></div><div><b><br></b></div><div><b></b></div></body></html><html><head></head></html></html>'
             end
           end
         end

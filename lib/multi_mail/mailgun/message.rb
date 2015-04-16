@@ -2,6 +2,8 @@ module MultiMail
   module Message
     # @see http://documentation.mailgun.com/api-sending.html
     class Mailgun < MultiMail::Message::Base
+      attr_accessor :stripped_text, :stripped_signature, :stripped_html, :content_id_map
+
       # Returns the message headers in Mailgun format.
       #
       # @return [Multimap] the message headers in Mailgun format

@@ -34,7 +34,7 @@ module MultiMail
       # Transforms the content of Mailgun's webhook into a list of messages.
       #
       # @param [Hash] params the content of Mailgun's webhook
-      # @return [Array<Mail::Message>] messages
+      # @return [Array<MultiMail::Message::Mailgun>] messages
       # @see http://documentation.mailgun.net/user_manual.html#mime-messages-parameters
       # @see http://documentation.mailgun.net/user_manual.html#parsed-messages-parameters
       def transform(params)
@@ -44,7 +44,7 @@ module MultiMail
           headers = self.class.multimap(JSON.load(params['message-headers']))
           this = self
 
-          message = Mail.new do
+          message = Message::Mailgun.new do
             headers headers
 
             # The following are redundant with `body-mime` in raw MIME format
@@ -78,27 +78,27 @@ module MultiMail
           end
 
           # Extra Mailgun parameters.
-          extra = [
-            'stripped-text',
-            'stripped-signature',
-            'stripped-html',
-            'content-id-map',
-          ]
-
-          # Non-plain, non-HTML body parts.
-          extra += params.keys.select do |key|
-            key[/\Abody-(?!html|plain)/]
+          if params.key?('stripped-text') && !params['stripped-text'].empty?
+            message.stripped_text = params['stripped-text']
+          end
+          if params.key?('stripped-signature') && !params['stripped-signature'].empty?
+            message.stripped_signature = params['stripped-signature']
+          end
+          if params.key?('stripped-html') && !params['stripped-html'].empty?
+            message.stripped_html = params['stripped-html']
+          end
+          if params.key?('content-id-map') && !params['content-id-map'].empty?
+            message.content_id_map = params['content-id-map']
           end
 
-          extra.each do |key|
-            if params.key?(key) && !params[key].empty?
-              message[key] = params[key]
-            end
-          end
+          # @todo Store non-plain, non-HTML body parts.
+          # params.keys.select do |key|
+          #   key[/\Abody-(?!html|plain)/]
+          # end
 
           [message]
         when 'raw'
-          message = self.class.condense(Mail.new(params['body-mime']))
+          message = self.class.condense(Message::Mailgun.new(Mail.new(params['body-mime'])))
           [message]
         else
           raise ArgumentError, "Can't handle Mailgun #{@http_post_format} HTTP POST format"
