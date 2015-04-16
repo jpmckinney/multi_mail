@@ -24,7 +24,7 @@ module MultiMail
       end
 
       # @param [Hash] params the content of Cloudmailin's webhook
-      # @return [Array<Mail::Message>] messages
+      # @return [Array<MultiMail::Message::Cloudmailin>] messages
       # @see http://docs.cloudmailin.com/http_post_formats/multipart/
       # @see http://docs.cloudmailin.com/http_post_formats/json/
       # @see http://docs.cloudmailin.com/http_post_formats/raw/
