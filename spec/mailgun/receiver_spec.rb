@@ -92,8 +92,8 @@ describe MultiMail::Receiver::Mailgun do
             message.subject.should == 'Test'
 
             # Body
-            message.multipart?.should            == true
-            message.parts.size.should            == 4
+            message.multipart?.should == true
+            message.parts.size.should == 4
             text_part = message.parts.find{|part| part.content_type == 'text/plain'}
             html_part = message.parts.find{|part| part.content_type == 'text/html; charset=UTF-8'}
             text_part.body.decoded.should == "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block"

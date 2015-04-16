@@ -23,8 +23,8 @@ describe MultiMail::Receiver::Postmark do
       message.subject.should == 'Test'
 
       # Body
-      message.multipart?.should            == true
-      message.parts.size.should            == 4
+      message.multipart?.should == true
+      message.parts.size.should == 4
       message.parts[0].content_type.should == 'text/plain'
       message.parts[1].content_type.should == 'text/html; charset=UTF-8'
       message.parts[0].body.decoded.should == "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block"

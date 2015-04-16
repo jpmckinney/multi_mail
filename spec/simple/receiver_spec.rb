@@ -38,7 +38,7 @@ describe MultiMail::Receiver::Simple do
       message.subject.should == 'Test'
 
       # Body
-      message.multipart?.should            == true
+      message.multipart?.should == true
       message.parts.size.should            == 2
       message.parts[0].content_type.should == 'text/plain; charset=us-ascii'
       message.parts[0].body.should         == "bold text\n\n\n> multiline\n> quoted\n> text\n\n--\nSignature block"

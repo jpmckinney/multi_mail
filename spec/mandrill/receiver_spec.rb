@@ -62,8 +62,8 @@ describe MultiMail::Receiver::Mandrill do
         message.subject.should == 'Test'
 
         # Body
-        message.multipart?.should            == true
-        message.parts.size.should            == 4
+        message.multipart?.should == true
+        message.parts.size.should == 4
         message.parts[0].content_type.should == 'text/plain'
         message.parts[1].content_type.should == 'text/html; charset=UTF-8'
         # @note Mandrill adds a newline at the end of each part.

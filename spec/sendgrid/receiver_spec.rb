@@ -24,7 +24,7 @@ describe MultiMail::Receiver::SendGrid do
       message.subject.should == 'Test'
 
       # Body
-      message.multipart?.should            == true
+      message.multipart?.should == true
       # @note SendGrid adds additional HTML parts as attachments, which is
       # sensible, but it does not match the behavior of other email APIs.
       message.parts.size.should            == 6
