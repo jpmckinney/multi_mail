@@ -15,20 +15,20 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency 'faraday', '~> 0.8.0'
+  s.add_runtime_dependency 'faraday', '~> 0.9.0'
   s.add_runtime_dependency 'mail', '~> 2.5.3' # Rails 3.2.13, less buggy than 2.4.x
   s.add_runtime_dependency 'rack', '~> 1.5.2'
 
   # For testing
   s.add_development_dependency 'coveralls'
-  s.add_development_dependency 'json', '~> 1.7.7' # to silence coveralls warning
+  s.add_development_dependency 'json', '~> 1.8' # to silence coveralls warning
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 2.10'
-  s.add_development_dependency 'vcr', '~> 2.4.0'
 
   # For Rake tasks
   s.add_development_dependency 'mandrill-api', '~> 1.0.35'
   s.add_development_dependency 'postmark'
   s.add_development_dependency 'rest-client', '~> 1.8.0'
-  s.add_development_dependency 'sendgrid_webapi'
+  # sendgrid_webapi 0.0.2 depends on Faraday 0.8.
+  # s.add_development_dependency 'sendgrid_webapi', '0.0.2'
 end
