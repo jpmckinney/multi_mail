@@ -31,7 +31,7 @@ module MultiMail
       def transform(params)
         case @http_post_format
         when 'raw', '', nil
-          message = self.class.condense(Mail.new(params['message']))
+          message = self.class.condense(MultiMail::Message::Cloudmailin.new(Mail.new(params['message'])))
 
           # Extra Cloudmailin parameters.
           message['spf-result'] = params['envelope']['spf']['result']
@@ -52,7 +52,7 @@ module MultiMail
           attachment_store = @attachment_store
           this = self
 
-          message = Mail.new do
+          message = MultiMail::Message::Cloudmailin.new do
             headers headers
 
             text_part do
@@ -92,7 +92,7 @@ module MultiMail
 
           # Extra Cloudmailin parameters. The multipart format uses CRLF whereas
           # the JSON format uses LF. Normalize to LF.
-          message['reply_plain'] = params['reply_plain'].gsub("\r\n", "\n")
+          message.reply_plain = params['reply_plain'].gsub("\r\n", "\n")
           message['spf-result']  = params['envelope']['spf']['result']
 
           [message]

@@ -63,8 +63,8 @@ describe MultiMail::Receiver::Cloudmailin do
             message.subject.should == 'Test'
 
             # Body
-            message.multipart?.should    == true
-            message.parts.size.should    == 4
+            message.multipart?.should == true
+            message.parts.size.should == 4
             text_part = message.parts.find{|part| part.content_type == 'text/plain'}
             html_part = message.parts.find{|part| part.content_type == 'text/html; charset=UTF-8'}
             text_part.body.decoded.should == "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n\n> multiline\n> quoted\n> text\n\n\n--\nSignature block"
@@ -92,9 +92,9 @@ describe MultiMail::Receiver::Cloudmailin do
 
             # Extra Cloudmailin parameters
             if actual_http_post_format == 'raw'
-              message['reply_plain'].should be_nil
+              message.reply_plain.should be_nil
             else
-              message['reply_plain'].value.should == "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n"
+              message.reply_plain.should == "bold text\n\n\n\nsome more bold text\n\n\n\nsome italic text\n"
             end
             message['spf-result'].value.should == 'pass'
           end
