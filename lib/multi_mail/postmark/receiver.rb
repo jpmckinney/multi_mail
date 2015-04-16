@@ -4,6 +4,10 @@ module MultiMail
     class Postmark
       include MultiMail::Receiver::Base
 
+      # Transforms the content of Postmark's webhook into a list of messages.
+      #
+      # @param [Hash] params the content of Postmark's webhook
+      # @return [Array<MultiMail::Message::Postmark>] messages
       def transform(params)
         headers = Multimap.new
         params['Headers'].each do |header|
@@ -15,7 +19,7 @@ module MultiMail
         to   = params['ToFull'].map{|hash| transform_address(hash)}
         cc   = params['CcFull'].map{|hash| transform_address(hash)}
 
-        message = Mail.new do
+        message = Message::Postmark.new do
           headers    headers
           message_id params['MessageID']
 
@@ -41,10 +45,14 @@ module MultiMail
         end
 
         # Extra Postmark parameters.
-        %w(MailboxHash MessageID Tag).each do |key|
-          if params.key?(key) && !params[key].empty?
-            message[key] = params[key]
-          end
+        if params.key?('MailboxHash') && !params['MailboxHash'].empty?
+          message.mailboxhash = params['MailboxHash']
+        end
+        if params.key?('MessageID') && !params['MessageID'].empty?
+          message.messageid = params['MessageID']
+        end
+        if params.key?('Tag') && !params['Tag'].empty?
+          message.tag = params['Tag']
         end
 
         [message]

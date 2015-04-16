@@ -2,6 +2,8 @@ module MultiMail
   module Message
     # @see http://developer.postmarkapp.com/developer-build.html#message-format
     class Postmark < MultiMail::Message::Base
+      attr_accessor :mailboxhash, :messageid, :tag
+
       # Returns the message headers in Postmark format.
       #
       # @return [Array<Hash>] the message headers in Postmark format

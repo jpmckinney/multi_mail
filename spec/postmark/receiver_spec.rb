@@ -38,9 +38,9 @@ describe MultiMail::Receiver::Postmark do
       attachment1.read.should == "Nam accumsan euismod eros et rhoncus.\n"
 
       # Extra Postmark parameters
-      message['MailboxHash'].value.should == 'bar'
-      message['MessageID'].value.should == 'e27500eb-142e-4ca0-8529-e32ffd9931d6'
-      message['Tag'].should be_nil
+      message.mailboxhash.should == 'bar'
+      message.messageid.should == 'e27500eb-142e-4ca0-8529-e32ffd9931d6'
+      message.tag.should be_nil
     end
   end
 
