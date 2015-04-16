@@ -16,7 +16,7 @@ module MultiMail
       # Transforms the content of SendGrid's webook into a list of messages.
       #
       # @param [Hash] params the content of Mandrill's webhook
-      # @return [Array<Mail::Messages>] messages
+      # @return [Array<MultiMail::Message::SendGrid>] messages
       # @see http://sendgrid.com/docs/API_Reference/Webhooks/parse.html
       def transform(params)
         # Make variables available to the `encode` method.
@@ -26,7 +26,7 @@ module MultiMail
         # Mail changes `self`.
         this = self
 
-        message = Mail.new do
+        message = Message::SendGrid.new do
           # SendGrid includes a `charsets` parameter, which describes the
           # encodings of the `from`, `to`, `cc` and `subject` parameters, which
           # we don't need because we parse the headers directly.
@@ -58,9 +58,10 @@ module MultiMail
         end
 
         # Extra SendGrid parameters.
-        %w(dkim SPF spam_report spam_score).each do |key|
-          message[key] = params[key]
-        end
+        message.dkim = params['dkim']
+        message.spf = params['SPF']
+        message.spam_report = params['spam_report']
+        message.spam_score = params['spam_score']
 
         # Discard `envelope`, which contains `to` and `from`, and the
         # undocumented `attachment-info`.
@@ -72,7 +73,7 @@ module MultiMail
       # @param [Mail::Message] message a message
       # @return [Boolean] whether the message is spam
       def spam?(message)
-        message['spam_score'] && message['spam_score'].value.to_f > @spamassassin_threshold
+        message.spam_score.to_f > @spamassassin_threshold
       end
 
       def encode(key)

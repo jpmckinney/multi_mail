@@ -47,10 +47,10 @@ describe MultiMail::Receiver::SendGrid do
       attachment1.read.should == "Nam accumsan euismod eros et rhoncus.\n"
 
       # Extra SendGrid parameters
-      message['dkim'].value.should == 'none'
-      message['SPF'].value.should == 'pass'
-      message['spam_report'].value.should == "Spam detection software, running on the system \"mx3.sendgrid.net\", has\r\nidentified this incoming email as possible spam.  The original message\r\nhas been attached to this so you can view it (if it isn't spam) or label\r\nsimilar future email.  If you have any questions, see\r\nthe administrator of that system for details.\r\n\r\nContent preview:  bold text some more bold text some italic text [...] \r\n\r\nContent analysis details:   (-2.6 points, 5.0 required)\r\n\r\n pts rule name              description\r\n---- ---------------------- --------------------------------------------------\r\n-0.7 RCVD_IN_DNSWL_LOW      RBL: Sender listed at http://www.dnswl.org/, low\r\n                            trust\r\n                            [209.85.223.172 listed in list.dnswl.org]\r\n-1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%\r\n                            [score: 0.0000]\r\n 0.0 HTML_MESSAGE           BODY: HTML included in message\r\n\r\n"
-      message['spam_score'].value.should == '-2.599'
+      message.dkim.should == 'none'
+      message.spf.should == 'pass'
+      message.spam_report.should == "Spam detection software, running on the system \"mx3.sendgrid.net\", has\r\nidentified this incoming email as possible spam.  The original message\r\nhas been attached to this so you can view it (if it isn't spam) or label\r\nsimilar future email.  If you have any questions, see\r\nthe administrator of that system for details.\r\n\r\nContent preview:  bold text some more bold text some italic text [...] \r\n\r\nContent analysis details:   (-2.6 points, 5.0 required)\r\n\r\n pts rule name              description\r\n---- ---------------------- --------------------------------------------------\r\n-0.7 RCVD_IN_DNSWL_LOW      RBL: Sender listed at http://www.dnswl.org/, low\r\n                            trust\r\n                            [209.85.223.172 listed in list.dnswl.org]\r\n-1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%\r\n                            [score: 0.0000]\r\n 0.0 HTML_MESSAGE           BODY: HTML included in message\r\n\r\n"
+      message.spam_score.should == '-2.599'
     end
 
     # No postbin is capable of handling mixed encodings, and most fail to even

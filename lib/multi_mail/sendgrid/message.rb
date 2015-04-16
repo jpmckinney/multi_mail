@@ -2,6 +2,8 @@ module MultiMail
   module Message
     # @see http://sendgrid.com/docs/API_Reference/Web_API/mail.html
     class SendGrid < MultiMail::Message::Base
+      attr_accessor :dkim, :spf, :spam_report, :spam_score
+
       # Returns the message headers in SendGrid format.
       #
       # @return [Hash] the message headers in SendGrid format
