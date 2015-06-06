@@ -60,15 +60,30 @@ module MultiMail
       # @see https://bitbucket.org/mailchimp/mandrill-api-ruby/src/d0950a6f9c4fac1dd2d5198a4f72c12c626ab149/lib/mandrill/api.rb?at=master#cl-738
       # @see https://bitbucket.org/mailchimp/mandrill-api-ruby/src/d0950a6f9c4fac1dd2d5198a4f72c12c626ab149/lib/mandrill.rb?at=master#cl-32
       def deliver!(mail)
+        template_name = settings.delete(:template_name) || false
+        template_content = settings.delete(:template_content)
+
         message = MultiMail::Message::Mandrill.new(mail).to_mandrill_hash.merge(parameters)
 
-        response = Faraday.post('https://mandrillapp.com/api/1.0/messages/send.json', JSON.dump({
+        api_params = {
           :key     => api_key,
           :message => message,
           :async   => async,
           :ip_pool => ip_pool,
           :send_at => send_at,
-        }))
+        }
+
+        if template_name
+          api_end_point = "messages/send-template"
+          api_params.merge!({
+            template_name:    template_name,
+            template_content: template_content
+            })
+        else
+          api_end_point = "messages/send"
+        end
+
+        response = Faraday.post("https://mandrillapp.com/api/1.0/#{api_end_point}.json", JSON.dump(api_params))
 
         body = JSON.load(response.body)
 
