@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MultiMail::Sender::Mandrill do 
+describe MultiMail::Sender::Mandrill do
   let :message do
     Mail.new do
       from    'foo@example.com'
@@ -119,23 +119,43 @@ describe MultiMail::Sender::Mandrill do
   end
 
   describe '#deliver!' do
-    before :all do
+    before do
       Mail.defaults do
         delivery_method MultiMail::Sender::Mandrill, :api_key => ENV['MANDRILL_API_KEY'], :return_response => true
       end
     end
 
-    it 'should send a message' do
-      results = message.deliver!
-      results.size.should == 1
+    context "when the :tempalte_name param is set" do
+      before do
+        message.delivery_method.settings.merge!({template_name: "default"})
+      end
+      it "should send a mandrill template" do
+        results = message.deliver!
+        results.size.should == 1
 
-      result = results.first
-      result.size.should == 4
+        result = results.first
+        result.size.should == 4
 
-      result['reject_reason'].should == nil
-      result['status'].should == 'sent'
-      result['email'].should == 'bit-bucket@test.smtp.org'
-      result['_id'].should match(/\A[0-9a-f]{32}\z/)
+        result['reject_reason'].should == nil
+        result['status'].should == 'sent'
+        result['email'].should == 'bit-bucket@test.smtp.org'
+        result['_id'].should match(/\A[0-9a-f]{32}\z/)
+      end
+    end
+
+    context "when the :template_name params is not set" do
+      it 'should send a message' do
+        results = message.deliver!
+        results.size.should == 1
+
+        result = results.first
+        result.size.should == 4
+
+        result['reject_reason'].should == nil
+        result['status'].should == 'sent'
+        result['email'].should == 'bit-bucket@test.smtp.org'
+        result['_id'].should match(/\A[0-9a-f]{32}\z/)
+      end
     end
 
     it 'should not send an empty message' do

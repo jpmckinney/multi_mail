@@ -74,16 +74,16 @@ module MultiMail
         }
 
         if template_name
-          api_end_point = "messages/send-template"
+          api_method = "send-template"
           api_params.merge!({
             template_name:    template_name,
             template_content: template_content
             })
         else
-          api_end_point = "messages/send"
+          api_method = "send"
         end
 
-        response = Faraday.post("https://mandrillapp.com/api/1.0/#{api_end_point}.json", JSON.dump(api_params))
+        response = Faraday.post("https://mandrillapp.com/api/1.0/messages/#{api_method}.json", JSON.dump(api_params))
 
         body = JSON.load(response.body)
 
