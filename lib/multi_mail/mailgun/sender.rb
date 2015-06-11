@@ -17,7 +17,7 @@ module MultiMail
       def initialize(options = {})
         super
         @api_key = settings.delete(:api_key)
-        @domain  = settings.delete(:domain)
+        @domain = settings.delete(:domain)
       end
 
       # Returns the additional parameters for the API call.

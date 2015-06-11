@@ -331,6 +331,8 @@ You may pass additional arguments to `delivery_method` to use Mandrill-specific 
 * `async`
 * `ip_pool`
 * `send_at`
+* `template_name`
+* `template_content`
 
 ```ruby
 Mail.deliver do

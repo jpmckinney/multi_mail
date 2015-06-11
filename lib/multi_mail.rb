@@ -22,6 +22,8 @@ module MultiMail
   class InvalidAPIKey < InvalidRequest; end
   # Raise if a message is invalid.
   class InvalidMessage < InvalidRequest; end
+  # Raise if a message template is invalid.
+  class InvalidTemplate < InvalidRequest; end
 
   # Raise if a message header is invalid
   class InvalidHeader < InvalidMessage; end

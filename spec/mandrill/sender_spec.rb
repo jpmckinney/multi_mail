@@ -34,6 +34,13 @@ describe MultiMail::Sender::Mandrill do
       }.to raise_error(MultiMail::InvalidAPIKey, 'Invalid API key')
     end
 
+    it 'should raise an error if :template_name is invalid' do
+      expect{
+        message.delivery_method MultiMail::Sender::Mandrill, :api_key => ENV['MANDRILL_API_KEY'], :template_name => 'nonexistent'
+        message.deliver
+      }.to raise_error(MultiMail::InvalidTemplate, 'No such template "nonexistent"')
+    end
+
     it 'should transform send_at to a string if it is not a string' do
       sender = MultiMail::Sender::Mandrill.new(:api_user => '', :api_key => '', 'send_at' => Time.at(981203696))
       sender.send_at.should == '2001-02-03 12:34:56'
@@ -51,20 +58,26 @@ describe MultiMail::Sender::Mandrill do
       sender.async.should   == false
       sender.ip_pool.should == nil
       sender.send_at.should == nil
+      sender.template_name.should == nil
+      sender.template_content.should == nil
     end
 
     it 'should assign custom settings' do
       sender = MultiMail::Sender::Mandrill.new({
         :api_key => 'xxx',
-        :async   => true,
+        :async => true,
         :ip_pool => 'Main Pool',
         :send_at => 'example send_at',
+        :template_name => 'foo',
+        :template_content => [{'name' => 'bar', 'content' => 'baz'}],
       })
 
       sender.api_key.should == 'xxx'
       sender.async.should   == true
       sender.ip_pool.should == 'Main Pool'
       sender.send_at.should == 'example send_at'
+      sender.template_name.should == 'foo'
+      sender.template_content.should == [{'name' => 'bar', 'content' => 'baz'}]
     end
   end
 
@@ -119,17 +132,14 @@ describe MultiMail::Sender::Mandrill do
   end
 
   describe '#deliver!' do
-    before do
-      Mail.defaults do
-        delivery_method MultiMail::Sender::Mandrill, :api_key => ENV['MANDRILL_API_KEY'], :return_response => true
-      end
-    end
-
-    context "when the :tempalte_name param is set" do
+    context 'when :template_name is set' do
       before do
-        message.delivery_method.settings.merge!({template_name: "default"})
+        Mail.defaults do
+          delivery_method MultiMail::Sender::Mandrill, :api_key => ENV['MANDRILL_API_KEY'], :return_response => true, :template_name => 'default'
+        end
       end
-      it "should send a mandrill template" do
+
+      it 'should send a mandrill template' do
         results = message.deliver!
         results.size.should == 1
 
@@ -143,7 +153,13 @@ describe MultiMail::Sender::Mandrill do
       end
     end
 
-    context "when the :template_name params is not set" do
+    context 'when :template_name is not set' do
+      before do
+        Mail.defaults do
+          delivery_method MultiMail::Sender::Mandrill, :api_key => ENV['MANDRILL_API_KEY'], :return_response => true
+        end
+      end
+
       it 'should send a message' do
         results = message.deliver!
         results.size.should == 1
@@ -156,10 +172,10 @@ describe MultiMail::Sender::Mandrill do
         result['email'].should == 'bit-bucket@test.smtp.org'
         result['_id'].should match(/\A[0-9a-f]{32}\z/)
       end
-    end
 
-    it 'should not send an empty message' do
-      empty_message.deliver!.should == [] # response not saved
+      it 'should not send an empty message' do
+        empty_message.deliver!.should == [] # response not saved
+      end
     end
   end
 end
