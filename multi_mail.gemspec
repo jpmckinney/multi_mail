@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency('faraday', '~> 0.9.0')
   s.add_runtime_dependency('mail', '~> 2.5')
-  s.add_runtime_dependency('rack', '~> 1.5.2')
+  s.add_runtime_dependency('rack', '~> 1.5')
 
   # For testing
   s.add_development_dependency('coveralls')
