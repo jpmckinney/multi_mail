@@ -18,12 +18,12 @@ module MultiMail
       #   mode optimized for bulk sending
       # @option options [String] :ip_pool the name of the dedicated IP pool that
       #   should be used to send the message
+      # @option options [Time,String] :send_at when this message should be sent
       # @option options [String] :template_name the slug or name of a template
       #   that exists in the user's Mandrill account
       # @option options [Array<Hash>] :template_content an array of hashes, each
       #   with a `"name"` key for the editable region to inject into and a
       #  `"content"` key for the content to inject
-      # @option options [Time,String] :send_at when this message should be sent
       # @see https://mandrillapp.com/api/docs/index.ruby.html
       # @see https://mandrillapp.com/api/docs/messages.JSON.html#method-send
       def initialize(options = {})
