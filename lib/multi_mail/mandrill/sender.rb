@@ -6,7 +6,9 @@ module MultiMail
 
       requires :api_key
 
-      attr_reader :api_key, :async, :ip_pool, :send_at, :template_name, :template_content
+      attr_reader :api_key, :async, :ip_pool, :send_at
+
+      attr_accessor :template_name, :template_content
 
       # Initializes a Mandrill outgoing email sender.
       #
@@ -67,9 +69,6 @@ module MultiMail
       # @see https://bitbucket.org/mailchimp/mandrill-api-ruby/src/d0950a6f9c4fac1dd2d5198a4f72c12c626ab149/lib/mandrill/api.rb?at=master#cl-738
       # @see https://bitbucket.org/mailchimp/mandrill-api-ruby/src/d0950a6f9c4fac1dd2d5198a4f72c12c626ab149/lib/mandrill.rb?at=master#cl-32
       def deliver!(mail)
-        @template_name = settings.delete(:template_name)
-        @template_content = settings.delete(:template_content)
-
         message = MultiMail::Message::Mandrill.new(mail).to_mandrill_hash.merge(parameters)
 
         api_params = {

@@ -11,6 +11,7 @@ require 'digest/sha1'
 require 'net/http'
 require 'yaml'
 
+require 'action_mailer'
 require 'rspec'
 require 'rack'
 require File.dirname(__FILE__) + '/../lib/multi_mail'

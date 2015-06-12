@@ -96,20 +96,20 @@ end
 First, add the delivery method to ActionMailer:
 
 ```
-ActionMailer::Base.add_delivery_method :postmark, MultiMail::Sender::Postmark, :api_key => 'your-api-key'
+ActionMailer::Base.add_delivery_method :mandrill, MultiMail::Sender::Mandrill, :api_key => 'your-api-key'
 ```
 
 Set the default delivery method for all ActionMailer classes in `config/environments/<ENV>.rb`:
 
 ```
-config.action_mailer.delivery_method = :postmark
+config.action_mailer.delivery_method = :mandrill
 ```
 
 Or, set the delivery method in an ActionMailer class:
 
 ```
 class UserMailer < ActionMailer::Base
-  default :delivery_method => :postmark
+  default :delivery_method => :mandrill
 end
 ```
 
@@ -121,7 +121,7 @@ class UserMailer < ActionMailer::Base
     mail({
       :to => user.email,
       :subject => 'Welcome to My Awesome Site',
-      :delivery_method => :postmark,
+      :delivery_method => :mandrill,
     })
   end
 end
@@ -130,7 +130,7 @@ end
 Set the delivery method's default options for all ActionMailer classes in `config/environments/<ENV>.rb`:
 
 ```
-config.action_mailer.postmark_settings = {:api_key => 'your-api-key'}
+config.action_mailer.mandrill_settings = {:api_key => 'your-api-key', :template_name => 'default'}
 ```
 
 Or, set the delivery method's options in an ActionMailer method:
@@ -141,7 +141,7 @@ class UserMailer < ActionMailer::Base
     mail({
       :to => user.email,
       :subject => 'Welcome to My Awesome Site',
-      :delivery_method_options => {:api_key => 'your-api-key'},
+      :delivery_method_options => {:template_name => 'default'},
     })
   end
 end
@@ -151,14 +151,14 @@ Or, set the delivery method's options in an ActionMailer action:
 
 ```
 class UserMailer < ActionMailer::Base
-  after_action :set_delivery_method_options
+  before_action :set_delivery_method_options
 
   ...
 
   private
 
     def set_delivery_method_options
-      mail.delivery_method.settings.merge!({:api_key => 'your-api-key'})
+      mail.delivery_method.template_name = 'default'
     end
 end
 ```

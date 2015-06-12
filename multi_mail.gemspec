@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency('rack', '~> 1.5')
 
   # For testing
+  s.add_development_dependency('actionmailer', '~> 4.2.1')
   s.add_development_dependency('coveralls')
   s.add_development_dependency('rake')
   s.add_development_dependency('rspec', '~> 2.10')
