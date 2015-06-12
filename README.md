@@ -127,7 +127,13 @@ class UserMailer < ActionMailer::Base
 end
 ```
 
-Set the delivery method's options in an ActionMailer method:
+Set the delivery method's default options for all ActionMailer classes in `config/environments/<ENV>.rb`:
+
+```
+config.action_mailer.postmark_settings = {:api_key => 'your-api-key'}
+```
+
+Or, set the delivery method's options in an ActionMailer method:
 
 ```
 class UserMailer < ActionMailer::Base
