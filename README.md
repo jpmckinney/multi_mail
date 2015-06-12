@@ -91,6 +91,72 @@ Mail.defaults do
 end
 ```
 
+#### ActionMailer
+
+First, add the delivery method to ActionMailer:
+
+```
+ActionMailer::Base.add_delivery_method :postmark, MultiMail::Sender::Postmark, :api_key => 'your-api-key'
+```
+
+Set the default delivery method for all ActionMailer classes in `config/environments/<ENV>.rb`:
+
+```
+config.action_mailer.delivery_method = :postmark
+```
+
+Or, set the delivery method in an ActionMailer class:
+
+```
+class UserMailer < ActionMailer::Base
+  default :delivery_method => :postmark
+end
+```
+
+Or, set the delivery method in an ActionMailer method:
+
+```
+class UserMailer < ActionMailer::Base
+  def welcome_email(user)
+    mail({
+      :to => user.email,
+      :subject => 'Welcome to My Awesome Site',
+      :delivery_method => :postmark,
+    })
+  end
+end
+```
+
+Set the delivery method's options in an ActionMailer method:
+
+```
+class UserMailer < ActionMailer::Base
+  def welcome_email(mail)
+    mail({
+      :to => user.email,
+      :subject => 'Welcome to My Awesome Site',
+      :delivery_method_options => {:api_key => 'your-api-key'},
+    })
+  end
+end
+```
+
+Or, set the delivery method's options in an ActionMailer action:
+
+```
+class UserMailer < ActionMailer::Base
+  after_action :set_delivery_method_options
+
+  ...
+
+  private
+
+    def set_delivery_method_options
+      mail.delivery_method.settings.merge!({:api_key => 'your-api-key'})
+    end
+end
+```
+
 #### Tagging
 
 Mailgun, Mandrill and Postmark allow you to tag messages in order to accumulate statistics by tag, which will be accessible through their user interface:
