@@ -6,17 +6,23 @@ module MultiMail
 
       # Returns the message headers in Mailgun format.
       #
-      # @return [Multimap] the message headers in Mailgun format
+      # @return [Hash] the message headers in Mailgun format
       def mailgun_headers
-        mm = Multimap.new
+        map = Multimap.new
+        hash = Hash.new
+
         header_fields.each do |field|
           key = field.name.downcase
-          unless %w(from to cc bcc subject tag reply-to).include?(key)
-            mm["h:#{field.name}"] = field.value
+          unless %w(from to cc bcc subject tag).include?(key)
+            if key == 'reply-to'
+              hash["h:#{field.name}"] = field.value
+            else
+              map["h:#{field.name}"] = field.value
+            end
           end
         end
-        mm.instance_variable_get('@hash')['h:Reply-To'] = self['Reply-To'].value if self['Reply-To']
-        mm
+
+        map.to_hash.merge(hash)
       end
 
       # Returns the message's attachments in Mailgun format.
@@ -24,12 +30,12 @@ module MultiMail
       # @return [Multimap] the attachments in Mailgun format
       # @see http://documentation.mailgun.com/user_manual.html#inline-image
       def mailgun_attachments
-        mm = Multimap.new
+        map = Multimap.new
         attachments.each do |attachment|
           key = attachment.content_type.start_with?('image/') ? 'inline' : 'attachment'
-          mm[key] = Faraday::UploadIO.new(StringIO.new(attachment.body.decoded), attachment.content_type, attachment.filename)
+          map[key] = Faraday::UploadIO.new(StringIO.new(attachment.body.decoded), attachment.content_type, attachment.filename)
         end
-        mm
+        map
       end
 
       # Returns the message as parameters to POST to Mailgun.
@@ -37,12 +43,12 @@ module MultiMail
       # @return [Hash] the message as parameters to POST to Mailgun
       # @see http://documentation.mailgun.com/user_manual.html#tagging
       def to_mailgun_hash
-        mm = Multimap.new
+        map = Multimap.new
         hash = Hash.new
 
         %w(from subject).each do |field|
           if self[field]
-            mm[field] = self[field].value
+            map[field] = self[field].value
           end
         end
 
@@ -50,33 +56,26 @@ module MultiMail
           if self[field]
             if self[field].value.respond_to?(:each)
               self[field].value.each do |value|
-                mm[field] = value
+                map[field] = value
               end
             else
-              mm[field] = self[field].value
+              map[field] = self[field].value
             end
           end
         end
 
-        # there may be others we want to do this with
-        %w(h:Reply-To).each do |field|
-          if self[field]
-            hash[field] = self[field].value
-          end
-        end
-
         if body_text && !body_text.empty?
-          mm['text'] = body_text
+          map['text'] = body_text
         end
         if body_html && !body_html.empty?
-          mm['html'] = body_html
+          map['html'] = body_html
         end
 
         tags.each do |tag|
-          mm['o:tag'] = tag
+          map['o:tag'] = tag
         end
 
-        normalize(mm.to_hash.merge(mailgun_attachments).merge(mailgun_headers).merge(hash))
+        normalize(map.merge(mailgun_attachments).to_hash.merge(mailgun_headers).merge(hash))
       end
     end
   end
