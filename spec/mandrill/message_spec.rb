@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MultiMail::Message::Mandrill do
+describe MultiMail::Message::Mandrill, skip: true do
   let :message do
     headers = {
       'X-Autoreply'  => true,

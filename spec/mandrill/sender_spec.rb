@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MultiMail::Sender::Mandrill do
+describe MultiMail::Sender::Mandrill, skip: true do
   let :message do
     Mail.new do
       from    'foo@example.com'
