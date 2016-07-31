@@ -65,7 +65,7 @@ describe MultiMail::Sender::Postmark do
       expect{
         message.delivery_method MultiMail::Sender::Postmark, :api_key => 'xxx'
         message.deliver
-      }.to raise_error(MultiMail::InvalidAPIKey)
+      }.to raise_error(MultiMail::InvalidAPIKey, 'The Server Token you provided in the X-Postmark-Server-Token request header was invalid. Please verify that you are using a valid token.')
     end
   end
 

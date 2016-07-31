@@ -182,7 +182,7 @@ describe MultiMail::Message::Mailgun do
   describe '#mailgun_headers' do
     it 'should return the headers' do
       headers = message.mailgun_headers
-      headers['h:Reply-To'].should     == ['noreply@example.com']
+      headers['h:Reply-To'].should     == 'noreply@example.com'
       headers['h:X-Autoreply'].should  == ['true']
       headers['h:X-Precedence'].should == ['auto_reply']
       headers['h:X-Numeric'].should    == ['42']
@@ -215,7 +215,7 @@ describe MultiMail::Message::Mailgun do
       hash[:subject].should      == ['test']
       hash[:text].should         == ['hello']
       hash[:html].should         == ['<p>hello</p>']
-      hash[:'h:Reply-To'].should == ['noreply@example.com']
+      hash[:'h:Reply-To'].should == 'noreply@example.com'
 
       Time.parse(hash[:'h:Date'][0]).should be_within(1).of(Time.at(946702800))
       hash[:'h:Content-Type'][0].should match(%r{\Amultipart/alternative; boundary=--==_mimepart_[0-9a-f_]+\z})

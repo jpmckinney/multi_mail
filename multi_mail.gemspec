@@ -23,12 +23,13 @@ Gem::Specification.new do |s|
   s.add_development_dependency('actionmailer', '~> 4.2.1')
   s.add_development_dependency('coveralls')
   s.add_development_dependency('rake')
-  s.add_development_dependency('rspec', '~> 2.10')
+  s.add_development_dependency('rspec', '~> 3.0')
 
   # For Rake tasks
   s.add_development_dependency('mandrill-api', '~> 1.0.35')
   s.add_development_dependency('postmark')
   s.add_development_dependency('rest-client', '~> 1.8.0')
+  s.add_development_dependency('tins', '< 1.7')
   # sendgrid_webapi 0.0.2 depends on Faraday 0.8.
   # s.add_development_dependency('sendgrid_webapi', '0.0.2')
 end
