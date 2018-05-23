@@ -2,7 +2,6 @@
 
 [![Gem Version](https://badge.fury.io/rb/multi_mail.svg)](https://badge.fury.io/rb/multi_mail)
 [![Build Status](https://secure.travis-ci.org/jpmckinney/multi_mail.png)](https://travis-ci.org/jpmckinney/multi_mail)
-[![Dependency Status](https://gemnasium.com/jpmckinney/multi_mail.png)](https://gemnasium.com/jpmckinney/multi_mail)
 [![Coverage Status](https://coveralls.io/repos/jpmckinney/multi_mail/badge.png)](https://coveralls.io/r/jpmckinney/multi_mail)
 [![Code Climate](https://codeclimate.com/github/jpmckinney/multi_mail.png)](https://codeclimate.com/github/jpmckinney/multi_mail)
 
