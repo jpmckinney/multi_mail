@@ -57,7 +57,7 @@ describe MultiMail::Receiver::Base do
     end
 
     it 'should raise an error if the argument is invalid' do
-      expect{ klass.parse(1) }.to raise_error(ArgumentError, "Can't handle Fixnum input")
+      expect{ klass.parse(1) }.to raise_error(ArgumentError, "Can't handle Integer input")
     end
 
     it 'should accept a Rack::Request object' do
