@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   # For testing
   s.add_development_dependency('actionmailer', '~> 4.2.1')
   s.add_development_dependency('coveralls')
-  s.add_development_dependency('rake', '< 11.0')
+  s.add_development_dependency('rake')
   s.add_development_dependency('rspec', '~> 3.0')
 
   # For Rake tasks
