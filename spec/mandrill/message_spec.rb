@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-xdescribe MultiMail::Message::Mandrill do
+describe MultiMail::Message::Mandrill do
   let :message do
     headers = {
       'X-Autoreply'  => true,
@@ -69,16 +69,6 @@ xdescribe MultiMail::Message::Mandrill do
       subject 'test'
       body    'hello'
       add_file :filename => 'xxx', :content => ''
-    end
-  end
-
-  let :message_with_empty_file do
-    MultiMail::Message::Mandrill.new do
-      from    'foo@example.com'
-      to      'bar@example.com'
-      subject 'test'
-      body    'hello'
-      add_file :filename => '', :content => ''
     end
   end
 
@@ -230,10 +220,6 @@ xdescribe MultiMail::Message::Mandrill do
           'content' => '',
         },
       ]
-    end
-
-    it 'should return an empty array if the attachment is blank' do
-      message_with_empty_file.mandrill_attachments.should == []
     end
 
     it 'should return an empty array' do

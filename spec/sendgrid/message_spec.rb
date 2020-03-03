@@ -72,16 +72,6 @@ describe MultiMail::Message::SendGrid do
     end
   end
 
-  let :message_with_empty_file do
-    MultiMail::Message::SendGrid.new do
-      from    'foo@example.com'
-      to      'bar@example.com'
-      subject 'test'
-      body    'hello'
-      add_file :filename => '', :content => ''
-    end
-  end
-
   let :message_with_empty_headers do
     headers = {
       'X-Autoreply' => nil,
@@ -156,10 +146,6 @@ describe MultiMail::Message::SendGrid do
       files.size.should == 1
     end
 
-    it 'should return an empty array if the attachment is blank' do
-      message_with_empty_file.sendgrid_files.should == {}
-    end
-
     it 'should return an empty array' do
       empty_message.sendgrid_files.should == {}
     end
@@ -169,10 +155,6 @@ describe MultiMail::Message::SendGrid do
     it 'should return the content IDs' do
       content = message.sendgrid_content
       content.should == {'empty.gif' => 'empty.gif'}
-    end
-
-    it 'should return an empty array if the attachment is blank' do
-      message_with_empty_file.sendgrid_content.should == {}
     end
 
     it 'should return an empty array' do

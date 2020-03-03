@@ -72,16 +72,6 @@ describe MultiMail::Message::Postmark do
     end
   end
 
-  let :message_with_empty_file do
-    MultiMail::Message::Postmark.new do
-      from    'foo@example.com'
-      to      'bar@example.com'
-      subject 'test'
-      body    'hello'
-      add_file :filename => '', :content => ''
-    end
-  end
-
   let :message_with_empty_headers do
     headers = {
       'X-Autoreply' => nil,
@@ -201,10 +191,6 @@ describe MultiMail::Message::Postmark do
           'Content' => '',
         },
       ]
-    end
-
-    it 'should return an empty array if the attachment is blank' do
-      message_with_empty_file.postmark_attachments.should == []
     end
 
     it 'should return an empty array' do
