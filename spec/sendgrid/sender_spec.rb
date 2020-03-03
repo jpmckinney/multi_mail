@@ -1,6 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe MultiMail::Sender::SendGrid do
+# Account disabled.
+xdescribe MultiMail::Sender::SendGrid do
   let :message do
     Mail.new do
       date    Time.at(946702800)

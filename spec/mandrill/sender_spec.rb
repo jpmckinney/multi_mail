@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+# Account disabled.
 xdescribe MultiMail::Sender::Mandrill do
   let :message do
     Mail.new do
